@@ -1,10 +1,3 @@
-//
-//  SearchBarView.swift
-//  Schedule ICTIS
-//
-//  Created by G412 on 13.11.2024.
-//
-
 import SwiftUI
 
 struct SearchBarView: View {
@@ -13,34 +6,41 @@ struct SearchBarView: View {
 
     var body: some View {
         HStack {
-            TextField("Ввести номер группы", text: $text)
-                .padding(7)
-                .padding(.horizontal, 25)
-                .background(.white)
-                .cornerRadius(8)
-                .overlay(
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundColor(.gray)
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                            .padding(.leading, 8)
-                        
-                        if isEditing {
-                            Button(action: {
-                                self.text = ""
-                                self.isEditing = false
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            }) {
-                                Image(systemName: "multiply.circle.fill")
-                                    .foregroundColor(.gray)
-                                    .padding(.trailing, 8)
-                            }
-                        }
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(Color.gray)
+                    .padding(.leading, 10)
+                TextField("Ввести номер группы", text: $text)
+                    .disableAutocorrection(true)
+                    .frame(width: 270, height: 45)
+                    .overlay(
+                        Group {
+                            if isEditing {
+                                Button {
+                                    self.text = ""
+                                    self.isEditing = false
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .padding(.trailing, 30)
+                                        .offset(x: 10)
+                                        .foregroundColor(.gray)
+                                }
+                                }
+                        }, alignment: .trailing
+                    )
+                    .onTapGesture {
+                        self.isEditing = true
                     }
-                )
-                .onTapGesture {
-                    self.isEditing = true
-                }
+                    .onSubmit {
+                        self.isEditing = false
+                    }
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.white)
+            )
+            Spacer()
             Button {
                 
             } label: {
@@ -54,8 +54,8 @@ struct SearchBarView: View {
                         .foregroundStyle(.white)
                         .scaledToFit()
                         .frame(width: 16)
+                    }
                 }
-            }
         }
         .padding(.horizontal)
     }

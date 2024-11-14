@@ -8,20 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isActiveTabBar: TabModel = .schedule
-    @State private var isTabBarHidden: Bool = false
+    @State private var selectedTab: TabModel = .schedule
     var body: some View {
-        VStack {
-            TabView(selection: $isActiveTabBar) {
+        ZStack {
+            switch selectedTab {
+            case .schedule:
                 ScheduleView()
-                    .tag(TabModel.schedule)
+            case .tasks:
                 Text("Tasks")
-                    .tag(TabModel.tasks)
+            case .settings:
                 Text("Settings")
-                    .tag(TabModel.settings)
             }
-            CustomTabBarView(isActiveTabBar: $isActiveTabBar)
-                .padding(.bottom, 10)
+            CustomTabBarView(selectedTab: $selectedTab)
         }
         .background(.secondary.opacity(0.15))
     }
