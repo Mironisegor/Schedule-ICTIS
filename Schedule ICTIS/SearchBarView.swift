@@ -10,7 +10,7 @@ struct SearchBarView: View {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(Color.gray)
                     .padding(.leading, 10)
-                TextField("Ввести номер группы", text: $text)
+                TextField("Поиск группы", text: $text)
                     .disableAutocorrection(true)
                     .frame(width: 270, height: 45)
                     .overlay(
@@ -22,7 +22,7 @@ struct SearchBarView: View {
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 } label: {
                                     Image(systemName: "xmark.circle.fill")
-                                        .padding(.trailing, 30)
+                                        .padding(.trailing, 20)
                                         .offset(x: 10)
                                         .foregroundColor(.gray)
                                 }
@@ -46,7 +46,7 @@ struct SearchBarView: View {
             } label: {
                 ZStack {
                     Rectangle()
-                        .frame(width: 35, height: 35)
+                        .frame(width: 40, height: 40)
                         .foregroundStyle(Color("blueColor"))
                         .cornerRadius(10)
                     Image(systemName: "plus")

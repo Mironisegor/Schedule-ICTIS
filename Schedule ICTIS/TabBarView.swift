@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomTabBarView: View {
+struct TabBarView: View {
     var isActiveForeground: Color = .white
     var isActiveBackground: Color = Color("blueColor")
     @Binding var selectedTab: TabModel
@@ -20,7 +20,7 @@ struct CustomTabBarView: View {
             }
             .animation(.smooth(duration: 0.3, extraBounce: 0), value: selectedTab)
             .padding(6)
-            .background(.clear)
+            .background(.white)
             .mask(RoundedRectangle(cornerRadius: 24, style: .continuous))
             
     //        .background(
@@ -41,12 +41,12 @@ struct CustomTabBarView: View {
                 VStack {
                     Image(systemName: tab.rawValue)
                         .font(.title)
-                        .frame(width: 80, height: 35)
+                        .frame(width: 70, height: 30)
                 }
                 .foregroundStyle(selectedTab == tab ? isActiveForeground : Color("blueColor"))
                 .padding(.vertical, 7)
-                .padding(.leading, 15)
-                .padding(.trailing, 15)
+                .padding(.leading, 13)
+                .padding(.trailing, 13)
                 .background {
                     if selectedTab == tab {
                         Capsule()

@@ -19,7 +19,7 @@ struct ContentView: View {
             case .settings:
                 Text("Settings")
             }
-            CustomTabBarView(selectedTab: $selectedTab)
+            TabBarView(selectedTab: $selectedTab)
         }
         .background(.secondary.opacity(0.15))
     }

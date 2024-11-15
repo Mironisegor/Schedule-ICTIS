@@ -11,7 +11,7 @@ struct ScheduleView: View {
     @State private var searchText: String = ""
     @State private var currentDate: Date = .init()
     @State private var weekSlider: [[Date.WeekDay]] = []
-    @State private var currentWeekIndex: Int = 0
+    @State private var currentWeekIndex: Int = 1
     var body: some View {
         VStack {
             SearchBarView(text: $searchText)
@@ -22,7 +22,16 @@ struct ScheduleView: View {
         .onAppear(perform: {
             if weekSlider.isEmpty {
                 let currentWeek = Date().fetchWeek()
+                
+                if let firstDate = currentWeek.first?.date {
+                    weekSlider.append(firstDate.createPrevioustWeek())
+                }
+                
                 weekSlider.append(currentWeek)
+                
+                if let lastDate = currentWeek.last?.date {
+                    weekSlider.append(lastDate.createNextWeek())
+                }
             }
         })
 
@@ -31,15 +40,28 @@ struct ScheduleView: View {
     @ViewBuilder
     func HeaderView() -> some View {
         VStack (alignment: .leading, spacing: 6) {
-            HStack (spacing: 5) {
-                Text(currentDate.format("YYYY"))
-                    .foregroundStyle(.blue)
-                Text(currentDate.format("MMMM"))
-                    .foregroundStyle(.blue)
+            HStack {
+                VStack (alignment: .leading, spacing: 0) {
+                    Text(currentDate.format("EEEE"))
+                        .font(.system(size: 40, weight: .semibold))
+                        .foregroundStyle(.black)
+//                        .background(Color.green)
+                    HStack (spacing: 5) {
+                        Text(currentDate.format("dd"))
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundStyle(Color("grayForDate"))
+                        Text(currentDate.format("MMMM"))
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundStyle(Color("grayForDate"))
+                    }
+//                    .background(.red)
+                }
+                .padding(.top, 8)
+                .padding(.leading, 20)
+//                .background(Color.brown)
+                Spacer()
             }
-            .font(.title.bold())
-//            Text(currentDate.formatted(date: .complete, time: .omitted))
-//                .font(.title.bold())
+            .frame(maxWidth: .infinity)
             
             TabView(selection: $currentWeekIndex) {
                 ForEach(weekSlider.indices, id: \.self) { index in
@@ -55,24 +77,46 @@ struct ScheduleView: View {
     
     @ViewBuilder
     func WeekView(_ week: [Date.WeekDay]) -> some View {
-        HStack (spacing: 14) {
+        HStack (spacing: 10) {
             ForEach(week) { day in
-                VStack (spacing: 4) {
+                VStack (spacing: 1) {
                     Text(day.date.format("E"))
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .textScale(.secondary)
-                        .padding(.top, 6)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(day.date.format("E") == "Вс" ? Color(.red) : isSameDate(day.date, currentDate) ? Color("customGray1") : Color("customGray3"))
+                        .padding(.top, 13)
                         .foregroundColor(.gray)
                     Text(day.date.format("dd"))
-                        .font(.callout)
-                        .fontWeight(.bold)
-                        .textScale(.secondary)
-                        .padding(.bottom, 6)
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(isSameDate(day.date, currentDate) ? .white : .black)
+                        .padding(.bottom, 13)
                 }
-                .frame(maxWidth: 40, maxHeight: 55,  alignment: .center)
-                .background(Color.white)
-                .cornerRadius(10)
+                .frame(width: 43, height: 55,  alignment: .center)
+                .background( content: {
+                    Group {
+                        if isSameDate(day.date, currentDate) {
+                            Color("blueColor")
+                        }
+                        else {
+                            Color(.white)
+                        }
+                        if day.date.isToday && isSameDate(day.date, currentDate) {
+                            Color("blueColor")
+                        }
+                    }
+                }
+                )
+                .overlay (
+                    Group {
+                        if day.date.isToday && !isSameDate(day.date, currentDate) {
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color("blueColor"), lineWidth: 2)
+                        }
+                    }
+                )
+                .cornerRadius(15)
+                .onTapGesture {
+                    currentDate = day.date
+                }
             }
         }
     }
