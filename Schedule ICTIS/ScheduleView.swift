@@ -12,10 +12,23 @@ struct ScheduleView: View {
     @State private var currentDate: Date = .init()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
+    @State private var createWeek: Bool = false
+    @StateObject var vm = ViewModel()
+
     var body: some View {
         VStack {
             SearchBarView(text: $searchText)
             HeaderView()
+            ScrollView(.vertical) {
+                VStack {
+                    ForEach(vm.weekSchedule, id: \.week) { day in
+                        HStack {
+                            Text(convertTimeString(day.table[1][1])[0])
+                            Text(convertTimeString(day.table[1][1])[9])
+                        }
+                    }
+                }
+            }
             Spacer()
         }
         .background(.secondary.opacity(0.1))
@@ -34,7 +47,6 @@ struct ScheduleView: View {
                 }
             }
         })
-
     }
     
     @ViewBuilder
@@ -45,7 +57,6 @@ struct ScheduleView: View {
                     Text(currentDate.format("EEEE"))
                         .font(.system(size: 40, weight: .semibold))
                         .foregroundStyle(.black)
-//                        .background(Color.green)
                     HStack (spacing: 5) {
                         Text(currentDate.format("dd"))
                             .font(.system(size: 20, weight: .bold))
@@ -54,11 +65,9 @@ struct ScheduleView: View {
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(Color("grayForDate"))
                     }
-//                    .background(.red)
                 }
                 .padding(.top, 8)
                 .padding(.leading, 20)
-//                .background(Color.brown)
                 Spacer()
             }
             .frame(maxWidth: .infinity)
@@ -67,11 +76,19 @@ struct ScheduleView: View {
                 ForEach(weekSlider.indices, id: \.self) { index in
                     let week = weekSlider[index]
                     WeekView(week)
+                        .padding(.horizontal, 15)
                         .tag(index)
                 }
             }
+            .padding(.horizontal, -15)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(height: 90)
+        }
+        .onChange(of: currentWeekIndex, initial: false) { oldValue, newValue in
+            if newValue == 0 || newValue == (weekSlider.count - 1) {
+                createWeek = true
+            }
+            vm.updateSelectedIndex(newValue)
         }
     }
     
@@ -116,8 +133,50 @@ struct ScheduleView: View {
                 .cornerRadius(15)
                 .onTapGesture {
                     currentDate = day.date
+                    vm.updateSelectedDayIndex(currentDate)
                 }
             }
+        }
+        .background {
+            GeometryReader {
+                let minX = $0.frame(in: .global).minX
+                
+                Color.clear
+                    .preference(key: OffsetKey.self, value: minX)
+                    .onPreferenceChange(OffsetKey.self) { value in
+                        if value.rounded() == 15 && createWeek {
+                            paginateWeek()
+                            createWeek = false
+                        }
+                    }
+            }
+        }
+    }
+    
+    func paginateWeek() {
+        if weekSlider.indices.contains(currentWeekIndex) {
+            if let firstDate = weekSlider[currentWeekIndex].first?.date,
+               currentWeekIndex == 0 {
+                weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
+                weekSlider.removeLast()
+                currentWeekIndex = 1
+            }
+            
+            if let lastDate = weekSlider[currentWeekIndex].last?.date,
+               currentWeekIndex == (weekSlider.count - 1) {
+                weekSlider.append(lastDate.createNextWeek())
+                weekSlider.removeFirst()
+                currentWeekIndex = weekSlider.count - 2
+            }
+        }
+    }
+    
+    func convertTimeString(_ input: String) -> [String] {
+        let parts = input.split(separator: "-")
+        if let firstPart = parts.first, let lastPart = parts.last {
+            return [String(firstPart), String(lastPart)]
+        } else {
+            return []
         }
     }
 }

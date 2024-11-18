@@ -8,13 +8,13 @@
 import Foundation
 
 // MARK: - Welcome
-struct Schedule: Codable {
+struct Schedule: Decodable {
     let table: Table
     let weeks: [Int]
 }
 
 // MARK: - Table
-struct Table: Codable {
+struct Table: Decodable {
     let type, name: String
     let week: Int
     let group: String
