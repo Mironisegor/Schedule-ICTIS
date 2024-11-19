@@ -19,17 +19,58 @@ struct ScheduleView: View {
         VStack {
             SearchBarView(text: $searchText)
             HeaderView()
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    ForEach(vm.weekSchedule, id: \.week) { day in
-                        HStack {
-                            Text(convertTimeString(day.table[1][1])[0])
-                            Text(convertTimeString(day.table[1][1])[9])
+                    ForEach(vm.weekSchedule, id: \.week) { element in
+                        let selectedDayIndex = vm.selectedIndex
+                        if selectedDayIndex < 8 {
+                            let schedule = element.table[selectedDayIndex]
+                            ForEach(schedule.indices.dropFirst(), id: \.self) { index in
+                                let lesson = schedule[index]
+                                let firstThreeCharacters = lesson.prefix(3)
+                                let checkEnglish = lesson.prefix(6)
+                                if !lesson.isEmpty && index != 0 {
+                                    GeometryReader { geometry in
+                                        HStack (spacing: 8) {
+                                            VStack (alignment: .center) {
+                                                Text(convertTimeString(element.table[1][index])[0])
+                                                    .font(.system(size: 15, weight: .light))
+                                                Text(convertTimeString(element.table[1][index])[1])
+                                                    .font(.system(size: 15, weight: .light))
+                                            }
+                                            .padding(.top, 4)
+                                            .padding(.bottom, 4)
+                                            .padding(.leading, 8)
+                                            Rectangle()
+                                                .frame(maxHeight: geometry.size.height - 10)
+                                                .frame(width: 3)
+                                                .cornerRadius(20)
+                                                .padding(.top, 4)
+                                                .padding(.bottom, 4)
+                                                .foregroundColor(checkEnglish == "пр.Ино" || firstThreeCharacters == "лек" ? Color.blue : Color.green)
+                                            Text(lesson)
+                                                .font(.system(size: 16, weight: .medium))
+                                                .padding(.trailing, 8)
+                                                .frame(maxWidth: 280, alignment: .leading) // Выравнивание текста по левому краю
+                                                .padding(.top, 4)
+                                                .padding(.bottom, 4)
+                                                .multilineTextAlignment(.leading)
+
+                                        }
+                                        .background(Color.white)
+                                        .cornerRadius(20)
+                                        .padding(.horizontal, 10)
+                                        .frame(maxWidth: 420, maxHeight: 130)
+                                    }
+                                    .frame(height: 70)
+                                }
+                            }
+                        } else {
+                            Text("Сегодня нет пар")
                         }
                     }
                 }
             }
-            Spacer()
         }
         .background(.secondary.opacity(0.1))
         .onAppear(perform: {
@@ -46,6 +87,7 @@ struct ScheduleView: View {
                     weekSlider.append(lastDate.createNextWeek())
                 }
             }
+            vm.updateSelectedDayIndex(currentDate)
         })
     }
     

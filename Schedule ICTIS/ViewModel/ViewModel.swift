@@ -12,14 +12,14 @@ final class ViewModel: ObservableObject {
     //MARK: Properties
     @Published var weekSchedule: [Table] = []
     @Published var selectedDay: Date = Date()
-    @Published var selectedIndex: Int = 0
+    @Published var selectedIndex: Int = 1
     
     init() {
         fetchWeekSchedule()
     }
     
     //MARK: Methods
-    func fetchWeekSchedule(){
+    func fetchWeekSchedule() {
         Task {
             do {
                 let schedule = try await NetworkManager.shared.getSchedule()
@@ -33,22 +33,28 @@ final class ViewModel: ObservableObject {
         }
     }
     
+    func getSelectedDaySchedule(for date: Date) -> [String]? {
+        guard let week = weekSchedule.first else { return nil }
+        let dayIndex = week.table.firstIndex { $0[0].contains(date.format("dd MMMM")) }
+        return dayIndex.flatMap { week.table[$0] }
+    }
+    
     func updateSelectedDayIndex(_ date: Date) {
         switch date.format("E") {
         case "Пн":
-            selectedIndex = 1
-        case "Вт":
             selectedIndex = 2
-        case "Ср":
+        case "Вт":
             selectedIndex = 3
-        case "Чт":
+        case "Ср":
             selectedIndex = 4
-        case "Пт":
+        case "Чт":
             selectedIndex = 5
-        case "Сб":
+        case "Пт":
             selectedIndex = 6
-        default:
+        case "Сб":
             selectedIndex = 7
+        default:
+            selectedIndex = 8
         }
         print(selectedIndex)
     }
