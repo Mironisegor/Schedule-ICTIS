@@ -20,7 +20,7 @@ struct ScheduleView: View {
             SearchBarView(text: $searchText)
             HeaderView()
             ScrollView(.vertical, showsIndicators: false) {
-                VStack {
+                VStack (spacing: 12) {
                     ForEach(vm.weekSchedule, id: \.week) { element in
                         let selectedDayIndex = vm.selectedIndex
                         if selectedDayIndex < 8 {
@@ -49,7 +49,7 @@ struct ScheduleView: View {
                                                 .padding(.bottom, 4)
                                                 .foregroundColor(checkEnglish == "пр.Ино" || firstThreeCharacters == "лек" ? Color.blue : Color.green)
                                             Text(lesson)
-                                                .font(.system(size: 16, weight: .medium))
+                                                .font(.system(size: 16, weight: .regular))
                                                 .padding(.trailing, 8)
                                                 .frame(maxWidth: 280, alignment: .leading) // Выравнивание текста по левому краю
                                                 .padding(.top, 4)

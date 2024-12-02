@@ -2,26 +2,25 @@
 //  CustomTabBarView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 13.11.2024.
+//  Created by Egor Mironov on 13.11.2024.
 //
 
 import SwiftUI
 
 struct TabBarView: View {
-    var isActiveForeground: Color = .white
-    var isActiveBackground: Color = Color("blueColor")
-    @Binding var selectedTab: TabModel
+    @Binding var selectedTab: TabBarModel
 //    @NameSpace private var animation
     var body: some View {
         VStack {
             Spacer()
-            HStack(spacing: 0) {
+            HStack(spacing: 15) {
                 content
             }
             .animation(.smooth(duration: 0.3, extraBounce: 0), value: selectedTab)
             .padding(6)
             .background(.white)
             .mask(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .shadow(color: .black.opacity(0.2), radius: 8, x: 4, y: 4)
             
     //        .background(
     //            background
@@ -30,27 +29,27 @@ struct TabBarView: View {
     //            in: .capsule
     //        )
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .ignoresSafeArea(.keyboard, edges: .bottom)  // Фиксаци таб-бара, при появлении клавиатуры
     }
     
     var content: some View {
-        ForEach(TabModel.allCases, id: \.rawValue) { tab in
+        ForEach(TabBarModel.allCases, id: \.rawValue) { tab in
             Button {
                 selectedTab = tab
             } label: {
-                VStack {
+                VStack (alignment: .center) {
                     Image(systemName: tab.rawValue)
-                        .font(.title)
-                        .frame(width: 70, height: 30)
+                        .font(.title3)
                 }
-                .foregroundStyle(selectedTab == tab ? isActiveForeground : Color("blueColor"))
+                .frame(width: 70, height: 28)
+                .foregroundStyle(selectedTab == tab ? Color.white : Color("blueColor"))
                 .padding(.vertical, 7)
                 .padding(.leading, 13)
                 .padding(.trailing, 13)
                 .background {
                     if selectedTab == tab {
                         Capsule()
-                            .fill(isActiveBackground)
+                            .fill(Color("blueColor"))
 //                                .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                     }
                 }

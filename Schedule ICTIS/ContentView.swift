@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedTab: TabModel = .schedule
+    @State private var selectedTab: TabBarModel = .schedule
     var body: some View {
         ZStack {
             switch selectedTab {
@@ -21,7 +21,7 @@ struct ContentView: View {
             }
             TabBarView(selectedTab: $selectedTab)
         }
-        .background(.secondary.opacity(0.15))
+        .background(Color("background"))
     }
 }
 

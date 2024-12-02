@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum TabModel: String, CaseIterable {
+enum TabBarModel: String, CaseIterable {
     case schedule = "house"
     case tasks = "books.vertical"
     case settings = "gear"
