@@ -72,7 +72,7 @@ struct ScheduleView: View {
                 }
             }
         }
-        .background(.secondary.opacity(0.1))
+        .background(Color("background"))
         .onAppear(perform: {
             if weekSlider.isEmpty {
                 let currentWeek = Date().fetchWeek()

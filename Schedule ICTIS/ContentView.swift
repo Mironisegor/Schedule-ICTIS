@@ -21,7 +21,6 @@ struct ContentView: View {
             }
             TabBarView(selectedTab: $selectedTab)
         }
-        .background(Color("background"))
     }
 }
 
