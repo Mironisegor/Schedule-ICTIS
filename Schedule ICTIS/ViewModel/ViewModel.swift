@@ -1,6 +1,6 @@
 //
 //  ViewModel.swift
-//  NewsApp
+//  Schedule ICTIS
 //
 //  Created by Mironov Egor on 18.11.2024.
 //

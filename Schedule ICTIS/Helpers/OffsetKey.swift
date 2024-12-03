@@ -2,7 +2,7 @@
 //  OffsetKey.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 18.11.2024.
+//  Created by Mironov Egor on 18.11.2024.
 //
 
 import SwiftUI

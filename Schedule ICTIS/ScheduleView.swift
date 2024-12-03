@@ -2,7 +2,7 @@
 //  ScheduleView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 13.11.2024.
+//  Created by Mironov Egor on 13.11.2024.
 //
 
 import SwiftUI
@@ -13,7 +13,7 @@ struct ScheduleView: View {
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
-    @StateObject var vm = ViewModel()
+    @ObservedObject var vm = ViewModel()
 
     var body: some View {
         VStack {
@@ -61,6 +61,7 @@ struct ScheduleView: View {
                                         .cornerRadius(20)
                                         .padding(.horizontal, 10)
                                         .frame(maxWidth: 420, maxHeight: 130)
+                                        .shadow(color: Color.black.opacity(0.1), radius: 2, x: 4, y: 4)
                                     }
                                     .frame(height: 70)
                                 }

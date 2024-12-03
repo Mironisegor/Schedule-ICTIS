@@ -2,7 +2,7 @@
 //  View+Extensions.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 15.11.2024.
+//  Created by Mironov Egor on 15.11.2024.
 //
 
 import SwiftUI
