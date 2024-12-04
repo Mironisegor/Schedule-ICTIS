@@ -38,14 +38,17 @@ extension Date {
         
         var week: [WeekDay] = []
         let weekForDate = calendar.dateInterval(of: .weekOfMonth, for: startOfDate)
+        //print("Start: \(weekForDate?.start)")
+        //print("End: \(weekForDate?.end)")
         
         guard let startOfWeek = weekForDate?.start else {
             return []
         }
         
+        // Создаем дни для недели
         (0..<7).forEach { index in
             if let weekDay = calendar.date(byAdding: .day, value: index, to: startOfWeek) {
-                week.append(.init(date: weekDay))
+                week.append(WeekDay(date: weekDay))
             }
         }
         

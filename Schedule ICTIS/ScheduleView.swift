@@ -13,7 +13,8 @@ struct ScheduleView: View {
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
-    @ObservedObject var vm = ViewModel()
+    @State private var isShowingMonthSlider: Bool = false
+    @StateObject var vm = ViewModel()
 
     var body: some View {
         VStack {
@@ -107,6 +108,16 @@ struct ScheduleView: View {
                         Text(currentDate.format("MMMM"))
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(Color("grayForDate"))
+                        Spacer()
+                        HStack (spacing: 2) {
+                            Text(isShowingMonthSlider ? "Свернуть" : "Развернуть")
+                                .font(.system(size: 15, weight: .light))
+                                .foregroundStyle(Color.blue)
+                            Image(isShowingMonthSlider ? "arrowup" : "arrowdown")
+                        }
+                        .onTapGesture {
+                            isShowingMonthSlider.toggle()
+                        }
                     }
                 }
                 .padding(.top, 8)
