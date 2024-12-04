@@ -12,7 +12,7 @@ struct SearchBarView: View {
     @State private var isEditing = false
 
     var body: some View {
-        HStack (spacing: 10) {
+        HStack (spacing: 11) {
             HStack (spacing: 0) {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(Color.gray)
