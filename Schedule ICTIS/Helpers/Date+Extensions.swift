@@ -37,6 +37,7 @@ extension Date {
         let startOfDate = calendar.startOfDay(for: date)
         
         var week: [WeekDay] = []
+        // Создаем дату начала и конца недели
         let weekForDate = calendar.dateInterval(of: .weekOfMonth, for: startOfDate)
         //print("Start: \(weekForDate?.start)")
         //print("End: \(weekForDate?.end)")
@@ -45,7 +46,7 @@ extension Date {
             return []
         }
         
-        // Создаем дни для недели
+        // Создаем массив дней для недели
         (0..<7).forEach { index in
             if let weekDay = calendar.date(byAdding: .day, value: index, to: startOfWeek) {
                 week.append(WeekDay(date: weekDay))

@@ -10,20 +10,31 @@ import Foundation
 @MainActor
 final class ViewModel: ObservableObject {
     //MARK: Properties
-    @Published var weekSchedule: [Table] = []
+    @Published var weekSchedule: Table = Table(
+        type: "",
+        name: "",
+        week: 0,
+        group: "",
+        table: [[]],
+        link: ""
+    )
     @Published var selectedDay: Date = Date()
     @Published var selectedIndex: Int = 1
+    @Published var classes: [[String]] = []
     
     init() {
-        fetchWeekSchedule()
+        
     }
     
+    
     //MARK: Methods
-    func fetchWeekSchedule() {
+    func fetchWeekSchedule(_ group: String) {
         Task {
             do {
-                let schedule = try await NetworkManager.shared.getSchedule()
-                weekSchedule = [schedule.table]
+                let schedule = try await NetworkManager.shared.getSchedule(group)
+                weekSchedule = schedule.table
+                classes = weekSchedule.table
+                print(weekSchedule.week)
             }
             catch {
                 if let error = error as? NetworkError {
@@ -31,12 +42,6 @@ final class ViewModel: ObservableObject {
                 }
             }
         }
-    }
-    
-    func getSelectedDaySchedule(for date: Date) -> [String]? {
-        guard let week = weekSchedule.first else { return nil }
-        let dayIndex = week.table.firstIndex { $0[0].contains(date.format("dd MMMM")) }
-        return dayIndex.flatMap { week.table[$0] }
     }
     
     func updateSelectedDayIndex(_ date: Date) {
@@ -59,8 +64,4 @@ final class ViewModel: ObservableObject {
         print(selectedIndex)
     }
     
-    func updateSelectedIndex(_ index: Int) {
-        selectedIndex = index
-        print(selectedIndex)
-    }
 }

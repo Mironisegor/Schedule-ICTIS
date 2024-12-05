@@ -13,7 +13,7 @@ struct ContentView: View {
         ZStack {
             switch selectedTab {
             case .schedule:
-                ScheduleView()
+                MainView()
             case .tasks:
                 Text("Tasks")
             case .settings:

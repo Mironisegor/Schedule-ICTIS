@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var text: String
     @State private var isEditing = false
+    @ObservedObject var vm: ViewModel
 
     var body: some View {
         HStack (spacing: 11) {
@@ -21,11 +22,15 @@ struct SearchBarView: View {
                 TextField("Поиск группы", text: $text)
                     .disableAutocorrection(true)
                     .onTapGesture {
-                        self.isEditing = true
+                        isEditing = true
                     }
                     .onSubmit {
-                        self.isEditing = false
+                        isEditing = false
+                        if (!text.isEmpty) {
+                            vm.fetchWeekSchedule(text)
+                        }
                     }
+                    .submitLabel(.search)
                     if isEditing {
                         Button {
                             self.text = ""
@@ -66,9 +71,10 @@ struct SearchBarView: View {
         .padding(.horizontal)
         .padding(.top, 5)
         .frame(height: 40)
+        .accentColor(.blue)
     }
 }
 
 #Preview {
-    ScheduleView()
+    MainView()
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ScheduleView: View {
+struct MainView: View {
     @State private var searchText: String = ""
     @State private var currentDate: Date = .init()
     @State private var weekSlider: [[Date.WeekDay]] = []
@@ -18,61 +18,9 @@ struct ScheduleView: View {
 
     var body: some View {
         VStack {
-            SearchBarView(text: $searchText)
+            SearchBarView(text: $searchText, vm: vm)
             HeaderView()
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack (spacing: 12) {
-                    ForEach(vm.weekSchedule, id: \.week) { element in
-                        let selectedDayIndex = vm.selectedIndex
-                        if selectedDayIndex < 8 {
-                            let schedule = element.table[selectedDayIndex]
-                            ForEach(schedule.indices.dropFirst(), id: \.self) { index in
-                                let lesson = schedule[index]
-                                let firstThreeCharacters = lesson.prefix(3)
-                                let checkEnglish = lesson.prefix(6)
-                                if !lesson.isEmpty && index != 0 {
-                                    GeometryReader { geometry in
-                                        HStack (spacing: 8) {
-                                            VStack (alignment: .center) {
-                                                Text(convertTimeString(element.table[1][index])[0])
-                                                    .font(.system(size: 15, weight: .light))
-                                                Text(convertTimeString(element.table[1][index])[1])
-                                                    .font(.system(size: 15, weight: .light))
-                                            }
-                                            .padding(.top, 4)
-                                            .padding(.bottom, 4)
-                                            .padding(.leading, 8)
-                                            Rectangle()
-                                                .frame(maxHeight: geometry.size.height - 10)
-                                                .frame(width: 3)
-                                                .cornerRadius(20)
-                                                .padding(.top, 4)
-                                                .padding(.bottom, 4)
-                                                .foregroundColor(checkEnglish == "пр.Ино" || firstThreeCharacters == "лек" ? Color.blue : Color.green)
-                                            Text(lesson)
-                                                .font(.system(size: 16, weight: .regular))
-                                                .padding(.trailing, 8)
-                                                .frame(maxWidth: 280, alignment: .leading) // Выравнивание текста по левому краю
-                                                .padding(.top, 4)
-                                                .padding(.bottom, 4)
-                                                .multilineTextAlignment(.leading)
-
-                                        }
-                                        .background(Color.white)
-                                        .cornerRadius(20)
-                                        .padding(.horizontal, 10)
-                                        .frame(maxWidth: 420, maxHeight: 130)
-                                        .shadow(color: Color.black.opacity(0.1), radius: 2, x: 4, y: 4)
-                                    }
-                                    .frame(height: 70)
-                                }
-                            }
-                        } else {
-                            Text("Сегодня нет пар")
-                        }
-                    }
-                }
-            }
+            ScheduleView(vm: vm)
         }
         .background(Color("background"))
         .onAppear(perform: {
@@ -121,10 +69,9 @@ struct ScheduleView: View {
                     }
                 }
                 .padding(.top, 8)
-                .padding(.leading, 20)
+                .padding(.leading, 5)
                 Spacer()
             }
-            .frame(maxWidth: .infinity)
             
             TabView(selection: $currentWeekIndex) {
                 ForEach(weekSlider.indices, id: \.self) { index in
@@ -142,8 +89,8 @@ struct ScheduleView: View {
             if newValue == 0 || newValue == (weekSlider.count - 1) {
                 createWeek = true
             }
-            vm.updateSelectedIndex(newValue)
         }
+        .padding(.horizontal)
     }
     
     @ViewBuilder
@@ -170,7 +117,7 @@ struct ScheduleView: View {
                         else {
                             Color(.white)
                         }
-                        if day.date.isToday && isSameDate(day.date, currentDate) {
+                        if isSameDate(day.date, currentDate) {
                             Color("blueColor")
                         }
                     }
@@ -224,17 +171,8 @@ struct ScheduleView: View {
             }
         }
     }
-    
-    func convertTimeString(_ input: String) -> [String] {
-        let parts = input.split(separator: "-")
-        if let firstPart = parts.first, let lastPart = parts.last {
-            return [String(firstPart), String(lastPart)]
-        } else {
-            return []
-        }
-    }
 }
 
 #Preview {
-    ScheduleView()
+    MainView()
 }
