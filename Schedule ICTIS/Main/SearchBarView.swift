@@ -27,6 +27,7 @@ struct SearchBarView: View {
                     .onSubmit {
                         isEditing = false
                         if (!text.isEmpty) {
+                            vm.isFirstStartOffApp = false
                             vm.fetchWeekSchedule(text)
                         }
                     }
@@ -76,5 +77,5 @@ struct SearchBarView: View {
 }
 
 #Preview {
-    MainView()
+    ContentView()
 }

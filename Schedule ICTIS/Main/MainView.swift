@@ -9,40 +9,47 @@ import SwiftUI
 
 struct MainView: View {
     @State private var searchText: String = ""
-    @State private var currentDate: Date = .init()
+    @State private var currentDate: Date = Date()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
     @State private var isShowingMonthSlider: Bool = false
-    @StateObject var vm = ViewModel()
+    @State private var isFirstAppearence = true
+    @ObservedObject var vm: ViewModel
 
     var body: some View {
         VStack {
             SearchBarView(text: $searchText, vm: vm)
-            HeaderView()
-            ScheduleView(vm: vm)
+            CurrentDateView()
+            if (vm.isFirstStartOffApp) {
+                FirstLaunchScheduleView()
+            }
+            else {
+                ScheduleView(vm: vm)
+            }
         }
         .background(Color("background"))
         .onAppear(perform: {
+            currentDate = vm.selectedDay
+            vm.updateSelectedDayIndex(currentDate)
             if weekSlider.isEmpty {
                 let currentWeek = Date().fetchWeek()
-                
+        
                 if let firstDate = currentWeek.first?.date {
                     weekSlider.append(firstDate.createPrevioustWeek())
                 }
-                
+                    
                 weekSlider.append(currentWeek)
-                
+                    
                 if let lastDate = currentWeek.last?.date {
                     weekSlider.append(lastDate.createNextWeek())
                 }
             }
-            vm.updateSelectedDayIndex(currentDate)
         })
     }
     
     @ViewBuilder
-    func HeaderView() -> some View {
+    func CurrentDateView() -> some View {
         VStack (alignment: .leading, spacing: 6) {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
@@ -147,6 +154,7 @@ struct MainView: View {
                     .onPreferenceChange(OffsetKey.self) { value in
                         if value.rounded() == 15 && createWeek {
                             paginateWeek()
+                            
                             createWeek = false
                         }
                     }
@@ -158,6 +166,7 @@ struct MainView: View {
         if weekSlider.indices.contains(currentWeekIndex) {
             if let firstDate = weekSlider[currentWeekIndex].first?.date,
                currentWeekIndex == 0 {
+                vm.fetchWeekSchedule("new week", -1)
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
                 currentWeekIndex = 1
@@ -165,6 +174,7 @@ struct MainView: View {
             
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
                currentWeekIndex == (weekSlider.count - 1) {
+                vm.fetchWeekSchedule("new week", 1)
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2
@@ -174,5 +184,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    ContentView()
 }

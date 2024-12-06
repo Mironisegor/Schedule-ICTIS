@@ -18,23 +18,30 @@ final class ViewModel: ObservableObject {
         table: [[]],
         link: ""
     )
-    @Published var selectedDay: Date = Date()
+    @Published var selectedDay: Date = .init()
     @Published var selectedIndex: Int = 1
     @Published var classes: [[String]] = []
-    
-    init() {
-        
-    }
-    
+    @Published var week: Int = 0
+    @Published var numOfGroup: String = ""
+    @Published var isFirstStartOffApp = true
     
     //MARK: Methods
-    func fetchWeekSchedule(_ group: String) {
+    func fetchWeekSchedule(_ group: String = "new week", _ num: Int = 0) {
         Task {
             do {
-                let schedule = try await NetworkManager.shared.getSchedule(group)
+                let schedule: Schedule
+                if (group == "new week") {
+                    schedule = try await NetworkManager.shared.getScheduleForOtherWeek(week + num, numOfGroup)
+                }
+                else{
+                    schedule = try await NetworkManager.shared.getSchedule(group)
+                }
                 weekSchedule = schedule.table
+                week = weekSchedule.week
+                numOfGroup = weekSchedule.group
+                print(week)
+                print(numOfGroup)
                 classes = weekSchedule.table
-                print(weekSchedule.week)
             }
             catch {
                 if let error = error as? NetworkError {
@@ -45,6 +52,7 @@ final class ViewModel: ObservableObject {
     }
     
     func updateSelectedDayIndex(_ date: Date) {
+        selectedDay = date
         switch date.format("E") {
         case "Пн":
             selectedIndex = 2
