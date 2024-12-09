@@ -20,20 +20,25 @@ struct MainView: View {
     var body: some View {
         VStack {
             SearchBarView(text: $searchText, vm: vm)
-            CurrentDateView()
             if (vm.isFirstStartOffApp) {
                 FirstLaunchScheduleView()
             }
             else {
+                CurrentDateView()
                 ScheduleView(vm: vm)
             }
+        }
+        .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
+            
+        } message: { error in
+            Text(error.failureReason)
         }
         .background(Color("background"))
         .onAppear(perform: {
             currentDate = vm.selectedDay
             vm.updateSelectedDayIndex(currentDate)
             if weekSlider.isEmpty {
-                let currentWeek = Date().fetchWeek()
+                let currentWeek = Date().fetchWeek(vm.selectedDay)
         
                 if let firstDate = currentWeek.first?.date {
                     weekSlider.append(firstDate.createPrevioustWeek())
@@ -163,21 +168,37 @@ struct MainView: View {
     }
     
     func paginateWeek() {
+        let calendar = Calendar.current
         if weekSlider.indices.contains(currentWeekIndex) {
             if let firstDate = weekSlider[currentWeekIndex].first?.date,
                currentWeekIndex == 0 {
-                vm.fetchWeekSchedule("new week", -1)
+                switch (vm.numOfGroup) {
+                case "":
+                    vm.week -= 1
+                default:
+                    vm.fetchWeekSchedule("new week", -1)
+                }
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
                 currentWeekIndex = 1
+                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -1, to: vm.selectedDay) ?? Date.init()
+                currentDate = vm.selectedDay
             }
             
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
                currentWeekIndex == (weekSlider.count - 1) {
-                vm.fetchWeekSchedule("new week", 1)
+                switch (vm.numOfGroup) {
+                case "":
+                    vm.week += 1
+                default:
+                    vm.fetchWeekSchedule("new week", 1)
+                }
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2
+                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 1, to: vm.selectedDay) ?? Date.init()
+                currentDate = vm.selectedDay
+                print(currentDate)
             }
         }
     }

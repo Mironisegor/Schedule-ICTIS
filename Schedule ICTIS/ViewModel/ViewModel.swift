@@ -24,14 +24,17 @@ final class ViewModel: ObservableObject {
     @Published var week: Int = 0
     @Published var numOfGroup: String = ""
     @Published var isFirstStartOffApp = true
+    @Published var isShowingAlertForIncorrectGroup: Bool = false
+    @Published var errorInNetwork: NetworkError?
     
     //MARK: Methods
-    func fetchWeekSchedule(_ group: String = "new week", _ num: Int = 0) {
+    func fetchWeekSchedule(_ group: String, _ num: Int = 0) {
         Task {
             do {
-                let schedule: Schedule
-                if (group == "new week") {
-                    schedule = try await NetworkManager.shared.getScheduleForOtherWeek(week + num, numOfGroup)
+                var schedule: Schedule
+                if (num != 0) {
+                    week += num
+                    schedule = try await NetworkManager.shared.getScheduleForOtherWeek(week, numOfGroup)
                 }
                 else{
                     schedule = try await NetworkManager.shared.getSchedule(group)
@@ -39,12 +42,21 @@ final class ViewModel: ObservableObject {
                 weekSchedule = schedule.table
                 week = weekSchedule.week
                 numOfGroup = weekSchedule.group
-                print(week)
-                print(numOfGroup)
                 classes = weekSchedule.table
+                self.isFirstStartOffApp = false
+                self.isShowingAlertForIncorrectGroup = false
             }
             catch {
                 if let error = error as? NetworkError {
+                    switch (error) {
+                    case .invalidResponse:
+                        print(4)
+                    case .invalidData:
+                        errorInNetwork = .invalidData
+                        self.isShowingAlertForIncorrectGroup = true
+                    default:
+                        print(2)
+                    }
                     print(error)
                 }
             }

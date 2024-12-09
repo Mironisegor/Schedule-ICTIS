@@ -26,7 +26,7 @@ final class NetworkManager {
     }
     
     func makeUrlForWeek(_ numOfWeek: Int, _ htmlNameOfGroup: String) -> String {
-        return urlForWeek + htmlNameOfGroup + "&" + String(numOfWeek)
+        return urlForWeek + htmlNameOfGroup + "&week=" + String(numOfWeek)
     }
     
     func getSchedule(_ group: String) async throws -> Schedule {
@@ -42,8 +42,10 @@ final class NetworkManager {
             throw NetworkError.invalidData
         }
     }
+    
     func getScheduleForOtherWeek(_ numOfWeek: Int, _ htmlNameOfGroup: String) async throws -> Schedule {
         let newUrlForWeek = makeUrlForWeek(numOfWeek, htmlNameOfGroup)
+        print(newUrlForWeek)
         guard let url = URL(string: newUrlForWeek) else {throw NetworkError.invalidUrl}
         let (data, response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {throw NetworkError.invalidResponse}

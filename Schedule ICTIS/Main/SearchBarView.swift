@@ -22,14 +22,14 @@ struct SearchBarView: View {
                 TextField("Поиск группы", text: $text)
                     .disableAutocorrection(true)
                     .onTapGesture {
-                        isEditing = true
+                        self.isEditing = true
                     }
                     .onSubmit {
-                        isEditing = false
+                        self.isEditing = false
                         if (!text.isEmpty) {
-                            vm.isFirstStartOffApp = false
                             vm.fetchWeekSchedule(text)
                         }
+                        self.text = ""
                     }
                     .submitLabel(.search)
                     if isEditing {
@@ -53,19 +53,20 @@ struct SearchBarView: View {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.white)
             )
-            Button {
-                
-            } label: {
-                ZStack {
-                    Rectangle()
-                        .frame(width: 40, height: 40)
-                        .foregroundStyle(Color("blueColor"))
-                        .cornerRadius(15)
-                    Image(systemName: "plus")
-                        .resizable()
-                        .foregroundStyle(.white)
-                        .scaledToFit()
-                        .frame(width: 16)
+            if (!vm.isFirstStartOffApp && !vm.isShowingAlertForIncorrectGroup) {
+                Button {
+                } label: {
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 40, height: 40)
+                            .foregroundStyle(Color("blueColor"))
+                            .cornerRadius(15)
+                        Image(systemName: "plus")
+                            .resizable()
+                            .foregroundStyle(.white)
+                            .scaledToFit()
+                            .frame(width: 16)
+                    }
                 }
             }
         }

@@ -43,16 +43,17 @@ struct ScheduleView: View {
                                 .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
                                 .background(Color.white)
                                 .cornerRadius(20)
+                                .shadow(color: .black.opacity(0.25), radius: 4, x: 4, y: 4)
                             }
                         }
                     }
                 }
             }
+            .frame(width: UIScreen.main.bounds.width)
             .padding(.bottom, 100)
             .padding(.top, 10)
         }
     }
-    //ктбо2-6
     
     func convertTimeString(_ input: String) -> [String] {
         let parts = input.split(separator: "-")

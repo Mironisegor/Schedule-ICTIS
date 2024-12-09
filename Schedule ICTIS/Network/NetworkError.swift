@@ -7,8 +7,35 @@
 
 import Foundation
 
-enum NetworkError: String, Error {
-    case invalidUrl = "Invalid URL"
-    case invalidResponse = "Invalid response form the server"
-    case invalidData = "Data received from the server is invalid"
+enum NetworkError: String, Error, LocalizedError {
+    case invalidUrl
+    case invalidResponse
+    case invalidData
+    case noNetwork
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidUrl:
+            "InvalidUrl"
+        case .invalidResponse:
+            "InvalidResponse"
+        case .invalidData:
+            "Проверьте номер группы"
+        case .noNetwork:
+            "No network connection"
+        }
+    }
+    
+    var failureReason: String {
+        switch self {
+        case .invalidUrl:
+            "Похоже не удалось составить ссылку для api"
+        case .invalidResponse:
+            "Для этой недели расписания еще нет"
+        case .invalidData:
+            "Похоже такой группы не существует"
+        case .noNetwork:
+            "Проверьте подключение к интернету и попробуйте заново"
+        }
+    }
 }
