@@ -9,6 +9,7 @@ import Foundation
 
 
 struct MockData {
+    static let daysOfWeek = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
     static let onlineClasses: [String] = [
         "пр.Академический курс иностранного языка Янкаускас Е. С. LMS",
         "пр.Академический курс иностранного языка Янкаускас Е. С. LMS-3",

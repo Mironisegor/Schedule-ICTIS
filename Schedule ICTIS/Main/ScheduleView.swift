@@ -55,10 +55,12 @@ struct ScheduleView: View {
                 .padding(.top, 30)
             }
             VStack {
-                Rectangle()
-                    .frame(width: UIScreen.main.bounds.width, height: 25)
-                    .foregroundColor(Color("background").opacity(0.9))
+                LinearGradient(gradient: Gradient(colors: [Color("background").opacity(0.9), Color("background").opacity(0.89)]), startPoint: .top, endPoint: .bottom)
+//                Rectangle()
+//                    .frame(width: UIScreen.main.bounds.width, height: 25)
+//                    .foregroundColor(Color("background").opacity(0.9))
             }
+            .frame(width: UIScreen.main.bounds.width, height: 15)
         }
     }
     

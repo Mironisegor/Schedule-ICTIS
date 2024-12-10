@@ -53,7 +53,7 @@ struct SearchBarView: View {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.white)
             )
-            if (!vm.isFirstStartOffApp && !vm.isShowingAlertForIncorrectGroup) {
+            if (!vm.isFirstStartOffApp) {
                 Button {
                 } label: {
                     ZStack {
