@@ -9,10 +9,6 @@ import SwiftUI
 
 struct MainView: View {
     @State private var searchText: String = ""
-    @State private var currentDate: Date = Date()
-    @State private var weekSlider: [[Date.WeekDay]] = []
-    @State private var currentWeekIndex: Int = 1
-    @State private var createWeek: Bool = false
     @State private var isShowingMonthSlider: Bool = false
     @State private var isFirstAppearence = true
     @ObservedObject var vm: ViewModel
@@ -20,7 +16,10 @@ struct MainView: View {
     var body: some View {
         VStack {
             SearchBarView(text: $searchText, vm: vm)
-            if (vm.isFirstStartOffApp) {
+            if (vm.isFirstStartOffApp && vm.isLoading) {
+                LoadingView(isLoading: $vm.isLoading)
+            }
+            else if (vm.isFirstStartOffApp) {
                 FirstLaunchScheduleView()
             }
             else {
@@ -34,23 +33,6 @@ struct MainView: View {
             Text(error.failureReason)
         }
         .background(Color("background"))
-        .onAppear(perform: {
-            currentDate = vm.selectedDay
-            vm.updateSelectedDayIndex(currentDate)
-            if weekSlider.isEmpty {
-                let currentWeek = Date().fetchWeek(vm.selectedDay)
-                
-                if let firstDate = currentWeek.first?.date {
-                    weekSlider.append(firstDate.createPrevioustWeek())
-                }
-                
-                weekSlider.append(currentWeek)
-                
-                if let lastDate = currentWeek.last?.date {
-                    weekSlider.append(lastDate.createNextWeek())
-                }
-            }
-        })
     }
     
     @ViewBuilder
@@ -58,14 +40,14 @@ struct MainView: View {
         VStack (alignment: .leading, spacing: 6) {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
-                    Text(currentDate.format("EEEE"))
+                    Text(vm.selectedDay.format("EEEE"))
                         .font(.system(size: 40, weight: .semibold))
                         .foregroundStyle(.black)
                     HStack (spacing: 5) {
-                        Text(currentDate.format("dd"))
+                        Text(vm.selectedDay.format("dd"))
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(Color("grayForDate"))
-                        Text(currentDate.format("MMMM"))
+                        Text(vm.selectedDay.format("MMMM"))
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(Color("grayForDate"))
                         Spacer()
@@ -91,7 +73,7 @@ struct MainView: View {
                 Spacer()
             }
             if (!isShowingMonthSlider) {
-                WeekTabView(currentWeekIndex: $currentWeekIndex, weekSlider: $weekSlider, currentDate: $currentDate, vm: vm)
+                WeekTabView(vm: vm)
                     .transition(.opacity)
             }
             else {

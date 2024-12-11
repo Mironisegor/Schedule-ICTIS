@@ -75,6 +75,24 @@ extension Date {
         return month
     }
     
+    func createNextMonth() -> [MonthWeek] {
+        let calendar = Calendar.current
+        let startOfLastDate = calendar.startOfDay(for: self)
+        guard let nextDate = calendar.date(byAdding: .day, value: 1, to: startOfLastDate) else {
+            return []
+        }
+        return fetchMonth(nextDate)
+    }
+    
+    func createPreviousMonth() -> [MonthWeek] {
+        let calendar = Calendar.current
+        let startOfFirstDate = calendar.startOfDay(for: self)
+        guard let previousDate = calendar.date(byAdding: .month, value: -1, to: startOfFirstDate) else {
+            return []
+        }
+        return fetchMonth(previousDate)
+    }
+    
     func createNextWeek() -> [WeekDay] {
         let calendar = Calendar.current
         let startOfLastDate = calendar.startOfDay(for: self)

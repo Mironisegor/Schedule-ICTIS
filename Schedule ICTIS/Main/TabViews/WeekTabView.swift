@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct WeekTabView: View {
-    @Binding var currentWeekIndex: Int
-    @Binding var weekSlider: [[Date.WeekDay]]
-    @Binding var currentDate: Date
+    @State private var currentWeekIndex: Int = 1
+    @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var createWeek: Bool = false
     @ObservedObject var vm: ViewModel
     var body: some View {
@@ -27,6 +26,22 @@ struct WeekTabView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(height: 90)
         }
+        .onAppear(perform: {
+            vm.updateSelectedDayIndex()
+            if weekSlider.isEmpty {
+                let currentWeek = Date().fetchWeek(vm.selectedDay)
+                    
+                if let firstDate = currentWeek.first?.date {
+                    weekSlider.append(firstDate.createPrevioustWeek())
+                }
+                    
+                weekSlider.append(currentWeek)
+                    
+                if let lastDate = currentWeek.last?.date {
+                    weekSlider.append(lastDate.createNextWeek())
+                }
+            }
+        })
         .onChange(of: currentWeekIndex, initial: false) { oldValue, newValue in
             if newValue == 0 || newValue == (weekSlider.count - 1) {
                 createWeek = true
@@ -41,24 +56,24 @@ struct WeekTabView: View {
                 VStack (spacing: 1) {
                     Text(day.date.format("E"))
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(day.date.format("E") == "Вс" ? Color(.red) : isSameDate(day.date, currentDate) ? Color("customGray1") : Color("customGray3"))
+                        .foregroundColor(day.date.format("E") == "Вс" ? Color(.red) : isSameDate(day.date, vm.selectedDay) ? Color("customGray1") : Color("customGray3"))
                         .padding(.top, 13)
                         .foregroundColor(.gray)
                     Text(day.date.format("dd"))
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundStyle(isSameDate(day.date, currentDate) ? .white : .black)
+                        .foregroundStyle(isSameDate(day.date, vm.selectedDay) ? .white : .black)
                         .padding(.bottom, 13)
                 }
                 .frame(width: 43, height: 55,  alignment: .center)
                 .background( content: {
                     Group {
-                        if isSameDate(day.date, currentDate) {
+                        if isSameDate(day.date, vm.selectedDay) {
                             Color("blueColor")
                         }
                         else {
                             Color(.white)
                         }
-                        if isSameDate(day.date, currentDate) {
+                        if isSameDate(day.date, vm.selectedDay) {
                             Color("blueColor")
                         }
                     }
@@ -66,7 +81,7 @@ struct WeekTabView: View {
                 )
                 .overlay (
                     Group {
-                        if day.date.isToday && !isSameDate(day.date, currentDate) {
+                        if day.date.isToday && !isSameDate(day.date, vm.selectedDay) {
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(Color("blueColor"), lineWidth: 2)
                         }
@@ -74,8 +89,8 @@ struct WeekTabView: View {
                 )
                 .cornerRadius(15)
                 .onTapGesture {
-                    currentDate = day.date
-                    vm.updateSelectedDayIndex(currentDate)
+                    vm.selectedDay = day.date
+                    vm.updateSelectedDayIndex()
                 }
             }
         }
@@ -111,7 +126,7 @@ struct WeekTabView: View {
                 weekSlider.removeLast()
                 currentWeekIndex = 1
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -1, to: vm.selectedDay) ?? Date.init()
-                currentDate = vm.selectedDay
+                vm.updateSelectedDayIndex()
             }
             
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
@@ -126,8 +141,7 @@ struct WeekTabView: View {
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 1, to: vm.selectedDay) ?? Date.init()
-                currentDate = vm.selectedDay
-                print(currentDate)
+                vm.updateSelectedDayIndex()
             }
         }
     }

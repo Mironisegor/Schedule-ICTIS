@@ -26,9 +26,11 @@ final class ViewModel: ObservableObject {
     @Published var isFirstStartOffApp = true
     @Published var isShowingAlertForIncorrectGroup: Bool = false
     @Published var errorInNetwork: NetworkError?
+    @Published var isLoading: Bool = false
     
     //MARK: Methods
     func fetchWeekSchedule(_ group: String, _ num: Int = 0) {
+        isLoading = true
         Task {
             do {
                 var schedule: Schedule
@@ -45,6 +47,7 @@ final class ViewModel: ObservableObject {
                 classes = weekSchedule.table
                 self.isFirstStartOffApp = false
                 self.isShowingAlertForIncorrectGroup = false
+                isLoading = false
             }
             catch {
                 if let error = error as? NetworkError {
@@ -57,15 +60,15 @@ final class ViewModel: ObservableObject {
                     default:
                         print(2)
                     }
+                    isLoading = false
                     print(error)
                 }
             }
         }
     }
     
-    func updateSelectedDayIndex(_ date: Date) {
-        selectedDay = date
-        switch date.format("E") {
+    func updateSelectedDayIndex() {
+        switch selectedDay.format("E") {
         case "Пн":
             selectedIndex = 2
         case "Вт":
@@ -81,7 +84,6 @@ final class ViewModel: ObservableObject {
         default:
             selectedIndex = 8
         }
-        print(selectedIndex)
     }
     
 }
