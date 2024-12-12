@@ -10,6 +10,7 @@ import SwiftUI
 struct SearchBarView: View {
     @Binding var text: String
     @State private var isEditing = false
+    @State private var isShowingSheet: Bool = false
     @ObservedObject var vm: ViewModel
 
     var body: some View {
@@ -56,6 +57,7 @@ struct SearchBarView: View {
             )
             if (!vm.isFirstStartOffApp) {
                 Button {
+                    isShowingSheet = true
                 } label: {
                     ZStack {
                         Rectangle()
@@ -75,6 +77,9 @@ struct SearchBarView: View {
         .padding(.top, 5)
         .frame(height: 40)
         .accentColor(.blue)
+        .sheet(isPresented: $isShowingSheet) {
+            SheetCreateClassView(isShowingSheet: $isShowingSheet)
+        }
     }
 }
 
