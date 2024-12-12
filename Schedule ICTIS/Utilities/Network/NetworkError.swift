@@ -12,6 +12,7 @@ enum NetworkError: String, Error, LocalizedError {
     case invalidResponse
     case invalidData
     case noNetwork
+    case noError
     
     var errorDescription: String? {
         switch self {
@@ -23,6 +24,8 @@ enum NetworkError: String, Error, LocalizedError {
             "Проверьте номер группы"
         case .noNetwork:
             "No network connection"
+        case .noError:
+            "Нет ошибки"
         }
     }
     
@@ -36,6 +39,8 @@ enum NetworkError: String, Error, LocalizedError {
             "Похоже такой группы не существует"
         case .noNetwork:
             "Проверьте подключение к интернету и попробуйте заново"
+        case .noError:
+            "Ошибки нет"
         }
     }
 }

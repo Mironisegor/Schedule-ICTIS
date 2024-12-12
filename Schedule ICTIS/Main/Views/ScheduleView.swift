@@ -14,6 +14,7 @@ struct ScheduleView: View {
             LoadingView(isLoading: $vm.isLoading)
         }
         else {
+            if vm.errorInNetwork != .invalidResponse {
             ZStack (alignment: .top) {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack (spacing: 20) {
@@ -57,11 +58,15 @@ struct ScheduleView: View {
                     .frame(width: UIScreen.main.bounds.width)
                     .padding(.bottom, 100)
                     .padding(.top, 30)
-                }
+                    }
                 VStack {
-                    LinearGradient(gradient: Gradient(colors: [Color("background").opacity(0.9), Color("background").opacity(0.89)]), startPoint: .top, endPoint: .bottom)
+                    LinearGradient(gradient: Gradient(colors: [Color("background").opacity(0.95), Color.white.opacity(0.1)]), startPoint: .top, endPoint: .bottom)
                 }
                 .frame(width: UIScreen.main.bounds.width, height: 15)
+                }
+            }
+            else {
+                NoScheduleView()
             }
         }
     }

@@ -11,6 +11,7 @@ struct MonthTabView: View {
     @State private var currentMonthIndex: Int = 1
     @State private var monthSlider: [[Date.MonthWeek]] = []
     @State private var createMonth: Bool = false
+    @State private var currentWeekIndex: Int = 0
     @ObservedObject var vm: ViewModel
     var body: some View {
         VStack {
@@ -139,7 +140,7 @@ struct MonthTabView: View {
         }
     }
     
-    func paginateMonth() {
+    func paginateMonth(_ indexOfWeek: Int = 0) {
         let calendar = Calendar.current
         if monthSlider.indices.contains(currentMonthIndex) {
             if let firstDate = monthSlider[currentMonthIndex].first?.week[0].date,

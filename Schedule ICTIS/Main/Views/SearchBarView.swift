@@ -28,6 +28,7 @@ struct SearchBarView: View {
                         self.isEditing = false
                         if (!text.isEmpty) {
                             vm.fetchWeekSchedule(text)
+                            vm.group = text
                         }
                         self.text = ""
                     }

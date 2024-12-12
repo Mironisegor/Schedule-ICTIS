@@ -16,6 +16,7 @@ struct MainView: View {
     var body: some View {
         VStack {
             SearchBarView(text: $searchText, vm: vm)
+            
             if (vm.isFirstStartOffApp && vm.isLoading) {
                 LoadingView(isLoading: $vm.isLoading)
             }
