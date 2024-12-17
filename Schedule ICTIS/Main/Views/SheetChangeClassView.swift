@@ -2,7 +2,7 @@
 //  SheetView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 12.12.2024.
+//  Created by Mironov Egor on 12.12.2024.
 //
 
 import SwiftUI

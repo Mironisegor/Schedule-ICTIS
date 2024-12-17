@@ -47,7 +47,7 @@ struct SearchBarView: View {
                                 .background(
                                 )
                         }
-                        .background(Color.white)
+                        .background(Color.red)
                     }
             }
             .frame(height: 40)
