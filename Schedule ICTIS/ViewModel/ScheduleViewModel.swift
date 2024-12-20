@@ -42,13 +42,13 @@ final class ScheduleViewModel: ObservableObject {
                 else {
                     schedule = try await NetworkManager.shared.getSchedule(group)
                 }
-                weekSchedule = schedule.table
-                week = weekSchedule.week
-                numOfGroup = weekSchedule.group
-                classes = weekSchedule.table
+                self.weekSchedule = schedule.table
+                self.week = weekSchedule.week
+                self.numOfGroup = weekSchedule.group
+                self.classes = weekSchedule.table
                 self.isFirstStartOffApp = false
                 self.isShowingAlertForIncorrectGroup = false
-                isLoading = false
+                self.isLoading = false
                 self.errorInNetwork = .noError
                 
             }

@@ -11,7 +11,7 @@ struct MainView: View {
     @State private var searchText: String = ""
     @State private var isShowingMonthSlider: Bool = false
     @State private var isFirstAppearence = true
-    @ObservedObject var vm: ViewModel
+    @ObservedObject var vm: ScheduleViewModel
     
     var body: some View {
         VStack {
@@ -64,7 +64,7 @@ struct MainView: View {
                                 Image(isShowingMonthSlider ? "arrowup" : "arrowdown")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 15, height: 15) // Установите размер изображения
+                                    .frame(width: 15, height: 15)
                             }
                         }
                     }

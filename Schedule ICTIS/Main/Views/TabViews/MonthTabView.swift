@@ -2,7 +2,7 @@
 //  MonthTabView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 10.12.2024.
+//  Created by Mironov Egor on 10.12.2024.
 //
 
 import SwiftUI
@@ -12,7 +12,7 @@ struct MonthTabView: View {
     @State private var monthSlider: [[Date.MonthWeek]] = []
     @State private var createMonth: Bool = false
     @State private var currentWeekIndex: Int = 0
-    @ObservedObject var vm: ViewModel
+    @ObservedObject var vm: ScheduleViewModel
     var body: some View {
         VStack {
             HStack (spacing: 34) {
@@ -25,7 +25,6 @@ struct MonthTabView: View {
                 }
             }
             .padding(.top, 14)
-            //.background(Color.red)
             TabView(selection: $currentMonthIndex) {
                 ForEach(monthSlider.indices, id: \.self) { index in
                     let month = monthSlider[index]
@@ -37,7 +36,6 @@ struct MonthTabView: View {
             .padding(.bottom, -10)
             .padding(.horizontal, -15)
             .tabViewStyle(.page(indexDisplayMode: .never))
-            //.background(Color.green)
         }
         .onAppear(perform: {
             vm.updateSelectedDayIndex()

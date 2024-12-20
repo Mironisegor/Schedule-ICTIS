@@ -10,5 +10,9 @@ import Foundation
 
 struct MockData {
     static let daysOfWeek = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+    
+    // MARK: SheetCreateClassView
     static let notifications = ["Нет", "За 10 минут", "За 30 миннут", "За 1 час"]
+    
+    static let onlineOrOffline = ["Оффлайн", "Онлайн"]
 }

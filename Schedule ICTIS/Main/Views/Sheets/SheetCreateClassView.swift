@@ -13,22 +13,21 @@ struct SheetCreateClassView: View {
     @State private var textForNameOfAuditory = ""
     @State private var textForNameOfProfessor = ""
     @State private var isShowingDatePickerForDate: Bool = false
-    @State private var selectedDay: Date = Date()
-    @State private var selectedStartTime: Date = Date()
-    @State private var selectedEndTime: Date = Date()
     @State private var isImportant: Bool = false
-    @State private var selectedOption: String = "Нет"
+    @State private var selectedOptionForNotification: String = "Нет"
+    @State private var selectedOptionForOnline: String = "Оффлайн"
     @State private var textForComment: String = ""
+    @ObservedObject var vm: EditClassViewModel
     
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    ProfessorAuditoryClassFieldView(text: $textForNameOfClass, nameOfImage: "book", labelForField: "Предмет")
+                    ProfessorAuditoryClassFieldView(text: $vm._class.subject, nameOfImage: "book", labelForField: "Предмет")
                         .padding(.bottom, 10)
-                    ProfessorAuditoryClassFieldView(text: $textForNameOfAuditory, nameOfImage: "mappin.and.ellipse", labelForField: "Корпус-аудитория")
+                    ProfessorAuditoryClassFieldView(text: $vm._class.auditory, nameOfImage: "mappin.and.ellipse", labelForField: "Корпус-аудитория")
                         .padding(.bottom, 10)
-                    ProfessorAuditoryClassFieldView(text: $textForNameOfProfessor, nameOfImage: "book", labelForField: "Преподаватель")
+                    ProfessorAuditoryClassFieldView(text: $vm._class.professor, nameOfImage: "book", labelForField: "Преподаватель")
                         .padding(.bottom, 10)
                     HStack {
                         Image(systemName: "calendar")
@@ -39,7 +38,7 @@ struct SheetCreateClassView: View {
                             .foregroundColor(Color("grayForFields").opacity(0.5))
                             .font(.system(size: 18, weight: .regular))
                         Spacer()
-                        Text("\(selectedDay, formatter: dateFormatter)")
+                        Text("\(vm._class.day, formatter: dateFormatter)")
                             .foregroundColor(.black)
                             .font(.system(size: 18, weight: .medium))
                             .padding(.trailing, 20)
@@ -50,18 +49,30 @@ struct SheetCreateClassView: View {
                             .fill(.white)
                     )
                     .overlay {
-                        DatePicker("", selection: $selectedDay, in: Date()..., displayedComponents: .date)
+                        DatePicker("", selection: $vm._class.day, in: Date()..., displayedComponents: .date)
                             .blendMode(.destinationOver)
                     }
                     .padding(.bottom, 10)
                     HStack {
-                        StartEndTimeFieldView(selectedTime: $selectedStartTime, imageName: "clock", text: "Начало")
+                        StartEndTimeFieldView(selectedTime: $vm._class.starttime, imageName: "clock", text: "Начало")
+                            .onChange(of: vm._class.starttime) { oldValue, newValue in
+                                if !checkStartTimeLessThenEndTime(vm._class.starttime, vm._class.endtime) {
+                                    print("Values \(oldValue) - \(newValue) 1")
+                                    print(vm._class.starttime)
+                                    vm._class.starttime = oldValue
+                                }
+                            }
                         Spacer()
-                        StartEndTimeFieldView(selectedTime: $selectedEndTime, imageName: "clock.badge.xmark", text: "Конец")
+                        StartEndTimeFieldView(selectedTime: $vm._class.endtime, imageName: "clock.badge.xmark", text: "Конец")
+                            .onChange(of: vm._class.endtime) { oldValue, newValue in
+                                print("Values \(oldValue) - \(newValue) 2")
+                                print(vm._class.endtime)
+                                validateTime(old: oldValue, new: newValue, isStartChanged: false)
+                            }
                     }
                     .frame(height: 40)
                     .padding(.bottom, 10)
-                    Toggle("Пометить как важную", isOn: $isImportant)
+                    Toggle("Пометить как важную", isOn: $vm._class.important)
                         .frame(height: 40)
                         .padding(.horizontal)
                         .background(
@@ -73,7 +84,7 @@ struct SheetCreateClassView: View {
                     HStack {
                         Text("Напоминанние")
                         Spacer()
-                        Picker("Напоминание", selection: $selectedOption, content: {
+                        Picker("Напоминание", selection: $vm._class.notification, content: {
                             ForEach(MockData.notifications, id: \.self) {
                                 Text($0)
                             }
@@ -87,8 +98,25 @@ struct SheetCreateClassView: View {
                             .fill(.white)
                     )
                     .padding(.bottom, 10)
+                    HStack {
+                        Text("Тип")
+                        Spacer()
+                        Picker("Тип", selection: $vm._class.online, content: {
+                            ForEach(MockData.onlineOrOffline, id: \.self) {
+                                Text($0)
+                            }
+                        })
+                        .accentColor(Color("grayForFields"))
+                    }
+                    .frame(height: 40)
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.white)
+                    )
+                    .padding(.bottom, 10)
                     
-                    CommentFieldView(textForComment: $textForComment)
+                    CommentFieldView(textForComment: $vm._class.comment)
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -102,6 +130,11 @@ struct SheetCreateClassView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Сохранить") {
+                        do {
+                            try vm.save()
+                        } catch {
+                            print(error)
+                        }
                         isShowingSheet = false
                     }
                 }
@@ -110,14 +143,18 @@ struct SheetCreateClassView: View {
             .background(Color("background"))
         }
     }
-    private var dateFormatter: DateFormatter {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .none
-            return formatter
+    func validateTime(old oldValue: Date, new newValue: Date, isStartChanged: Bool) {
+        if !checkStartTimeLessThenEndTime(vm._class.starttime, vm._class.endtime) {
+            if isStartChanged {
+                vm._class.starttime = Date()
+            } else {
+                vm._class.starttime = Date()
+            }
+            print("Invalid time selected. Reverting to old value.")
+        }
     }
 }
 
 #Preview {
-    SheetCreateClassView(isShowingSheet: .constant(true))
+    SheetCreateClassView(isShowingSheet: .constant(true), vm: .init(provider: .shared))
 }

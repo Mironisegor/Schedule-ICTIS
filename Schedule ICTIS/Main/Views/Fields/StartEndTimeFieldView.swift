@@ -46,12 +46,6 @@ struct StartEndTimeFieldView: View {
                 }
         }
     }
-    
-    private var timeFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter
-    }
 }
 
 #Preview {

@@ -11,7 +11,7 @@ struct WeekTabView: View {
     @State private var currentWeekIndex: Int = 1
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var createWeek: Bool = false
-    @ObservedObject var vm: ViewModel
+    @ObservedObject var vm: ScheduleViewModel
     var body: some View {
         HStack {
             TabView(selection: $currentWeekIndex) {

@@ -41,6 +41,3 @@ struct CommentFieldView: View {
     }
 }
 
-#Preview {
-    SheetCreateClassView(isShowingSheet: .constant(true))
-}

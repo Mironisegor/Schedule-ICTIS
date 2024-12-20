@@ -71,7 +71,90 @@ extension View {
         }
     }
     
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    // MARK: ScheduleView
+    func datesAreEqual(_ date1: Date, _ date2: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        let components1 = calendar.dateComponents([.year, .month, .day], from: date1)
+        let components2 = calendar.dateComponents([.year, .month, .day], from: date2)
+        
+        return components1.year == components2.year &&
+               components1.month == components2.month &&
+               components1.day == components2.day
+    }
+    
+    func onlineOrNot(_ str: String) -> Color {
+        if (str == "Онлайн") {
+            return Color("blueForOnline")
+        }
+        else {
+            return Color("greenForOffline")
+        }
+    }
+    
+    func getSubjectName(_ subject: String, _ professor: String, _ auditory: String) -> String {
+        return "\(subject) \(professor) \(auditory)"
+    }
+    
+    func getTimeString(_ date: Date) -> String {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: date)
+        
+        guard let hour = components.hour, let minute = components.minute else {
+            return "Invalid time"
+        }
+        
+        return String(format: "%02d:%02d", hour, minute)
+    }
+    
+    var dateFormatter: DateFormatter {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            return formatter
+    }
+    
+    var timeFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }
+    
+    func checkStartTimeLessThenEndTime(_ startTime: Date, _ endTime: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        let firstComponents = calendar.dateComponents([.hour, .minute], from: startTime)
+        let secondComponents = calendar.dateComponents([.hour, .minute], from: endTime)
+        
+        guard let startHours = firstComponents.hour, let startMinutes = firstComponents.minute else {
+            return false
+        }
+        guard let endHours = secondComponents.hour, let endMinutes = secondComponents.minute else {
+            return false
+        }
+        
+        print("\(startHours) - \(endHours)")
+        print("\(startMinutes) - \(endMinutes)")
+        if startHours > endHours {
+            return false
+        }
+        else if startHours == endHours {
+            if startMinutes < endMinutes {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
+            return true
+        }
+    }
+    
+    func checkUpFields(_ subject: String, _ auditory: String, _ professor: String, _ time1: Date, _ time3: Date) -> Bool {
+        if (subject != "" || auditory != "" || professor != "") {
+            return true
+        }
+        return true
     }
 }

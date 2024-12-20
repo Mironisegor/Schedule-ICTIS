@@ -11,7 +11,9 @@ struct SearchBarView: View {
     @Binding var text: String
     @State private var isEditing = false
     @State private var isShowingSheet: Bool = false
-    @ObservedObject var vm: ViewModel
+    @ObservedObject var vm: ScheduleViewModel
+
+    var provider = ClassProvider.shared
 
     var body: some View {
         HStack (spacing: 11) {
@@ -28,6 +30,9 @@ struct SearchBarView: View {
                     .onSubmit {
                         self.isEditing = false
                         if (!text.isEmpty) {
+                            if !vm.numOfGroup.isEmpty {
+                                
+                            }
                             vm.fetchWeekSchedule(text)
                             vm.group = text
                         }
@@ -78,7 +83,7 @@ struct SearchBarView: View {
         .frame(height: 40)
         .accentColor(.blue)
         .sheet(isPresented: $isShowingSheet) {
-            SheetCreateClassView(isShowingSheet: $isShowingSheet)
+            SheetCreateClassView(isShowingSheet: $isShowingSheet, vm: .init(provider: provider))
         }
     }
 }

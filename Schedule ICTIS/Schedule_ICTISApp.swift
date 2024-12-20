@@ -12,6 +12,7 @@ struct Schedule_ICTISApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, ClassProvider.shared.viewContext)
         }
     }
 }
