@@ -24,11 +24,11 @@ struct SheetCreateClassView: View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    FieldView(text: $textForNameOfClass, nameOfImage: "book", labelForField: "Предмет")
+                    ProfessorAuditoryClassFieldView(text: $textForNameOfClass, nameOfImage: "book", labelForField: "Предмет")
                         .padding(.bottom, 10)
-                    FieldView(text: $textForNameOfAuditory, nameOfImage: "mappin.and.ellipse", labelForField: "Корпус-аудитория")
+                    ProfessorAuditoryClassFieldView(text: $textForNameOfAuditory, nameOfImage: "mappin.and.ellipse", labelForField: "Корпус-аудитория")
                         .padding(.bottom, 10)
-                    FieldView(text: $textForNameOfProfessor, nameOfImage: "book", labelForField: "Преподаватель")
+                    ProfessorAuditoryClassFieldView(text: $textForNameOfProfessor, nameOfImage: "book", labelForField: "Преподаватель")
                         .padding(.bottom, 10)
                     HStack {
                         Image(systemName: "calendar")
@@ -55,9 +55,9 @@ struct SheetCreateClassView: View {
                     }
                     .padding(.bottom, 10)
                     HStack {
-                        StartEndTimeView(selectedTime: $selectedStartTime, imageName: "clock", text: "Начало")
+                        StartEndTimeFieldView(selectedTime: $selectedStartTime, imageName: "clock", text: "Начало")
                         Spacer()
-                        StartEndTimeView(selectedTime: $selectedEndTime, imageName: "clock.badge.xmark", text: "Конец")
+                        StartEndTimeFieldView(selectedTime: $selectedEndTime, imageName: "clock.badge.xmark", text: "Конец")
                     }
                     .frame(height: 40)
                     .padding(.bottom, 10)
@@ -88,7 +88,7 @@ struct SheetCreateClassView: View {
                     )
                     .padding(.bottom, 10)
                     
-                    CommentView(textForComment: $textForComment)
+                    CommentFieldView(textForComment: $textForComment)
                     Spacer()
                 }
                 .padding(.horizontal)

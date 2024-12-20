@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct StartEndTimeView: View {
+struct StartEndTimeFieldView: View {
     @Binding var selectedTime: Date
     var imageName: String
     var text: String
@@ -55,5 +55,5 @@ struct StartEndTimeView: View {
 }
 
 #Preview {
-    StartEndTimeView(selectedTime: .constant(Date()), imageName: "clock", text: "Начало")
+    StartEndTimeFieldView(selectedTime: .constant(Date()), imageName: "clock", text: "Начало")
 }

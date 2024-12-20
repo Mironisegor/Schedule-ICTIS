@@ -13,7 +13,7 @@ struct SheetChangeClassView: View {
         NavigationView {
             VStack {
                 Spacer()
-                Text("Создание новой пары")
+                Text("Редактирвоание пары")
                 Spacer()
             }
             .toolbar {

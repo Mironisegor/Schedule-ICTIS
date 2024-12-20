@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-final class ViewModel: ObservableObject {
+final class ScheduleViewModel: ObservableObject {
     //MARK: Properties
     @Published var weekSchedule: Table = Table(
         type: "",

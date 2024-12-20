@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommentView: View {
+struct CommentFieldView: View {
     @Binding var textForComment: String
     @FocusState private var isFocused: Bool
     
