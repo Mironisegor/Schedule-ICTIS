@@ -30,9 +30,6 @@ struct SearchBarView: View {
                     .onSubmit {
                         self.isEditing = false
                         if (!text.isEmpty) {
-                            if !vm.numOfGroup.isEmpty {
-                                
-                            }
                             vm.fetchWeekSchedule(text)
                             vm.group = text
                         }
@@ -83,7 +80,7 @@ struct SearchBarView: View {
         .frame(height: 40)
         .accentColor(.blue)
         .sheet(isPresented: $isShowingSheet) {
-            SheetCreateClassView(isShowingSheet: $isShowingSheet, vm: .init(provider: provider))
+            CreateClassView(isShowingSheet: $isShowingSheet, vm: .init(provider: provider))
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import SwiftUI
 
 // Это класс служит посредником между View и моделью данных
 // Он позволяет открыть наш файл данных чтобы записывать и извлекать значения
@@ -29,6 +30,9 @@ final class ClassProvider {
     private init() {
         // Открытие файла
         persistentContainer = NSPersistentContainer(name: "ClassDataModel")
+        if EnvironmentValues.isPreview {
+            persistentContainer.persistentStoreDescriptions.first?.url = .init(filePath: "/dev/null")
+        }
         
         // Выставляем флаг для автоматического сохранения изменений данных из Veiw в память
         persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
@@ -40,5 +44,11 @@ final class ClassProvider {
             }
         }
         
+    }
+}
+
+extension EnvironmentValues {
+    static var isPreview: Bool {
+        return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
     }
 }

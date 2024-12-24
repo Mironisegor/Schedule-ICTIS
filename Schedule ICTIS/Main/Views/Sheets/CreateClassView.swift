@@ -7,17 +7,12 @@
 
 import SwiftUI
 
-struct SheetCreateClassView: View {
+struct CreateClassView: View {
     @Binding var isShowingSheet: Bool
-    @State private var textForNameOfClass = ""
-    @State private var textForNameOfAuditory = ""
-    @State private var textForNameOfProfessor = ""
     @State private var isShowingDatePickerForDate: Bool = false
-    @State private var isImportant: Bool = false
-    @State private var selectedOptionForNotification: String = "Нет"
-    @State private var selectedOptionForOnline: String = "Оффлайн"
-    @State private var textForComment: String = ""
     @ObservedObject var vm: EditClassViewModel
+    @State private var isIncorrectDate1: Bool = false
+    @State private var isIncorrectDate2: Bool = false
     
     var body: some View {
         NavigationView {
@@ -54,20 +49,42 @@ struct SheetCreateClassView: View {
                     }
                     .padding(.bottom, 10)
                     HStack {
-                        StartEndTimeFieldView(selectedTime: $vm._class.starttime, imageName: "clock", text: "Начало")
+                        StartEndTimeFieldView(isIncorrectDate: $isIncorrectDate1, selectedDay: $vm._class.day, selectedTime: $vm._class.starttime, imageName: "clock", text: "Начало")
                             .onChange(of: vm._class.starttime) { oldValue, newValue in
                                 if !checkStartTimeLessThenEndTime(vm._class.starttime, vm._class.endtime) {
-                                    print("Values \(oldValue) - \(newValue) 1")
-                                    print(vm._class.starttime)
-                                    vm._class.starttime = oldValue
+                                    self.isIncorrectDate1 = true
+                                }
+                                else {
+                                    self.isIncorrectDate1 = false
+                                    self.isIncorrectDate2 = false
+                                }
+                            }
+                            .overlay {
+                                if isIncorrectDate1 {
+                                    Rectangle()
+                                        .frame(maxWidth: 300, maxHeight: 1)
+                                        .foregroundColor(.red)
+                                        .padding(.horizontal)
                                 }
                             }
                         Spacer()
-                        StartEndTimeFieldView(selectedTime: $vm._class.endtime, imageName: "clock.badge.xmark", text: "Конец")
+                        StartEndTimeFieldView(isIncorrectDate: $isIncorrectDate2, selectedDay: $vm._class.day, selectedTime: $vm._class.endtime, imageName: "clock.badge.xmark", text: "Конец")
                             .onChange(of: vm._class.endtime) { oldValue, newValue in
-                                print("Values \(oldValue) - \(newValue) 2")
-                                print(vm._class.endtime)
-                                validateTime(old: oldValue, new: newValue, isStartChanged: false)
+                                if !checkStartTimeLessThenEndTime(vm._class.starttime, vm._class.endtime) {
+                                    self.isIncorrectDate2 = true
+                                }
+                                else {
+                                    self.isIncorrectDate1 = false
+                                    self.isIncorrectDate2 = false
+                                }
+                            }
+                            .overlay {
+                                if isIncorrectDate2 {
+                                    Rectangle()
+                                        .frame(maxWidth: 300, maxHeight: 1)
+                                        .foregroundColor(.red)
+                                        .padding(.horizontal)
+                                }
                             }
                     }
                     .frame(height: 40)
@@ -143,18 +160,38 @@ struct SheetCreateClassView: View {
             .background(Color("background"))
         }
     }
-    func validateTime(old oldValue: Date, new newValue: Date, isStartChanged: Bool) {
-        if !checkStartTimeLessThenEndTime(vm._class.starttime, vm._class.endtime) {
-            if isStartChanged {
-                vm._class.starttime = Date()
-            } else {
-                vm._class.starttime = Date()
+    func checkStartTimeLessThenEndTime(_ startTime: Date, _ endTime: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        let firstComponents = calendar.dateComponents([.hour, .minute], from: startTime)
+        let secondComponents = calendar.dateComponents([.hour, .minute], from: endTime)
+        
+        guard let startHours = firstComponents.hour, let startMinutes = firstComponents.minute else {
+            return false
+        }
+        guard let endHours = secondComponents.hour, let endMinutes = secondComponents.minute else {
+            return false
+        }
+        
+        print("\(startHours) - \(endHours)")
+        print("\(startMinutes) - \(endMinutes)")
+        if Int(startHours) > Int(endHours) {
+            return false
+        }
+        else if startHours == endHours {
+            if startMinutes < endMinutes {
+                return true
             }
-            print("Invalid time selected. Reverting to old value.")
+            else {
+                return false
+            }
+        }
+        else {
+            return true
         }
     }
 }
 
 #Preview {
-    SheetCreateClassView(isShowingSheet: .constant(true), vm: .init(provider: .shared))
+    CreateClassView(isShowingSheet: .constant(true), vm: .init(provider: .shared))
 }

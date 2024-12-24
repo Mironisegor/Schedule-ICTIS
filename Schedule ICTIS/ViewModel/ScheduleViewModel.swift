@@ -30,14 +30,13 @@ final class ScheduleViewModel: ObservableObject {
     @Published var group: String = ""
     
     //MARK: Methods
-    func fetchWeekSchedule(_ group: String, _ num: Int = 0) {
+    func fetchWeekSchedule(_ group: String) {
         isLoading = true
         Task {
             do {
                 var schedule: Schedule
-                if (num != 0) {
-                    week += num
-                    schedule = try await NetworkManager.shared.getScheduleForOtherWeek(week, numOfGroup)
+                if !self.numOfGroup.isEmpty {
+                    schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, self.numOfGroup)
                 }
                 else {
                     schedule = try await NetworkManager.shared.getSchedule(group)

@@ -120,37 +120,6 @@ extension View {
         return formatter
     }
     
-    func checkStartTimeLessThenEndTime(_ startTime: Date, _ endTime: Date) -> Bool {
-        let calendar = Calendar.current
-        
-        let firstComponents = calendar.dateComponents([.hour, .minute], from: startTime)
-        let secondComponents = calendar.dateComponents([.hour, .minute], from: endTime)
-        
-        guard let startHours = firstComponents.hour, let startMinutes = firstComponents.minute else {
-            return false
-        }
-        guard let endHours = secondComponents.hour, let endMinutes = secondComponents.minute else {
-            return false
-        }
-        
-        print("\(startHours) - \(endHours)")
-        print("\(startMinutes) - \(endMinutes)")
-        if startHours > endHours {
-            return false
-        }
-        else if startHours == endHours {
-            if startMinutes < endMinutes {
-                return true
-            }
-            else {
-                return false
-            }
-        }
-        else {
-            return true
-        }
-    }
-    
     func checkUpFields(_ subject: String, _ auditory: String, _ professor: String, _ time1: Date, _ time3: Date) -> Bool {
         if (subject != "" || auditory != "" || professor != "") {
             return true
