@@ -53,6 +53,7 @@ extension ClassModel {
     }
     
     // Получаем все данные и сортируем их по дню
+    // Этот метод будет использоваться на View(ScheduleView), где отображаются пары
     static func all() -> NSFetchRequest<ClassModel> {
         let request: NSFetchRequest<ClassModel> = classesFetchRequest
         request.sortDescriptors = [

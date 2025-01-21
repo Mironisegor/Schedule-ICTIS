@@ -11,11 +11,22 @@ import CoreData
 final class EditClassViewModel: ObservableObject {
     @Published var _class: ClassModel
     
+    let isNew: Bool
+    
     private let context: NSManagedObjectContext
     
     init(provider: ClassProvider, _class: ClassModel? = nil) {
         self.context = provider.newContext
-        self._class = ClassModel(context: self.context)
+        
+        if let _class,
+           let existingClassCopy = try? context.existingObject(with: _class.objectID) as? ClassModel {
+            self._class = existingClassCopy
+            self.isNew = false
+        }
+        else {
+            self._class = ClassModel(context: self.context)
+            self.isNew = true
+        }
     }
     
     func save() throws {

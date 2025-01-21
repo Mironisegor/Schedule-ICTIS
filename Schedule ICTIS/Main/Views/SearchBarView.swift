@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchBarView: View {
     @Binding var text: String
-    @State private var isEditing = false
+    @FocusState private var isFocused: Bool
     @State private var isShowingSheet: Bool = false
     @ObservedObject var vm: ScheduleViewModel
 
@@ -24,11 +24,9 @@ struct SearchBarView: View {
                     .padding(.trailing, 7)
                 TextField("Поиск группы", text: $text)
                     .disableAutocorrection(true)
-                    .onTapGesture {
-                        self.isEditing = true
-                    }
+                    .focused($isFocused)
                     .onSubmit {
-                        self.isEditing = false
+                        self.isFocused = false
                         if (!text.isEmpty) {
                             vm.fetchWeekSchedule(text)
                             vm.group = text
@@ -36,21 +34,20 @@ struct SearchBarView: View {
                         self.text = ""
                     }
                     .submitLabel(.search)
-                    if isEditing {
-                        Button {
-                            self.text = ""
-                            self.isEditing = false
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .padding(.trailing, 20)
-                                .offset(x: 10)
-                                .foregroundColor(.gray)
-                                .background(
-                                )
+                if isFocused {
+                    Button {
+                        self.text = ""
+                        self.isFocused = false
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .padding(.trailing, 20)
+                            .offset(x: 10)
+                            .foregroundColor(.gray)
+                            .background(
+                            )
                         }
-                        .background(Color.red)
-                    }
+                }
             }
             .frame(height: 40)
             .background(
@@ -80,7 +77,7 @@ struct SearchBarView: View {
         .frame(height: 40)
         .accentColor(.blue)
         .sheet(isPresented: $isShowingSheet) {
-            CreateClassView(isShowingSheet: $isShowingSheet, vm: .init(provider: provider))
+            CreateEditClassView(vm: .init(provider: provider))
         }
     }
 }

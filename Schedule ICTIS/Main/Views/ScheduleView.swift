@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ScheduleView: View {
     @ObservedObject var vm: ScheduleViewModel
-    @FetchRequest(fetchRequest: ClassModel.all()) private var classes
-    @State private var isShowingEditClassView = false
+    @FetchRequest(fetchRequest: ClassModel.all()) private var classes  //Делаем запрос в CoreData и получаем список сохраненных пар
     @State private var selectedClass: ClassModel? = nil
+    var provider = ClassProvider.shared
     var body: some View {
         if vm.isLoading {
             LoadingView(isLoading: $vm.isLoading)
@@ -58,11 +58,13 @@ struct ScheduleView: View {
                                 }
                             }
                             ForEach(classes) { _class in
-                                CreatedClassView(_class: _class)
-                                    .onTapGesture {
-                                        isShowingEditClassView = true
-                                        selectedClass = _class
-                                    }
+                                if daysAreEqual(_class.day, vm.selectedDay) {
+                                    CreatedClassView(_class: _class)
+                                        .onTapGesture {
+                                            selectedClass = _class
+                                            print(selectedClass)
+                                        }
+                                }
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width)
@@ -74,17 +76,19 @@ struct ScheduleView: View {
                     }
                     .frame(width: UIScreen.main.bounds.width, height: 15)
                 }
-                .sheet(isPresented: $isShowingEditClassView) {
-                    if let selectedClass = selectedClass {
-                        EditClassView(isShowingSheet: $isShowingEditClassView, _class: selectedClass)
-                    }
-                }
+                //Sheet будет открываться, когда selectedClass будет становиться не nil
+                .sheet(item: $selectedClass,
+                       onDismiss: {
+                    selectedClass = nil
+                },
+                       content: { _class in
+                    CreateEditClassView(vm: .init(provider: provider, _class: _class))
+                })
             }
             else {
                 NoScheduleView()
             }
         }
-        
     }
 }
 

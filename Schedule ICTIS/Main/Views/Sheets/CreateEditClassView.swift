@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CreateClassView: View {
-    @Binding var isShowingSheet: Bool
+struct CreateEditClassView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var isShowingDatePickerForDate: Bool = false
     @ObservedObject var vm: EditClassViewModel
     @State private var isIncorrectDate1: Bool = false
     @State private var isIncorrectDate2: Bool = false
-    
+    var provider = ClassProvider.shared
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
@@ -134,6 +134,31 @@ struct CreateClassView: View {
                     .padding(.bottom, 10)
                     
                     CommentFieldView(textForComment: $vm._class.comment)
+                        .padding(.bottom, 20)
+                    
+                    
+                    if !vm.isNew {
+                        Button {
+                            do {
+                                try delete(vm._class)
+                            } catch {
+                                print(error)
+                            }
+                            dismiss()
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "trash")
+                                Text("Удалить занятие")
+                                    .font(.system(size: 17, weight: .medium))
+                                Spacer()
+                            }
+                            .frame(height: 40)
+                            .background(Color.white)
+                            .foregroundColor(Color.red)
+                            .cornerRadius(10)
+                        }
+                    }
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -142,56 +167,37 @@ struct CreateClassView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Отменить") {
-                        isShowingSheet = false
+                        dismiss()
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Сохранить") {
                         do {
                             try vm.save()
+                            dismiss()
                         } catch {
                             print(error)
                         }
-                        isShowingSheet = false
                     }
                 }
             }
-            .navigationTitle("Новая пара")
+            .navigationTitle(vm.isNew ? "Новая пара" : "Изменить данные")
             .background(Color("background"))
         }
     }
-    func checkStartTimeLessThenEndTime(_ startTime: Date, _ endTime: Date) -> Bool {
-        let calendar = Calendar.current
-        
-        let firstComponents = calendar.dateComponents([.hour, .minute], from: startTime)
-        let secondComponents = calendar.dateComponents([.hour, .minute], from: endTime)
-        
-        guard let startHours = firstComponents.hour, let startMinutes = firstComponents.minute else {
-            return false
-        }
-        guard let endHours = secondComponents.hour, let endMinutes = secondComponents.minute else {
-            return false
-        }
-        
-        print("\(startHours) - \(endHours)")
-        print("\(startMinutes) - \(endMinutes)")
-        if Int(startHours) > Int(endHours) {
-            return false
-        }
-        else if startHours == endHours {
-            if startMinutes < endMinutes {
-                return true
-            }
-            else {
-                return false
+    func delete(_ _class: ClassModel) throws {
+        let context = provider.viewContext
+        let existingClass = try context.existingObject(with: _class.objectID)
+        context.delete(existingClass)
+        Task (priority: .background) {
+            try await context.perform {
+                try context.save()
             }
         }
-        else {
-            return true
-        }
+        
     }
 }
 
 #Preview {
-    CreateClassView(isShowingSheet: .constant(true), vm: .init(provider: .shared))
+    CreateEditClassView(vm: .init(provider: .shared))
 }

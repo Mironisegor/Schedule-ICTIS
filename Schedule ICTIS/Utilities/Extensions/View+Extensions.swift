@@ -72,7 +72,7 @@ extension View {
     }
     
     // MARK: ScheduleView
-    func datesAreEqual(_ date1: Date, _ date2: Date) -> Bool {
+    func daysAreEqual(_ date1: Date, _ date2: Date) -> Bool {
         let calendar = Calendar.current
         
         let components1 = calendar.dateComponents([.year, .month, .day], from: date1)
@@ -120,10 +120,34 @@ extension View {
         return formatter
     }
     
-    func checkUpFields(_ subject: String, _ auditory: String, _ professor: String, _ time1: Date, _ time3: Date) -> Bool {
-        if (subject != "" || auditory != "" || professor != "") {
+    func checkStartTimeLessThenEndTime(_ startTime: Date, _ endTime: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        let firstComponents = calendar.dateComponents([.hour, .minute], from: startTime)
+        let secondComponents = calendar.dateComponents([.hour, .minute], from: endTime)
+        
+        guard let startHours = firstComponents.hour, let startMinutes = firstComponents.minute else {
+            return false
+        }
+        guard let endHours = secondComponents.hour, let endMinutes = secondComponents.minute else {
+            return false
+        }
+        
+        print("\(startHours) - \(endHours)")
+        print("\(startMinutes) - \(endMinutes)")
+        if Int(startHours) > Int(endHours) {
+            return false
+        }
+        else if startHours == endHours {
+            if startMinutes < endMinutes {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+        else {
             return true
         }
-        return true
     }
 }

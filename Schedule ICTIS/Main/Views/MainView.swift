@@ -10,7 +10,6 @@ import SwiftUI
 struct MainView: View {
     @State private var searchText: String = ""
     @State private var isShowingMonthSlider: Bool = false
-    @State private var isFirstAppearence = true
     @ObservedObject var vm: ScheduleViewModel
     
     var body: some View {
