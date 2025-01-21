@@ -141,10 +141,10 @@ struct CreateEditClassView: View {
                         Button {
                             do {
                                 try delete(vm._class)
+                                dismiss()
                             } catch {
                                 print(error)
                             }
-                            dismiss()
                         } label: {
                             HStack {
                                 Spacer()
@@ -194,7 +194,6 @@ struct CreateEditClassView: View {
                 try context.save()
             }
         }
-        
     }
 }
 

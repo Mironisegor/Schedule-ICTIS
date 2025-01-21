@@ -24,7 +24,10 @@ final class ClassProvider {
     }
     
     var newContext: NSManagedObjectContext {
-        persistentContainer.newBackgroundContext()
+        //persistentContainer.newBackgroundContext()
+        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+                context.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
+                return context
     }
     
     private init() {

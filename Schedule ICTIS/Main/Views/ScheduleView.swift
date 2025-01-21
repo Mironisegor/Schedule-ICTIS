@@ -62,7 +62,6 @@ struct ScheduleView: View {
                                     CreatedClassView(_class: _class)
                                         .onTapGesture {
                                             selectedClass = _class
-                                            print(selectedClass)
                                         }
                                 }
                             }
