@@ -23,6 +23,7 @@ final class ClassModel: NSManagedObject, Identifiable {
     static var dateNow: Date = .now
     
     // Здесь мы выполняем дополнительную инициализацию, назначая значения по умолчанию
+    // Этот метод вызывается всякий раз, когда объект Core Data вставляется в контекст
     override func awakeFromInsert() {
         super.awakeFromInsert()
         

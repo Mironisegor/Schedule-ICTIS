@@ -28,18 +28,25 @@ final class ScheduleViewModel: ObservableObject {
     @Published var errorInNetwork: NetworkError?
     @Published var isLoading: Bool = false
     @Published var group: String = ""
+    @Published var isNewGroup: Bool = false
     
     //MARK: Methods
-    func fetchWeekSchedule(_ group: String) {
+    func fetchWeekSchedule(group: String = "default", isOtherWeek: Bool = false) {
         isLoading = true
         Task {
             do {
                 var schedule: Schedule
-                if !self.numOfGroup.isEmpty {
+                // В этот if мы заходим только если пользователь перелистывает недели и нам известы номер группы(в html формате) и номер неделе, которая показывается пользователю
+                if (isOtherWeek || !isFirstStartOffApp) && (group == "default") {
                     schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, self.numOfGroup)
                 }
-                else {
+                // В else мы заходим в том случае, если не знаем номера недели, которую нужно отобразить и номер группы(в html формате)
+                else  {
                     schedule = try await NetworkManager.shared.getSchedule(group)
+                    if (!self.isFirstStartOffApp) {
+                        self.isNewGroup = true
+                    }
+                    self.selectedDay = .init()
                 }
                 self.weekSchedule = schedule.table
                 self.week = weekSchedule.week

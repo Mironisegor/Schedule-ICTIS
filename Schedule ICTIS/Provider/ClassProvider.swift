@@ -25,6 +25,7 @@ final class ClassProvider {
     
     var newContext: NSManagedObjectContext {
         //persistentContainer.newBackgroundContext()
+        //Можно использовать объявление newContext с помощью строки, которая написана выше, но вариант ниже потокобезопаснее
         let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
                 context.persistentStoreCoordinator = persistentContainer.persistentStoreCoordinator
                 return context
@@ -37,7 +38,7 @@ final class ClassProvider {
             persistentContainer.persistentStoreDescriptions.first?.url = .init(filePath: "/dev/null")
         }
         
-        // Выставляем флаг для автоматического сохранения изменений данных из Veiw в память
+        // Выставляем флаг для автоматического слияния данных из фонового контекста в основной
         persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         
         // Выполняем открытие файла с данными

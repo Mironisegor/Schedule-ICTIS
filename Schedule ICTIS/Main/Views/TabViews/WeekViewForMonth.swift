@@ -62,7 +62,7 @@ struct WeekViewForMonth: View {
             }
             print(difBetweenWeeks)
             vm.week += difBetweenWeeks
-            vm.fetchWeekSchedule("")
+            vm.fetchWeekSchedule(isOtherWeek: true)
             }
         vm.selectedDay = day.date
         vm.updateSelectedDayIndex()

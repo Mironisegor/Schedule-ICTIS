@@ -28,7 +28,7 @@ struct SearchBarView: View {
                     .onSubmit {
                         self.isFocused = false
                         if (!text.isEmpty) {
-                            vm.fetchWeekSchedule(text)
+                            vm.fetchWeekSchedule(group: text)
                             vm.group = text
                         }
                         self.text = ""
@@ -54,7 +54,7 @@ struct SearchBarView: View {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.white)
             )
-            if (!vm.isFirstStartOffApp) {
+            if (!vm.isFirstStartOffApp && !isFocused) {
                 Button {
                     isShowingSheet = true
                 } label: {

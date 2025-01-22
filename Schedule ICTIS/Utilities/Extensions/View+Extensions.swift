@@ -151,3 +151,16 @@ extension View {
         }
     }
 }
+
+extension CreateEditClassView {
+    func delete(_ _class: ClassModel) throws {
+        let context = provider.viewContext
+        let existingClass = try context.existingObject(with: _class.objectID)
+        context.delete(existingClass)
+        Task (priority: .background) {
+            try await context.perform {
+                try context.save()
+            }
+        }
+    }
+}

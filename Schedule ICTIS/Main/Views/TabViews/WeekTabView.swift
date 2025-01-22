@@ -27,24 +27,39 @@ struct WeekTabView: View {
             .frame(height: 90)
         }
         .onAppear(perform: {
-            vm.updateSelectedDayIndex()
-            if weekSlider.isEmpty {
-                let currentWeek = Date().fetchWeek(vm.selectedDay)
-                    
-                if let firstDate = currentWeek.first?.date {
-                    weekSlider.append(firstDate.createPrevioustWeek())
-                }
-                    
-                weekSlider.append(currentWeek)
-                    
-                if let lastDate = currentWeek.last?.date {
-                    weekSlider.append(lastDate.createNextWeek())
-                }
-            }
+            updateWeekScreenViewForNewGroup()
         })
         .onChange(of: currentWeekIndex, initial: false) { oldValue, newValue in
             if newValue == 0 || newValue == (weekSlider.count - 1) {
                 createWeek = true
+            }
+        }
+        .onChange(of: vm.isNewGroup, initial: false) { oldValue, newValue in
+            if newValue {
+                weekSlider.removeAll()
+                currentWeekIndex = 1
+                updateWeekScreenViewForNewGroup()
+                print(52)
+                vm.isNewGroup = false
+            }
+        }
+    }
+}
+
+extension WeekTabView {
+    func updateWeekScreenViewForNewGroup() {
+        vm.updateSelectedDayIndex()
+        if weekSlider.isEmpty {
+            let currentWeek = Date().fetchWeek(vm.selectedDay)
+                
+            if let firstDate = currentWeek.first?.date {
+                weekSlider.append(firstDate.createPrevioustWeek())
+            }
+                
+            weekSlider.append(currentWeek)
+                
+            if let lastDate = currentWeek.last?.date {
+                weekSlider.append(lastDate.createNextWeek())
             }
         }
     }

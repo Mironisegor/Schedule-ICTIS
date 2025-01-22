@@ -79,7 +79,7 @@ struct WeekViewForWeek: View {
             if let firstDate = weekSlider[currentWeekIndex].first?.date,
                currentWeekIndex == 0 {
                 vm.week -= 1
-                vm.fetchWeekSchedule("")
+                vm.fetchWeekSchedule(isOtherWeek: true)
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
                 currentWeekIndex = 1
@@ -90,7 +90,7 @@ struct WeekViewForWeek: View {
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
                currentWeekIndex == (weekSlider.count - 1) {
                 vm.week += 1
-                vm.fetchWeekSchedule("")
+                vm.fetchWeekSchedule(isOtherWeek: true)
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2

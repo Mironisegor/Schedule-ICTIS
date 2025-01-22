@@ -38,24 +38,20 @@ struct MonthTabView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
         .onAppear(perform: {
-            vm.updateSelectedDayIndex()
-            if monthSlider.isEmpty {
-                let currentMonth = Date().fetchMonth(vm.selectedDay)
-                
-                if let firstDate = currentMonth.first?.week[0].date {
-                    monthSlider.append(firstDate.createPreviousMonth())
-                }
-                    
-                monthSlider.append(currentMonth)
-                
-                if let lastDate = currentMonth.last?.week[6].date {
-                    monthSlider.append(lastDate.createNextMonth())
-                }
-            }
+            updateMonthScreenViewForNewGroup()
         })
         .onChange(of: currentMonthIndex, initial: false) { oldValue, newValue in
             if newValue == 0 || newValue == (monthSlider.count - 1) {
                 createMonth = true
+            }
+        }
+        .onChange(of: vm.isNewGroup, initial: false) { oldValue, newValue in
+            if newValue {
+                monthSlider.removeAll()
+                currentMonthIndex = 1
+                updateMonthScreenViewForNewGroup()
+                print(52)
+                vm.isNewGroup = false
             }
         }
     }
@@ -96,7 +92,7 @@ struct MonthTabView: View {
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week -= 5
-                vm.fetchWeekSchedule("")
+                vm.fetchWeekSchedule(isOtherWeek: true)
             }
             
             if let lastDate = monthSlider[currentMonthIndex].last?.week[6].date,
@@ -107,7 +103,26 @@ struct MonthTabView: View {
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week += 5
-                vm.fetchWeekSchedule("")
+                vm.fetchWeekSchedule(isOtherWeek: true)
+            }
+        }
+    }
+}
+
+extension MonthTabView {
+    func updateMonthScreenViewForNewGroup() {
+        vm.updateSelectedDayIndex()
+        if monthSlider.isEmpty {
+            let currentMonth = Date().fetchMonth(vm.selectedDay)
+            
+            if let firstDate = currentMonth.first?.week[0].date {
+                monthSlider.append(firstDate.createPreviousMonth())
+            }
+                
+            monthSlider.append(currentMonth)
+            
+            if let lastDate = currentMonth.last?.week[6].date {
+                monthSlider.append(lastDate.createNextMonth())
             }
         }
     }
