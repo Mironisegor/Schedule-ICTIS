@@ -1,28 +1,31 @@
 //
-//  CommentView.swift
+//  ProfessorFieldView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 17.12.2024.
+//  Created by G412 on 23.01.2025.
 //
 
 import SwiftUI
 
-struct CommentFieldView: View {
-    @Binding var textForComment: String
+struct ProfessorFieldView: View {
+    @Binding var text: String
+    var nameOfImage: String
+    var labelForField: String
     @FocusState var isFocused: Bool
-    
     var body: some View {
-        HStack {
-            TextField("Комментарий", text: $textForComment)
+        HStack(spacing: 0) {
+            Image(systemName: nameOfImage)
+                .foregroundColor(Color.gray)
+                .padding(.leading, 12)
+                .padding(.trailing, 7)
+            TextField(labelForField, text: $text)
+                .font(.system(size: 18, weight: .regular))
+                .disableAutocorrection(true)
                 .submitLabel(.done)
-                .multilineTextAlignment(.leading)
                 .focused($isFocused)
-                .padding(.top, 6)
-                .padding(.bottom, 6)
-            
             if isFocused {
                 Button {
-                    textForComment = ""
+                    self.text = ""
                     self.isFocused = false
                 } label: {
                     Image(systemName: "xmark.circle.fill")
@@ -32,8 +35,7 @@ struct CommentFieldView: View {
                 }
             }
         }
-        .frame(minHeight: 40)
-        .padding(.horizontal)
+        .frame(height: 40)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.white)
@@ -41,3 +43,6 @@ struct CommentFieldView: View {
     }
 }
 
+#Preview {
+    ContentView()
+}

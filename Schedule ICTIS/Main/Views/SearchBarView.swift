@@ -77,7 +77,7 @@ struct SearchBarView: View {
         .frame(height: 40)
         .accentColor(.blue)
         .sheet(isPresented: $isShowingSheet) {
-            CreateEditClassView(vm: .init(provider: provider))
+            CreateEditClassView(vm: .init(provider: provider), day: vm.selectedDay)
         }
     }
 }

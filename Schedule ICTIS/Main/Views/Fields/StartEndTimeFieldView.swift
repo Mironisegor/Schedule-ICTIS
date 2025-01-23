@@ -13,20 +13,19 @@ struct StartEndTimeFieldView: View {
     @Binding var selectedTime: Date
     var imageName: String
     var text: String
-    @State private var isTimeSelected: Bool = false
+    @Binding var isTimeSelected: Bool
     var body: some View {
         HStack {
             Image(systemName: imageName)
                 .foregroundColor(isIncorrectDate ? .red : Color("grayForFields"))
                 .padding(.leading, 12)
             
-            if !isTimeSelected {
+            if !isTimeSelected || isIncorrectDate {
                 Text(text)
                     .font(.system(size: 17, weight: .regular))
                     .foregroundColor(.gray.opacity(0.5))
             }
-            
-            if isTimeSelected {
+            else {
                 Text("\(selectedTime, formatter: timeFormatter)")
                     .foregroundColor(isIncorrectDate ? .red : .black)
                     .font(.system(size: 17, weight: .medium))
@@ -40,7 +39,7 @@ struct StartEndTimeFieldView: View {
                 .fill(.white)
         )
         .overlay {
-            if isSameDate(selectedTime, selectedDay) {
+            if selectedDay.isToday {
                 DatePicker("", selection: $selectedTime, in: Date()..., displayedComponents: .hourAndMinute)
                     .padding(.trailing, 35)
                     .blendMode(.destinationOver)

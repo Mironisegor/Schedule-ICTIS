@@ -1,17 +1,17 @@
 //
-//  Field.swift
+//  AuditoryFieldView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 16.12.2024.
+//  Created by G412 on 23.01.2025.
 //
 
 import SwiftUI
 
-struct ProfessorAuditoryClassFieldView: View {
+struct AuditoryFieldView: View {
     @Binding var text: String
     var nameOfImage: String
     var labelForField: String
-    @FocusState private var isFocused: Bool
+    @FocusState var isFocused: Bool
     var body: some View {
         HStack(spacing: 0) {
             Image(systemName: nameOfImage)

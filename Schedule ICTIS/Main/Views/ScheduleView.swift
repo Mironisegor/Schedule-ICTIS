@@ -81,7 +81,7 @@ struct ScheduleView: View {
                     selectedClass = nil
                 },
                        content: { _class in
-                    CreateEditClassView(vm: .init(provider: provider, _class: _class))
+                    CreateEditClassView(vm: .init(provider: provider, _class: _class), day: vm.selectedDay)
                 })
             }
             else {
