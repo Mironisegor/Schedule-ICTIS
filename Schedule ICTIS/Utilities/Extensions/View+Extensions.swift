@@ -71,6 +71,15 @@ extension View {
         }
     }
     
+    func hoursMinutesAreEqual(date1: Date, isEqualTo date2: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        let components1 = calendar.dateComponents([.day, .hour, .minute], from: date1)
+        let components2 = calendar.dateComponents([.day, .hour, .minute], from: date2)
+        
+        return components1.day == components2.day && components1.hour == components2.hour && components1.minute == components2.minute
+    }
+    
     // MARK: ScheduleView
     func daysAreEqual(_ date1: Date, _ date2: Date) -> Bool {
         let calendar = Calendar.current

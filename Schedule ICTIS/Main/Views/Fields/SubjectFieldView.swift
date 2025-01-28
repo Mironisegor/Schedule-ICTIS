@@ -10,12 +10,11 @@ import SwiftUI
 struct SubjectFieldView: View {
     @Binding var text: String
     @Binding var isShowingSubjectFieldRed: Bool
-    var nameOfImage: String
     @Binding var labelForField: String
     @FocusState var isFocused: Bool
     var body: some View {
         HStack(spacing: 0) {
-            Image(systemName: nameOfImage)
+            Image(systemName: "book")
                 .foregroundColor(Color.gray)
                 .padding(.leading, 12)
                 .padding(.trailing, 7)
@@ -62,5 +61,5 @@ struct SubjectFieldView: View {
 }
 
 #Preview {
-    ContentView()
+    SubjectFieldView(text: .constant(""), isShowingSubjectFieldRed: .constant(false), labelForField: .constant("Предмет"))
 }

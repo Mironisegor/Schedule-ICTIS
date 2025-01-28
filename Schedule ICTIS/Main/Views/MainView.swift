@@ -11,10 +11,11 @@ struct MainView: View {
     @State private var searchText: String = ""
     @State private var isShowingMonthSlider: Bool = false
     @ObservedObject var vm: ScheduleViewModel
+    @FocusState private var isFocusedSearchBar: Bool
     
     var body: some View {
         VStack {
-            SearchBarView(text: $searchText, vm: vm)
+            SearchBarView(text: $searchText, isFocused: _isFocusedSearchBar, vm: vm)
             
             if (vm.isFirstStartOffApp && vm.isLoading) {
                 LoadingView(isLoading: $vm.isLoading)
@@ -33,6 +34,9 @@ struct MainView: View {
             Text(error.failureReason)
         }
         .background(Color("background"))
+        .onTapGesture {
+            isFocusedSearchBar = false
+        }
     }
     
     @ViewBuilder

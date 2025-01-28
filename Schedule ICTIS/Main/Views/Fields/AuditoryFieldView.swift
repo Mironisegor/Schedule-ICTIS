@@ -9,12 +9,11 @@ import SwiftUI
 
 struct AuditoryFieldView: View {
     @Binding var text: String
-    var nameOfImage: String
     var labelForField: String
     @FocusState var isFocused: Bool
     var body: some View {
         HStack(spacing: 0) {
-            Image(systemName: nameOfImage)
+            Image(systemName: "mappin.and.ellipse")
                 .foregroundColor(Color.gray)
                 .padding(.leading, 12)
                 .padding(.trailing, 7)
@@ -44,5 +43,5 @@ struct AuditoryFieldView: View {
 }
 
 #Preview {
-    ContentView()
+    AuditoryFieldView(text: .constant(""), labelForField: "Корпус-аудитория")
 }

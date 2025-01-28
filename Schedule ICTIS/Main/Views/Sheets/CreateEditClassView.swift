@@ -27,7 +27,7 @@ struct CreateEditClassView: View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
-                    SubjectFieldView(text: $vm._class.subject, isShowingSubjectFieldRed: $isShowingSubjectFieldRed, nameOfImage: "book", labelForField: $textForLabelInSubjectField, isFocused: _isFocusedSubject)
+                    SubjectFieldView(text: $vm._class.subject, isShowingSubjectFieldRed: $isShowingSubjectFieldRed, labelForField: $textForLabelInSubjectField, isFocused: _isFocusedSubject)
                         .padding(.bottom, 10)
                     HStack {
                         Text("Тип")
@@ -50,7 +50,7 @@ struct CreateEditClassView: View {
                     
                     ZStack {
                         if vm._class.online == "Оффлайн" {
-                            AuditoryFieldView(text: $vm._class.auditory, nameOfImage: "mappin.and.ellipse", labelForField: "Корпус-аудитория", isFocused: _isFocusedAuditory)
+                            AuditoryFieldView(text: $vm._class.auditory, labelForField: "Корпус-аудитория", isFocused: _isFocusedAuditory)
                                 .padding(.bottom, 10)
                                 .transition(.asymmetric(
                                     insertion: .offset(y: -50).combined(with: .identity),
@@ -65,7 +65,7 @@ struct CreateEditClassView: View {
                         value: vm._class.online
                     )
                     
-                    ProfessorFieldView(text: $vm._class.professor, nameOfImage: "book", labelForField: "Преподаватель", isFocused: _isFocusedProfessor)
+                    ProfessorFieldView(text: $vm._class.professor, labelForField: "Преподаватель", isFocused: _isFocusedProfessor)
                         .padding(.bottom, 10)
                     
                     HStack {
@@ -108,14 +108,6 @@ struct CreateEditClassView: View {
                                     self.isIncorrectDate2 = false
                                 }
                             }
-//                            .overlay {
-//                                if isIncorrectDate1 {
-//                                    Rectangle()
-//                                        .frame(maxWidth: 300, maxHeight: 1)
-//                                        .foregroundColor(.red)
-//                                        .padding(.horizontal)
-//                                }
-//                            }
                         Spacer()
                         StartEndTimeFieldView(isIncorrectDate: $isIncorrectDate2, selectedDay: $vm._class.day, selectedTime: $vm._class.endtime, imageName: "clock.badge.xmark", text: "Конец", isTimeSelected: $isSelectedTime2)
                             .onChange(of: vm._class.endtime) { oldValue, newValue in
@@ -131,14 +123,6 @@ struct CreateEditClassView: View {
                                     self.isIncorrectDate2 = false
                                 }
                             }
-//                            .overlay {
-//                                if isIncorrectDate2 {
-//                                    Rectangle()
-//                                        .frame(maxWidth: 300, maxHeight: 1)
-//                                        .foregroundColor(.red)
-//                                        .padding(.horizontal)
-//                                }
-//                            }
                     }
                     .frame(height: 40)
                     .padding(.bottom, 10)
@@ -238,8 +222,20 @@ struct CreateEditClassView: View {
             .navigationTitle(vm.isNew ? "Новая пара" : "Изменить данные")
             .background(Color("background"))
             .onAppear {
-                if day >= Calendar.current.startOfDay(for: Date()) {
+                let temp = Calendar.current.date(byAdding: .hour, value: 1, to: Date.init())
+                if let endTime = temp {
+                    if (!hoursMinutesAreEqual(date1: vm._class.starttime, isEqualTo: Date()) && !hoursMinutesAreEqual(date1: vm._class.endtime, isEqualTo: endTime)) {
+                        self.isSelectedTime1 = true
+                        self.isSelectedTime2 = true
+                        print(vm._class.starttime)
+                        print(vm._class.endtime)
+                        print(endTime)
+                        print(Date())
+                    }
+                }
+                if day > Calendar.current.startOfDay(for: Date()) {
                     vm._class.day = day
+                    print(34)
                 }
             }
             .onTapGesture {

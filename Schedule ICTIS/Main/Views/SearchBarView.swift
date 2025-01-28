@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchBarView: View {
     @Binding var text: String
-    @FocusState private var isFocused: Bool
+    @FocusState var isFocused: Bool
     @State private var isShowingSheet: Bool = false
     @ObservedObject var vm: ScheduleViewModel
 

@@ -2,7 +2,7 @@
 //  WeekTabView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 10.12.2024.
+//  Created by Mironov Egor on 10.12.2024.
 //
 
 import SwiftUI

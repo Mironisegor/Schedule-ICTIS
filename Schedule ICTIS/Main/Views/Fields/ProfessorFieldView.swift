@@ -9,12 +9,11 @@ import SwiftUI
 
 struct ProfessorFieldView: View {
     @Binding var text: String
-    var nameOfImage: String
     var labelForField: String
     @FocusState var isFocused: Bool
     var body: some View {
         HStack(spacing: 0) {
-            Image(systemName: nameOfImage)
+            Image(systemName: "graduationcap")
                 .foregroundColor(Color.gray)
                 .padding(.leading, 12)
                 .padding(.trailing, 7)
@@ -44,5 +43,5 @@ struct ProfessorFieldView: View {
 }
 
 #Preview {
-    ContentView()
+    ProfessorFieldView(text: .constant(""), labelForField: "Преподаватель")
 }
