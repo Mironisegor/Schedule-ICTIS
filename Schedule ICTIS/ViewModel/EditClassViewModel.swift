@@ -13,13 +13,16 @@ final class EditClassViewModel: ObservableObject {
     
     let isNew: Bool
     
+    private let provider: ClassProvider
+    
     private let context: NSManagedObjectContext
     
     init(provider: ClassProvider, _class: ClassModel? = nil) {
+        self.provider = provider
         self.context = provider.newContext
         
         if let _class,
-           let existingClassCopy = try? context.existingObject(with: _class.objectID) as? ClassModel {
+           let existingClassCopy = provider.exists(_class, in: context) {
             self._class = existingClassCopy
             self.isNew = false
         }
@@ -30,8 +33,6 @@ final class EditClassViewModel: ObservableObject {
     }
     
     func save() throws {
-        if context.hasChanges {
-            try context.save()
-        }
+        try provider.persist(in: context)
     }
 }

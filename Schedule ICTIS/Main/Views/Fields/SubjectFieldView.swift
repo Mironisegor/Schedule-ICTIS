@@ -3,7 +3,7 @@
 //  Schedule ICTIS
 //
 //  Created by G412 on 16.12.2024.
-//
+// КТбо2-6
 
 import SwiftUI
 
@@ -17,9 +17,9 @@ struct SubjectFieldView: View {
             Image(systemName: "book")
                 .foregroundColor(Color.gray)
                 .padding(.leading, 12)
-                .padding(.trailing, 7)
+                .padding(.trailing, 9)
             TextField(labelForField, text: $text)
-                .font(.system(size: 18, weight: .regular))
+                .font(.custom("Montserrat-Regular", size: 18))
                 .disableAutocorrection(true)
                 .submitLabel(.done)
                 .focused($isFocused)
@@ -33,7 +33,7 @@ struct SubjectFieldView: View {
                     Group {
                         if isShowingSubjectFieldRed {
                             Text("Поле должно быть заполнено!")
-                                .font(.system(size: 18, weight: .regular))
+                                .font(.custom("Montserrat-Regular", size: 18))
                                 .foregroundColor(.red)
                                 .frame(width: 290)
                                 .padding(.leading, -42)

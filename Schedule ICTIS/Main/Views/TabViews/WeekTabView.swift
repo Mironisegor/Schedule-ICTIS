@@ -39,7 +39,6 @@ struct WeekTabView: View {
                 weekSlider.removeAll()
                 currentWeekIndex = 1
                 updateWeekScreenViewForNewGroup()
-                print(52)
                 vm.isNewGroup = false
             }
         }

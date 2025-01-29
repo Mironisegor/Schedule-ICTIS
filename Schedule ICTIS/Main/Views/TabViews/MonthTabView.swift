@@ -18,7 +18,7 @@ struct MonthTabView: View {
             HStack (spacing: 34) {
                 ForEach(MockData.daysOfWeek.indices, id: \.self) { index in
                     Text(MockData.daysOfWeek[index])
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.custom("Montserrat-SemiBold", size: 15))
                         .foregroundColor(MockData.daysOfWeek[index] == "Вс" ? Color(.red) : Color("customGray2"))
                         .padding(.top, 13)
                         .foregroundColor(.gray)
@@ -50,7 +50,6 @@ struct MonthTabView: View {
                 monthSlider.removeAll()
                 currentMonthIndex = 1
                 updateMonthScreenViewForNewGroup()
-                print(52)
                 vm.isNewGroup = false
             }
         }

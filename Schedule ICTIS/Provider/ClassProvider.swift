@@ -47,7 +47,27 @@ final class ClassProvider {
                 fatalError("Unable to load store. Error: \(error)")
             }
         }
-        
+    }
+    
+    func exists(_ lesson: ClassModel, in context: NSManagedObjectContext) -> ClassModel? {
+        try? context.existingObject(with: lesson.objectID) as? ClassModel
+    }
+    
+    func delete(_ lesson: ClassModel, in context: NSManagedObjectContext) throws {
+        if let existingClass = exists(lesson, in: context) {
+            context.delete(existingClass)
+            Task(priority: .background) {
+                try await context.perform {
+                    try context.save()
+                }
+            }
+        }
+    }
+    
+    func persist(in context: NSManagedObjectContext) throws {
+        if context.hasChanges {
+            try context.save()
+        }
     }
 }
 

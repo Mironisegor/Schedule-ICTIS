@@ -14,6 +14,7 @@ struct CommentFieldView: View {
     var body: some View {
         HStack {
             TextField("Комментарий", text: $textForComment)
+                .font(.custom("Montserrat-Regular", size: 18))
                 .submitLabel(.done)
                 .multilineTextAlignment(.leading)
                 .focused($isFocused)

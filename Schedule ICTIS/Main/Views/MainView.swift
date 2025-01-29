@@ -12,10 +12,16 @@ struct MainView: View {
     @State private var isShowingMonthSlider: Bool = false
     @ObservedObject var vm: ScheduleViewModel
     @FocusState private var isFocusedSearchBar: Bool
+    @State private var isScrolling: Bool = false
     
     var body: some View {
         VStack {
             SearchBarView(text: $searchText, isFocused: _isFocusedSearchBar, vm: vm)
+                .onChange(of: isScrolling, initial: false) { oldValue, newValue in
+                    if newValue && isScrolling {
+                        isFocusedSearchBar = false
+                    }
+                }
             
             if (vm.isFirstStartOffApp && vm.isLoading) {
                 LoadingView(isLoading: $vm.isLoading)
@@ -25,7 +31,7 @@ struct MainView: View {
             }
             else {
                 CurrentDateView()
-                ScheduleView(vm: vm)
+                ScheduleView(vm: vm, isScrolling: $isScrolling)
             }
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
@@ -45,14 +51,14 @@ struct MainView: View {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
                     Text(vm.selectedDay.format("EEEE"))
-                        .font(.system(size: 40, weight: .semibold))
+                        .font(.custom("Montserrat-SemiBold", size: 40))
                         .foregroundStyle(.black)
                     HStack (spacing: 5) {
                         Text(vm.selectedDay.format("dd"))
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.custom("Montserrat-Bold", size: 20))
                             .foregroundStyle(Color("grayForDate"))
                         Text(vm.selectedDay.format("MMMM"))
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.custom("Montserrat-Bold", size: 20))
                             .foregroundStyle(Color("grayForDate"))
                         Spacer()
                         Button(action: {
@@ -62,7 +68,7 @@ struct MainView: View {
                         }) {
                             HStack(spacing: 2) {
                                 Text(isShowingMonthSlider ? "Свернуть" : "Развернуть")
-                                    .font(.system(size: 16, weight: .light))
+                                    .font(.custom("Montserrat-Light", size: 16))
                                     .foregroundStyle(Color.blue)
                                 Image(isShowingMonthSlider ? "arrowup" : "arrowdown")
                                     .resizable()

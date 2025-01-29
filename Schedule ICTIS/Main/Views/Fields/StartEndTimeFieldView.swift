@@ -19,16 +19,17 @@ struct StartEndTimeFieldView: View {
             Image(systemName: imageName)
                 .foregroundColor(isIncorrectDate ? .red : Color("grayForFields"))
                 .padding(.leading, 12)
+                .padding(.trailing, 5)
             
             if !isTimeSelected || isIncorrectDate {
                 Text(text)
-                    .font(.system(size: 17, weight: .regular))
+                    .font(.custom("Montserrat-Regular", size: 17))
                     .foregroundColor(.gray.opacity(0.5))
             }
             else {
                 Text("\(selectedTime, formatter: timeFormatter)")
                     .foregroundColor(isIncorrectDate ? .red : .black)
-                    .font(.system(size: 17, weight: .medium))
+                    .font(.custom("Montserrat-Medium", size: 17))
                     .padding(.trailing, 10)
             }
             Spacer()

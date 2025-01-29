@@ -3,7 +3,7 @@
 //  Schedule ICTIS
 //
 //  Created by Mironov Egor on 05.12.2024.
-//
+// ктбо2-6
 
 import SwiftUI
 
@@ -11,6 +11,7 @@ struct ScheduleView: View {
     @ObservedObject var vm: ScheduleViewModel
     @FetchRequest(fetchRequest: ClassModel.all()) private var classes  //Делаем запрос в CoreData и получаем список сохраненных пар
     @State private var selectedClass: ClassModel? = nil
+    @Binding var isScrolling: Bool
     var provider = ClassProvider.shared
     var body: some View {
         if vm.isLoading {
@@ -30,9 +31,11 @@ struct ScheduleView: View {
                                             HStack(spacing: 10) {
                                                 VStack {
                                                     Text(convertTimeString(vm.classes[1][lessonIndex])[0])
-                                                        .font(.system(size: 15, weight: .regular))
+                                                        .font(.custom("Montserrat-Medium", size: 15))
+                                                        .padding(.bottom, 1)
                                                     Text(convertTimeString(vm.classes[1][lessonIndex])[1])
-                                                        .font(.system(size: 15, weight: .regular))
+                                                        .font(.custom("Montserrat-Medium", size: 15))
+                                                        .padding(.top, 1)
                                                 }
                                                 .padding(.top, 7)
                                                 .padding(.bottom, 7)
@@ -44,9 +47,10 @@ struct ScheduleView: View {
                                                     .padding(.bottom, 7)
                                                     .foregroundColor(getColorForClass(lesson))
                                                 Text(lesson)
-                                                    .font(.system(size: 18, weight: .regular))
-                                                    .padding(.top, 7)
-                                                    .padding(.bottom, 7)
+                                                    .font(.custom("Montserrat-Regular", size: 17))
+                                                    .lineSpacing(3)
+                                                    .padding(.top, 9)
+                                                    .padding(.bottom, 9)
                                                 Spacer()
                                             }
                                             .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
@@ -70,6 +74,16 @@ struct ScheduleView: View {
                         .padding(.bottom, 100)
                         .padding(.top, 30)
                     }
+                    .onPreferenceChange(ViewOffsetKey.self) { offset in
+                        if offset > 0 {
+                            isScrolling = true
+                            print("Сейчас скролл")
+                        } else {
+                            isScrolling = false
+                            print("Scrolling ended")
+                        }
+                    }
+                    .coordinateSpace(name: "scroll")
                     VStack {
                         LinearGradient(gradient: Gradient(colors: [Color("background").opacity(0.95), Color.white.opacity(0.1)]), startPoint: .top, endPoint: .bottom)
                     }
@@ -88,6 +102,14 @@ struct ScheduleView: View {
                 NoScheduleView()
             }
         }
+    }
+}
+
+struct ViewOffsetKey: PreferenceKey {
+    typealias Value = CGFloat
+    static var defaultValue = CGFloat.zero
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value += nextValue()
     }
 }
 

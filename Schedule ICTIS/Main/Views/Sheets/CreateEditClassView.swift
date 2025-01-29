@@ -31,6 +31,7 @@ struct CreateEditClassView: View {
                         .padding(.bottom, 10)
                     HStack {
                         Text("Тип")
+                            .font(.custom("Montserrat-Medium", size: 17))
                         Spacer()
                         Picker("Тип", selection: $vm._class.online, content: {
                             ForEach(MockData.onlineOrOffline, id: \.self) {
@@ -72,14 +73,14 @@ struct CreateEditClassView: View {
                         Image(systemName: "calendar")
                             .foregroundColor(Color.gray)
                             .padding(.leading, 12)
-                            .padding(.trailing, 7)
+                            .padding(.trailing, 5)
                         Text("Дата")
                             .foregroundColor(Color("grayForFields").opacity(0.5))
-                            .font(.system(size: 18, weight: .regular))
+                            .font(.custom("Montserrat-Regular", size: 18))
                         Spacer()
                         Text("\(vm._class.day, formatter: dateFormatter)")
                             .foregroundColor(.black)
-                            .font(.system(size: 18, weight: .medium))
+                            .font(.custom("Montserrat-Medium", size: 18))
                             .padding(.trailing, 20)
                     }
                     .frame(height: 40)
@@ -127,6 +128,7 @@ struct CreateEditClassView: View {
                     .frame(height: 40)
                     .padding(.bottom, 10)
                     Toggle("Пометить как важную", isOn: $vm._class.important)
+                        .font(.custom("Montserrat-Medium", size: 17))
                         .frame(height: 40)
                         .padding(.horizontal)
                         .background(
@@ -137,6 +139,7 @@ struct CreateEditClassView: View {
                     
                     HStack {
                         Text("Напоминанние")
+                            .font(.custom("Montserrat-Medium", size: 17))
                         Spacer()
                         Picker("Напоминание", selection: $vm._class.notification, content: {
                             ForEach(MockData.notifications, id: \.self) {
@@ -160,7 +163,7 @@ struct CreateEditClassView: View {
                     if !vm.isNew {
                         Button {
                             do {
-                                try delete(vm._class)
+                                try provider.delete(vm._class, in: provider.viewContext)
                                 dismiss()
                             } catch {
                                 print(error)
@@ -170,7 +173,7 @@ struct CreateEditClassView: View {
                                 Spacer()
                                 Image(systemName: "trash")
                                 Text("Удалить занятие")
-                                    .font(.system(size: 17, weight: .medium))
+                                    .font(.custom("Montserrat-Medium", size: 17))
                                 Spacer()
                             }
                             .frame(height: 40)
@@ -235,7 +238,6 @@ struct CreateEditClassView: View {
                 }
                 if day > Calendar.current.startOfDay(for: Date()) {
                     vm._class.day = day
-                    print(34)
                 }
             }
             .onTapGesture {

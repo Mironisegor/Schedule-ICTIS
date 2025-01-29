@@ -13,6 +13,7 @@ struct NoScheduleView: View {
             ScrollView (showsIndicators: false) {
                 Text("Пока расписания нет")
                     .padding(.top, 20)
+                    .font(.custom("Montserrat-Regular", size: 15))
             }
         }
     }

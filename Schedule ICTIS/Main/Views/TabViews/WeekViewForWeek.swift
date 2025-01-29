@@ -18,12 +18,12 @@ struct WeekViewForWeek: View {
             ForEach(week) { day in
                 VStack (spacing: 1) {
                     Text(day.date.format("E"))
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.custom("Montserrat-Medium", size: 16))
                         .foregroundColor(day.date.format("E") == "Вс" ? Color(.red) : isSameDate(day.date, vm.selectedDay) ? Color("customGray1") : Color("customGray3"))
                         .padding(.top, 13)
                         .foregroundColor(.gray)
                     Text(day.date.format("dd"))
-                        .font(.system(size: 15, weight: .bold))
+                        .font(.custom("Montserrat-Medium", size: 15))
                         .foregroundStyle(isSameDate(day.date, vm.selectedDay) ? .white : .black)
                         .padding(.bottom, 13)
                 }
