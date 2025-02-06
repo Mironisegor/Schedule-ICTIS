@@ -15,4 +15,8 @@ struct MockData {
     static let notifications = ["Нет", "За 10 минут", "За 30 миннут", "За 1 час"]
     
     static let onlineOrOffline = ["Оффлайн", "Онлайн"]
+    
+    static let themes = ["Светлая", "Темная", "Системная"]
+    
+    static let languages = ["Русский", "Английский", "Китайский", "Испанский"]
 }

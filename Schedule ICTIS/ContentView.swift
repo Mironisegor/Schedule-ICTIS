@@ -27,7 +27,7 @@ struct ContentView: View {
                 }
                 .tag(1)
             
-            Text("Settings")
+            SettingsView(vm: vm)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Настройки")
@@ -35,6 +35,13 @@ struct ContentView: View {
                 .tag(2)
         }
         .accentColor(Color("blueColor"))
+        .onAppear {
+            let group = UserDefaults.standard.string(forKey: "group")
+            if let nameGroup = group {
+                vm.group = nameGroup
+                vm.fetchWeekSchedule(group: nameGroup)
+            }
+        }
     }
 }
 

@@ -22,15 +22,11 @@ struct MainView: View {
                         isFocusedSearchBar = false
                     }
                 }
-            
-            if (vm.isFirstStartOffApp && vm.isLoading) {
+            CurrentDateView()
+            if vm.isLoading {
                 LoadingView(isLoading: $vm.isLoading)
             }
-            else if (vm.isFirstStartOffApp) {
-                FirstLaunchScheduleView()
-            }
             else {
-                CurrentDateView()
                 ScheduleView(vm: vm, isScrolling: $isScrolling)
             }
         }
@@ -42,6 +38,12 @@ struct MainView: View {
         .background(Color("background"))
         .onTapGesture {
             isFocusedSearchBar = false
+        }
+        .onAppear {
+            vm.group = UserDefaults.standard.string(forKey: "group") ?? "notSeted"
+            if vm.group != "notSeted" {
+                
+            }
         }
     }
     

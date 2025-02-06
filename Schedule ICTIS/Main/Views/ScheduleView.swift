@@ -11,6 +11,8 @@ struct ScheduleView: View {
     @ObservedObject var vm: ScheduleViewModel
     @FetchRequest(fetchRequest: ClassModel.all()) private var classes  //Делаем запрос в CoreData и получаем список сохраненных пар
     @State private var selectedClass: ClassModel? = nil
+    @State private var lastOffset: CGFloat = 0
+    @State private var scrollTimer: Timer? = nil
     @Binding var isScrolling: Bool
     var provider = ClassProvider.shared
     var body: some View {
@@ -73,17 +75,28 @@ struct ScheduleView: View {
                         .frame(width: UIScreen.main.bounds.width)
                         .padding(.bottom, 100)
                         .padding(.top, 30)
+                        .background(GeometryReader { geometry in
+                                Color.clear.preference(key: ViewOffsetKey.self, value: geometry.frame(in: .global).minY)
+                            })
                     }
                     .onPreferenceChange(ViewOffsetKey.self) { offset in
-                        if offset > 0 {
+                        if offset != lastOffset {
+                            // Скролл происходит
                             isScrolling = true
-                            print("Сейчас скролл")
-                        } else {
-                            isScrolling = false
-                            print("Scrolling ended")
+
+                            // Останавливаем предыдущий таймер
+                            scrollTimer?.invalidate()
+                            // Запускаем новый таймер
+                            scrollTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
+                                // Скролл остановился
+                                isScrolling = false
+                            }
                         }
+                        lastOffset = offset
                     }
-                    .coordinateSpace(name: "scroll")
+                    .onDisappear {
+                        scrollTimer?.invalidate()
+                    }
                     VStack {
                         LinearGradient(gradient: Gradient(colors: [Color("background").opacity(0.95), Color.white.opacity(0.1)]), startPoint: .top, endPoint: .bottom)
                     }

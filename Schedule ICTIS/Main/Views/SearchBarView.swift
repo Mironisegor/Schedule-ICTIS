@@ -38,7 +38,6 @@ struct SearchBarView: View {
                     Button {
                         self.text = ""
                         self.isFocused = false
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .padding(.trailing, 20)

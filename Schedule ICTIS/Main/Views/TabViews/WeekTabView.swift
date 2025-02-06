@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WeekTabView: View {
     @State private var currentWeekIndex: Int = 1
-    @State private var weekSlider: [[Date.WeekDay]] = []
+    @State var weekSlider: [[Date.WeekDay]] = []
     @State private var createWeek: Bool = false
     @ObservedObject var vm: ScheduleViewModel
     var body: some View {
@@ -40,25 +40,6 @@ struct WeekTabView: View {
                 currentWeekIndex = 1
                 updateWeekScreenViewForNewGroup()
                 vm.isNewGroup = false
-            }
-        }
-    }
-}
-
-extension WeekTabView {
-    func updateWeekScreenViewForNewGroup() {
-        vm.updateSelectedDayIndex()
-        if weekSlider.isEmpty {
-            let currentWeek = Date().fetchWeek(vm.selectedDay)
-                
-            if let firstDate = currentWeek.first?.date {
-                weekSlider.append(firstDate.createPrevioustWeek())
-            }
-                
-            weekSlider.append(currentWeek)
-                
-            if let lastDate = currentWeek.last?.date {
-                weekSlider.append(lastDate.createNextWeek())
             }
         }
     }
