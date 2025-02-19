@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 final class ScheduleViewModel: ObservableObject {
     //MARK: Properties
+    //Schedule
     @Published var weekSchedule: Table = Table(
         type: "",
         name: "",
@@ -30,6 +31,12 @@ final class ScheduleViewModel: ObservableObject {
     @Published var group: String = ""
     @Published var isNewGroup: Bool = false
     
+    //Groups
+    @Published var groups: [Choice] = []
+    //VPK
+    @Published var vpk: [[String]] = []
+    
+    
     //MARK: Methods
     func fetchWeekSchedule(group: String = "default", isOtherWeek: Bool = false) {
         isLoading = true
@@ -42,10 +49,11 @@ final class ScheduleViewModel: ObservableObject {
                 }
                 // В else мы заходим в том случае, если не знаем номер недели, которую нужно отобразить и номер группы(в html формате)
                 else  {
+                    print("Отладка 1")
                     schedule = try await NetworkManager.shared.getSchedule(group)
-                    if (!self.isFirstStartOffApp) {
-                        self.isNewGroup = true
-                    }
+                    print("Отладка 2")
+                    self.group = group
+                    self.isNewGroup = true
                     self.selectedDay = .init()
                 }
                 self.weekSchedule = schedule.table
@@ -56,7 +64,7 @@ final class ScheduleViewModel: ObservableObject {
                 self.isShowingAlertForIncorrectGroup = false
                 self.isLoading = false
                 self.errorInNetwork = .noError
-                
+                print("Отладка 4")
             }
             catch {
                 if let error = error as? NetworkError {
@@ -67,10 +75,33 @@ final class ScheduleViewModel: ObservableObject {
                         errorInNetwork = .invalidData
                         self.isShowingAlertForIncorrectGroup = true
                     default:
-                        print(2)
+                        print("Неизвестная ошибка: \(error)")
                     }
                     isLoading = false
-                    print(error)
+                    print("Есть ошибка: \(error)")
+                }
+            }
+        }
+    }
+    
+    func fetchGroups(group: String) {
+        Task {
+            do {
+                var groups: Welcome
+                groups = try await NetworkManager.shared.getGroups(group: group)
+                self.groups = groups.choices
+                
+            }
+            catch {
+                if let error = error as? NetworkError {
+                    switch (error) {
+                    case .invalidData:
+                        self.groups.removeAll()
+                    default:
+                        self.groups.removeAll()
+                        print("Неизвестная ошибка: \(error)")
+                    }
+                    print("Есть ошибка: \(error)")
                 }
             }
         }

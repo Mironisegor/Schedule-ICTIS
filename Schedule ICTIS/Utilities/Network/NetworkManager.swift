@@ -31,9 +31,9 @@ final class NetworkManager {
     
     func getSchedule(_ group: String) async throws -> Schedule {
         let newUrlForGroup = makeUrlForGroup(group)
-        guard let url = URL(string: newUrlForGroup) else {throw NetworkError.invalidUrl}
+        guard let url = URL(string: newUrlForGroup) else { throw NetworkError.invalidUrl }
         let (data, response) = try await URLSession.shared.data(from: url)
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {throw NetworkError.invalidResponse}
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
         
         do {
             return try decoder.decode(Schedule.self, from: data)
@@ -46,12 +46,26 @@ final class NetworkManager {
     func getScheduleForOtherWeek(_ numOfWeek: Int, _ htmlNameOfGroup: String) async throws -> Schedule {
         let newUrlForWeek = makeUrlForWeek(numOfWeek, htmlNameOfGroup)
         print(newUrlForWeek)
-        guard let url = URL(string: newUrlForWeek) else {throw NetworkError.invalidUrl}
+        guard let url = URL(string: newUrlForWeek) else { throw NetworkError.invalidUrl }
         let (data, response) = try await URLSession.shared.data(from: url)
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {throw NetworkError.invalidResponse}
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
         
         do {
             return try decoder.decode(Schedule.self, from: data)
+        }
+        catch {
+            throw NetworkError.invalidData
+        }
+    }
+    
+    func getGroups(group: String) async throws -> Welcome {
+        let newUrlForGroups = makeUrlForGroup(group)
+        guard let url = URL(string: newUrlForGroups) else { throw NetworkError.invalidUrl }
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
+        
+        do {
+            return try decoder.decode(Welcome.self, from: data)
         }
         catch {
             throw NetworkError.invalidData

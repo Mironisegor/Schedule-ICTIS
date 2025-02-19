@@ -2,7 +2,7 @@
 //  LoadingView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 11.12.2024.
+//  Created by Mironov Egor on 11.12.2024.
 //
 
 import SwiftUI

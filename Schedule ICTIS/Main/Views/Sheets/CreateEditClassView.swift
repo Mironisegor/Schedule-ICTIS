@@ -76,11 +76,11 @@ struct CreateEditClassView: View {
                             .padding(.trailing, 5)
                         Text("Дата")
                             .foregroundColor(Color("grayForFields").opacity(0.5))
-                            .font(.custom("Montserrat-Regular", size: 18))
+                            .font(.custom("Montserrat-Meduim", size: 17))
                         Spacer()
                         Text("\(vm._class.day, formatter: dateFormatter)")
                             .foregroundColor(.black)
-                            .font(.custom("Montserrat-Medium", size: 18))
+                            .font(.custom("Montserrat-Medium", size: 17))
                             .padding(.trailing, 20)
                     }
                     .frame(height: 40)

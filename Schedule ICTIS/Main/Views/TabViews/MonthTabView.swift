@@ -18,7 +18,7 @@ struct MonthTabView: View {
             HStack (spacing: 34) {
                 ForEach(MockData.daysOfWeek.indices, id: \.self) { index in
                     Text(MockData.daysOfWeek[index])
-                        .font(.custom("Montserrat-SemiBold", size: 15))
+                        .font(.custom("Montserrat-SemiBold", size: 14))
                         .foregroundColor(MockData.daysOfWeek[index] == "Вс" ? Color(.red) : Color("customGray2"))
                         .padding(.top, 13)
                         .foregroundColor(.gray)

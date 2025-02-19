@@ -2,7 +2,7 @@
 //  FirstLaunchScheduleView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 06.12.2024.
+//  Created by Mironov Egor on 06.12.2024.
 //
 
 import SwiftUI

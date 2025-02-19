@@ -2,7 +2,7 @@
 //  SettingsView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 30.01.2025.
+//  Created by Mironov Egor on 30.01.2025.
 //
 
 import SwiftUI
@@ -11,6 +11,8 @@ struct SettingsView: View {
     @ObservedObject var vm: ScheduleViewModel
     @State private var selectedTheme = "Светлая"
     @State private var selectedLanguage = "Русский"
+    @AppStorage("group") private var favGroup = ""
+    @AppStorage("vpk") private var favVPK = ""
     var body: some View {
         NavigationView {
             VStack {
@@ -28,17 +30,18 @@ struct SettingsView: View {
                         })
                     }
                     Section("Расписание") {
-                        NavigationLink(destination: SelectingGroupView(group: $vm.group)) {
+                        NavigationLink(destination: SelectingGroupView(vm: vm)) {
                             LabeledContent {
-                                Text(vm.group)
+                                Text(favGroup)
                             } label: {
                                 Text("Избранное расписание")
                             }
                         }
-                        NavigationLink(destination: SelectingVPKView()) {
+                        NavigationLink(destination: SelectingVPKView(vm: vm)) {
                             LabeledContent {
+                                Text(favVPK)
                             } label: {
-                                Text("ВПК")
+                                Text("Избранное ВПК")
                             }
                         }
                     }

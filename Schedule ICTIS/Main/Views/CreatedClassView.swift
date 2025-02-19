@@ -2,7 +2,7 @@
 //  CreatedClassView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 23.12.2024.
+//  Created by Mironov Egor on 23.12.2024.
 //
 
 import SwiftUI
@@ -12,7 +12,7 @@ struct CreatedClassView: View {
     var provider = ClassProvider.shared
     var body: some View {
         let existingCopy = try? provider.viewContext.existingObject(with: _class.objectID)
-        if let check = existingCopy {
+        if existingCopy != nil {
             HStack(spacing: 10) {
                 VStack {
                     Text(getTimeString(_class.starttime))
@@ -20,6 +20,7 @@ struct CreatedClassView: View {
                     Text(getTimeString(_class.endtime))
                         .font(.custom("Montserrat-Regular", size: 15))
                 }
+                .frame(width: 48)
                 .padding(.top, 7)
                 .padding(.bottom, 7)
                 .padding(.leading, 10)
@@ -30,7 +31,7 @@ struct CreatedClassView: View {
                     .padding(.bottom, 7)
                     .foregroundColor(_class.important ? Color("redForImportant") : onlineOrNot(_class.online))
                 Text(getSubjectName(_class.subject, _class.professor, _class.auditory))
-                    .font(.custom("Montserrat-Regular", size: 18))
+                    .font(.custom("Montserrat-Medium", size: 15))
                     .padding(.top, 7)
                     .padding(.bottom, 7)
                 Spacer()

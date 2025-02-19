@@ -185,9 +185,11 @@ extension WeekViewForWeek {
         let calendar = Calendar.current
         if weekSlider.indices.contains(currentWeekIndex) {
             if let firstDate = weekSlider[currentWeekIndex].first?.date,
-               currentWeekIndex == 0 {
+                currentWeekIndex == 0 {
                 vm.week -= 1
-                vm.fetchWeekSchedule(isOtherWeek: true)
+                if vm.group != "" {
+                    vm.fetchWeekSchedule(isOtherWeek: true)
+                }
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
                 currentWeekIndex = 1
@@ -196,9 +198,11 @@ extension WeekViewForWeek {
             }
             
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
-               currentWeekIndex == (weekSlider.count - 1) {
+                currentWeekIndex == (weekSlider.count - 1) {
                 vm.week += 1
-                vm.fetchWeekSchedule(isOtherWeek: true)
+                if vm.group != "" {
+                    vm.fetchWeekSchedule(isOtherWeek: true)
+                }
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2
@@ -242,8 +246,10 @@ extension WeekViewForMonth {
             }
             print(difBetweenWeeks)
             vm.week += difBetweenWeeks
-            vm.fetchWeekSchedule(isOtherWeek: true)
+            if vm.group != "" {
+                vm.fetchWeekSchedule(isOtherWeek: true)
             }
+        }
         vm.selectedDay = day.date
         vm.updateSelectedDayIndex()
     }
@@ -271,25 +277,29 @@ extension MonthTabView {
         let calendar = Calendar.current
         if monthSlider.indices.contains(currentMonthIndex) {
             if let firstDate = monthSlider[currentMonthIndex].first?.week[0].date,
-               currentMonthIndex == 0 {
+                currentMonthIndex == 0 {
                 monthSlider.insert(firstDate.createPreviousMonth(), at: 0)
                 monthSlider.removeLast()
                 currentMonthIndex = 1
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week -= 5
-                vm.fetchWeekSchedule(isOtherWeek: true)
+                if vm.group != "" {
+                    vm.fetchWeekSchedule(isOtherWeek: true)
+                }
             }
             
             if let lastDate = monthSlider[currentMonthIndex].last?.week[6].date,
-               currentMonthIndex == (monthSlider.count - 1) {
+                currentMonthIndex == (monthSlider.count - 1) {
                 monthSlider.append(lastDate.createNextMonth())
                 monthSlider.removeFirst()
                 currentMonthIndex = monthSlider.count - 2
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week += 5
-                vm.fetchWeekSchedule(isOtherWeek: true)
+                if vm.group != "" {
+                    vm.fetchWeekSchedule(isOtherWeek: true)
+                }
             }
         }
     }

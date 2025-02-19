@@ -24,27 +24,25 @@ struct MainView: View {
                 }
             CurrentDateView()
             if vm.isLoading {
-                LoadingView(isLoading: $vm.isLoading)
+                LoadingScheduleView()
             }
             else {
                 ScheduleView(vm: vm, isScrolling: $isScrolling)
+                    .onTapGesture {
+                        isFocusedSearchBar = false
+                    }
             }
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
-            
+            Button("ОК") {
+                print("This alert")
+                vm.isShowingAlertForIncorrectGroup = false
+                vm.errorInNetwork = nil
+            }
         } message: { error in
             Text(error.failureReason)
         }
         .background(Color("background"))
-        .onTapGesture {
-            isFocusedSearchBar = false
-        }
-        .onAppear {
-            vm.group = UserDefaults.standard.string(forKey: "group") ?? "notSeted"
-            if vm.group != "notSeted" {
-                
-            }
-        }
     }
     
     @ViewBuilder
@@ -53,14 +51,14 @@ struct MainView: View {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
                     Text(vm.selectedDay.format("EEEE"))
-                        .font(.custom("Montserrat-SemiBold", size: 40))
+                        .font(.custom("Montserrat-SemiBold", size: 30))
                         .foregroundStyle(.black)
                     HStack (spacing: 5) {
                         Text(vm.selectedDay.format("dd"))
-                            .font(.custom("Montserrat-Bold", size: 20))
+                            .font(.custom("Montserrat-Bold", size: 17))
                             .foregroundStyle(Color("grayForDate"))
                         Text(vm.selectedDay.format("MMMM"))
-                            .font(.custom("Montserrat-Bold", size: 20))
+                            .font(.custom("Montserrat-Bold", size: 17))
                             .foregroundStyle(Color("grayForDate"))
                         Spacer()
                         Button(action: {
@@ -70,7 +68,7 @@ struct MainView: View {
                         }) {
                             HStack(spacing: 2) {
                                 Text(isShowingMonthSlider ? "Свернуть" : "Развернуть")
-                                    .font(.custom("Montserrat-Light", size: 16))
+                                    .font(.custom("Montserrat-Regular", size: 15))
                                     .foregroundStyle(Color.blue)
                                 Image(isShowingMonthSlider ? "arrowup" : "arrowdown")
                                     .resizable()

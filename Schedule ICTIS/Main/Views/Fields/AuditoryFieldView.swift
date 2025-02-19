@@ -18,7 +18,7 @@ struct AuditoryFieldView: View {
                 .padding(.leading, 12)
                 .padding(.trailing, 14)
             TextField(labelForField, text: $text)
-                .font(.custom("Montserrat-Regular", size: 18))
+                .font(.custom("Montserrat-Meduim", size: 17))
                 .disableAutocorrection(true)
                 .submitLabel(.done)
                 .focused($isFocused)

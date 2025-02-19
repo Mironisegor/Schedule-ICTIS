@@ -16,7 +16,7 @@ struct WeekViewForMonth: View {
             ForEach(week) { day in
                 VStack {
                     Text(day.date.format("dd"))
-                        .font(.custom("Montserrat-Medium", size: 15))
+                        .font(.custom("Montserrat-SemiBold", size: 14))
                         .foregroundStyle(getForegroundColor(day: day))
                 }
                 .frame(width: 30, height: 30, alignment: .center)

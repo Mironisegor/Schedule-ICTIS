@@ -2,7 +2,7 @@
 //  MockData.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 06.12.2024.
+//  Created by Mironov Egor on 06.12.2024.
 //
 
 import Foundation
@@ -19,4 +19,6 @@ struct MockData {
     static let themes = ["Светлая", "Темная", "Системная"]
     
     static let languages = ["Русский", "Английский", "Китайский", "Испанский"]
+    
+    static let groups = ["КТбо2-6", "КТбо1-9", "КТбо3-3", "ВУЦ", "КТао1-1", "КТсо2-2"]
 }

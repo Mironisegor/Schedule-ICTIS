@@ -18,7 +18,7 @@ struct ProfessorFieldView: View {
                 .padding(.leading, 12)
                 .padding(.trailing, 7)
             TextField(labelForField, text: $text)
-                .font(.custom("Montserrat-Regular", size: 18))
+                .font(.custom("Montserrat-Meduim", size: 17))
                 .disableAutocorrection(true)
                 .submitLabel(.done)
                 .focused($isFocused)

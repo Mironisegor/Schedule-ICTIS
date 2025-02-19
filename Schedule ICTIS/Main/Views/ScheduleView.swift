@@ -17,7 +17,7 @@ struct ScheduleView: View {
     var provider = ClassProvider.shared
     var body: some View {
         if vm.isLoading {
-            LoadingView(isLoading: $vm.isLoading)
+            LoadingScheduleView()
         }
         else {
             if vm.errorInNetwork != .invalidResponse {
@@ -33,12 +33,13 @@ struct ScheduleView: View {
                                             HStack(spacing: 10) {
                                                 VStack {
                                                     Text(convertTimeString(vm.classes[1][lessonIndex])[0])
-                                                        .font(.custom("Montserrat-Medium", size: 15))
+                                                        .font(.custom("Montserrat-Regular", size: 15))
                                                         .padding(.bottom, 1)
                                                     Text(convertTimeString(vm.classes[1][lessonIndex])[1])
-                                                        .font(.custom("Montserrat-Medium", size: 15))
+                                                        .font(.custom("Montserrat-Regular", size: 15))
                                                         .padding(.top, 1)
                                                 }
+                                                .frame(width: 48)
                                                 .padding(.top, 7)
                                                 .padding(.bottom, 7)
                                                 .padding(.leading, 10)
@@ -49,7 +50,7 @@ struct ScheduleView: View {
                                                     .padding(.bottom, 7)
                                                     .foregroundColor(getColorForClass(lesson))
                                                 Text(lesson)
-                                                    .font(.custom("Montserrat-Regular", size: 17))
+                                                    .font(.custom("Montserrat-Medium", size: 15))
                                                     .lineSpacing(3)
                                                     .padding(.top, 9)
                                                     .padding(.bottom, 9)
