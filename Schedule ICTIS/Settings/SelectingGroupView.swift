@@ -84,27 +84,29 @@ struct SelectingGroupView: View {
                 if isFocused {
                     ScrollView(.vertical, showsIndicators: true) {
                         ForEach(vm.groups) { item in
-                            VStack {
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundColor(Color("customGray1"))
+                            if item.name.starts(with: "КТ") { //Отображаем только группы(без аудиторий и преподавателей)
+                                VStack {
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(Color("customGray1"))
+                                        .padding(.horizontal, 10)
+                                    HStack {
+                                        Text(item.name)
+                                            .foregroundColor(.black)
+                                            .font(.custom("Montserrat-SemiBold", size: 15))
+                                        Spacer()
+                                    }
                                     .padding(.horizontal, 10)
-                                HStack {
-                                    Text(item.name)
-                                        .foregroundColor(.black)
-                                        .font(.custom("Montserrat-SemiBold", size: 15))
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 10)
-                                .padding(.top, 2)
-                                .padding(.bottom, 2)
-                                .frame(width: UIScreen.main.bounds.width, height: 30)
-                                .background(Color("background"))
-                                .onTapGesture {
-                                    UserDefaults.standard.set(item.name, forKey: "group")
-                                    vm.group = item.name
-                                    vm.fetchWeekSchedule(group: item.name)
-                                    dismiss()
+                                    .padding(.top, 2)
+                                    .padding(.bottom, 2)
+                                    .frame(width: UIScreen.main.bounds.width, height: 30)
+                                    .background(Color("background"))
+                                    .onTapGesture {
+                                        UserDefaults.standard.set(item.name, forKey: "group")
+                                        vm.group = item.name
+                                        vm.fetchWeekSchedule(group: item.name)
+                                        dismiss()
+                                    }
                                 }
                             }
                         }

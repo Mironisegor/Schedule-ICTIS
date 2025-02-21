@@ -13,6 +13,7 @@ struct ScheduleView: View {
     @State private var selectedClass: ClassModel? = nil
     @State private var lastOffset: CGFloat = 0
     @State private var scrollTimer: Timer? = nil
+    @State private var isShowingMyPairs = false
     @Binding var isScrolling: Bool
     var provider = ClassProvider.shared
     var body: some View {
@@ -23,59 +24,115 @@ struct ScheduleView: View {
             if vm.errorInNetwork != .invalidResponse {
                 ZStack (alignment: .top) {
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack (spacing: 20) {
-                            ForEach(vm.classes.indices, id: \.self) { index in
-                                if index != 0 && index != 1 && index == vm.selectedIndex {
-                                    let daySchedule = vm.classes[index] // Это массив строк для дня
-                                    ForEach(daySchedule.indices.dropFirst(), id: \.self) { lessonIndex in
-                                        let lesson = daySchedule[lessonIndex] // Это строка с расписанием одной пары
-                                        if !lesson.isEmpty {
-                                            HStack(spacing: 10) {
-                                                VStack {
-                                                    Text(convertTimeString(vm.classes[1][lessonIndex])[0])
-                                                        .font(.custom("Montserrat-Regular", size: 15))
-                                                        .padding(.bottom, 1)
-                                                    Text(convertTimeString(vm.classes[1][lessonIndex])[1])
-                                                        .font(.custom("Montserrat-Regular", size: 15))
-                                                        .padding(.top, 1)
-                                                }
-                                                .frame(width: 48)
-                                                .padding(.top, 7)
-                                                .padding(.bottom, 7)
-                                                .padding(.leading, 10)
-                                                Rectangle()
-                                                    .frame(width: 2)
-                                                    .frame(maxHeight: UIScreen.main.bounds.height - 18)
+                        VStack (spacing: 30) {
+                            VStack (alignment: .leading, spacing: 20 ) {
+                                Text("Учебное расписание")
+                                    .font(.custom("Montserrat-Bold", size: 20))
+                                ForEach(vm.classes.indices, id: \.self) { index in
+                                    if index != 0 && index != 1 && index == vm.selectedIndex {
+                                        let daySchedule = vm.classes[index] // Это массив строк для дня
+                                        ForEach(daySchedule.indices.dropFirst(), id: \.self) { lessonIndex in
+                                            let lesson = daySchedule[lessonIndex] // Это строка с расписанием одной пары
+                                            if !lesson.isEmpty {
+                                                HStack(spacing: 15) {
+                                                    VStack {
+                                                        Text(convertTimeString(vm.classes[1][lessonIndex])[0])
+                                                            .font(.custom("Montserrat-Regular", size: 15))
+                                                            .padding(.bottom, 1)
+                                                        Text(convertTimeString(vm.classes[1][lessonIndex])[1])
+                                                            .font(.custom("Montserrat-Regular", size: 15))
+                                                            .padding(.top, 1)
+                                                    }
+                                                    .frame(width: 48)
                                                     .padding(.top, 7)
                                                     .padding(.bottom, 7)
-                                                    .foregroundColor(getColorForClass(lesson))
-                                                Text(lesson)
-                                                    .font(.custom("Montserrat-Medium", size: 15))
-                                                    .lineSpacing(3)
-                                                    .padding(.top, 9)
-                                                    .padding(.bottom, 9)
-                                                Spacer()
+                                                    .padding(.leading, 10)
+                                                    Rectangle()
+                                                        .frame(width: 2)
+                                                        .frame(maxHeight: UIScreen.main.bounds.height - 18)
+                                                        .padding(.top, 7)
+                                                        .padding(.bottom, 7)
+                                                        .foregroundColor(getColorForClass(lesson))
+                                                    Text(lesson)
+                                                        .font(.custom("Montserrat-Medium", size: 15))
+                                                        .lineSpacing(3)
+                                                        .padding(.top, 9)
+                                                        .padding(.bottom, 9)
+                                                    Spacer()
+                                                }
+                                                .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
+                                                .background(Color.white)
+                                                .cornerRadius(20)
+                                                .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 2)
                                             }
-                                            .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
-                                            .background(Color.white)
-                                            .cornerRadius(20)
-                                            .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 2)
                                         }
                                     }
                                 }
                             }
-                            ForEach(classes) { _class in
-                                if daysAreEqual(_class.day, vm.selectedDay) {
-                                    CreatedClassView(_class: _class)
-                                        .onTapGesture {
-                                            selectedClass = _class
+                            if classes.contains(where: { daysAreEqual($0.day, vm.selectedDay) }) {
+                                VStack(alignment: .leading, spacing: 20) {
+                                    Text("Мои пары")
+                                        .font(.custom("Montserrat-Bold", size: 20))
+                                    ForEach(classes) { _class in
+                                        if daysAreEqual(_class.day, vm.selectedDay) {
+                                            CreatedClassView(_class: _class)
+                                                .onTapGesture {
+                                                    selectedClass = _class
+                                                }
                                         }
+                                    }
+                                }
+                            }
+                            if UserDefaults.standard.string(forKey: "vpk") != nil {
+                                VStack (alignment: .leading, spacing: 20 ) {
+                                    Text("ВПК")
+                                        .font(.custom("Montserrat-Bold", size: 20))
+                                    ForEach(vm.vpks.indices, id: \.self) { index in
+                                        if index != 0 && index != 1 && index == vm.selectedIndex {
+                                            let dayVPK = vm.vpks[index] // Это массив строк для дня
+                                            ForEach(dayVPK.indices.dropFirst(), id: \.self) { lessonIndex in
+                                                let lesson = dayVPK[lessonIndex] // Это строка с расписанием одной пары
+                                                if !lesson.isEmpty {
+                                                    HStack(spacing: 15) {
+                                                        VStack {
+                                                            Text(convertTimeString(vm.vpks[1][lessonIndex])[0])
+                                                                .font(.custom("Montserrat-Regular", size: 15))
+                                                                .padding(.bottom, 1)
+                                                            Text(convertTimeString(vm.vpks[1][lessonIndex])[1])
+                                                                .font(.custom("Montserrat-Regular", size: 15))
+                                                                .padding(.top, 1)
+                                                        }
+                                                        .frame(width: 48)
+                                                        .padding(.top, 7)
+                                                        .padding(.bottom, 7)
+                                                        .padding(.leading, 10)
+                                                        Rectangle()
+                                                            .frame(width: 2)
+                                                            .frame(maxHeight: UIScreen.main.bounds.height - 18)
+                                                            .padding(.top, 7)
+                                                            .padding(.bottom, 7)
+                                                            .foregroundColor(getColorForClass(lesson))
+                                                        Text(lesson)
+                                                            .font(.custom("Montserrat-Medium", size: 15))
+                                                            .lineSpacing(3)
+                                                            .padding(.top, 9)
+                                                            .padding(.bottom, 9)
+                                                        Spacer()
+                                                    }
+                                                    .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
+                                                    .background(Color.white)
+                                                    .cornerRadius(20)
+                                                    .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 2)
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                         .frame(width: UIScreen.main.bounds.width)
                         .padding(.bottom, 100)
-                        .padding(.top, 30)
+                        .padding(.top, 10)
                         .background(GeometryReader { geometry in
                                 Color.clear.preference(key: ViewOffsetKey.self, value: geometry.frame(in: .global).minY)
                             })

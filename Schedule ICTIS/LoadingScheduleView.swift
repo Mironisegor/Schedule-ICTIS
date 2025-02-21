@@ -13,7 +13,7 @@ struct LoadingScheduleView: View {
         ZStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 20) {
-                    ForEach(0..<3, id: \.self) { _ in
+                    ForEach(0..<6, id: \.self) { _ in
                         RoundedRectangle(cornerRadius: 20)
                             .fill(
                                 LinearGradient(

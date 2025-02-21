@@ -41,6 +41,10 @@ struct ContentView: View {
                 vm.group = nameGroup
                 vm.fetchWeekSchedule(group: nameGroup)
             }
+            if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
+                vm.fetchWeekVPK(vpk: vpkStr)
+            }
+            print(vm.vpks)
         }
     }
 }

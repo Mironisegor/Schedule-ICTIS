@@ -190,6 +190,9 @@ extension WeekViewForWeek {
                 if vm.group != "" {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
+                if UserDefaults.standard.string(forKey: "vpk") != nil {
+                    vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
+                }
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
                 currentWeekIndex = 1
@@ -202,6 +205,9 @@ extension WeekViewForWeek {
                 vm.week += 1
                 if vm.group != "" {
                     vm.fetchWeekSchedule(isOtherWeek: true)
+                }
+                if UserDefaults.standard.string(forKey: "vpk") != nil {
+                    vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
                 }
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
@@ -249,6 +255,9 @@ extension WeekViewForMonth {
             if vm.group != "" {
                 vm.fetchWeekSchedule(isOtherWeek: true)
             }
+            if UserDefaults.standard.string(forKey: "vpk") != nil {
+                vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
+            }
         }
         vm.selectedDay = day.date
         vm.updateSelectedDayIndex()
@@ -287,6 +296,9 @@ extension MonthTabView {
                 if vm.group != "" {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
+                if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
+                    vm.fetchWeekVPK(vpk: vpkStr)
+                }
             }
             
             if let lastDate = monthSlider[currentMonthIndex].last?.week[6].date,
@@ -299,6 +311,9 @@ extension MonthTabView {
                 vm.week += 5
                 if vm.group != "" {
                     vm.fetchWeekSchedule(isOtherWeek: true)
+                }
+                if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
+                    vm.fetchWeekVPK(vpk: vpkStr)
                 }
             }
         }

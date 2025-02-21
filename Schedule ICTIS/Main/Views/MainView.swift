@@ -28,9 +28,6 @@ struct MainView: View {
             }
             else {
                 ScheduleView(vm: vm, isScrolling: $isScrolling)
-                    .onTapGesture {
-                        isFocusedSearchBar = false
-                    }
             }
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in

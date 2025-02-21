@@ -38,7 +38,7 @@ struct SelectingVPKView: View {
                         .onSubmit {
                             self.isFocused = false
                             if (!text.isEmpty) {
-                                vm.fetchWeekSchedule(group: text)
+                                vm.fetchWeekVPK(vpk: UserDefaults.standard.string(forKey: "vpk"))
                                 self.isLoading = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                     self.isLoading = false
@@ -84,27 +84,29 @@ struct SelectingVPKView: View {
                 if isFocused {
                     ScrollView(.vertical, showsIndicators: true) {
                         ForEach(vm.groups) { item in
-                            VStack {
-                                Rectangle()
-                                    .frame(height: 1)
-                                    .foregroundColor(Color("customGray1"))
+                            if item.name.starts(with: "ВП") || item.name.starts(with: "мВ") {
+                                VStack {
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(Color("customGray1"))
+                                        .padding(.horizontal, 10)
+                                    HStack {
+                                        Text(item.name)
+                                            .foregroundColor(.black)
+                                            .font(.custom("Montserrat-SemiBold", size: 15))
+                                        Spacer()
+                                    }
                                     .padding(.horizontal, 10)
-                                HStack {
-                                    Text(item.name)
-                                        .foregroundColor(.black)
-                                        .font(.custom("Montserrat-SemiBold", size: 15))
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 10)
-                                .padding(.top, 2)
-                                .padding(.bottom, 2)
-                                .frame(width: UIScreen.main.bounds.width, height: 30)
-                                .background(Color("background"))
-                                .onTapGesture {
-                                    UserDefaults.standard.set(item.name, forKey: "vpk")
-                                    vm.group = item.name
-                                    vm.fetchWeekSchedule(group: item.name)
-                                    dismiss()
+                                    .padding(.top, 2)
+                                    .padding(.bottom, 2)
+                                    .frame(width: UIScreen.main.bounds.width, height: 30)
+                                    .background(Color("background"))
+                                    .onTapGesture {
+                                        UserDefaults.standard.set(item.name, forKey: "vpk")
+                                        vm.vpk = item.name
+                                        vm.fetchWeekVPK(vpk: item.name)
+                                        dismiss()
+                                    }
                                 }
                             }
                         }

@@ -28,7 +28,6 @@ struct SearchBarView: View {
                     .onSubmit {
                         self.isFocused = false
                         if (!text.isEmpty) {
-                            print(vm.errorInNetwork)
                             vm.fetchWeekSchedule(group: text)
                         }
                         self.text = ""

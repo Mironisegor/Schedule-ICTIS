@@ -13,12 +13,14 @@ struct CreatedClassView: View {
     var body: some View {
         let existingCopy = try? provider.viewContext.existingObject(with: _class.objectID)
         if existingCopy != nil {
-            HStack(spacing: 10) {
+            HStack(spacing: 15) {
                 VStack {
                     Text(getTimeString(_class.starttime))
                         .font(.custom("Montserrat-Regular", size: 15))
+                        .padding(.bottom, 1)
                     Text(getTimeString(_class.endtime))
                         .font(.custom("Montserrat-Regular", size: 15))
+                        .padding(.top, 1)
                 }
                 .frame(width: 48)
                 .padding(.top, 7)
@@ -32,8 +34,9 @@ struct CreatedClassView: View {
                     .foregroundColor(_class.important ? Color("redForImportant") : onlineOrNot(_class.online))
                 Text(getSubjectName(_class.subject, _class.professor, _class.auditory))
                     .font(.custom("Montserrat-Medium", size: 15))
-                    .padding(.top, 7)
-                    .padding(.bottom, 7)
+                    .lineSpacing(3)
+                    .padding(.top, 9)
+                    .padding(.bottom, 9)
                 Spacer()
             }
             .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
