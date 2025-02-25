@@ -15,6 +15,7 @@ struct ScheduleView: View {
     @State private var scrollTimer: Timer? = nil
     @State private var isShowingMyPairs = false
     @Binding var isScrolling: Bool
+    @Binding var isShowingVPKLabel: Bool
     var provider = ClassProvider.shared
     var body: some View {
         if vm.isLoading {
@@ -27,7 +28,7 @@ struct ScheduleView: View {
                         VStack (spacing: 30) {
                             VStack (alignment: .leading, spacing: 20 ) {
                                 Text("Учебное расписание")
-                                    .font(.custom("Montserrat-Bold", size: 20))
+                                    .font(.custom("Montserrat-Bold", fixedSize: 20))
                                 ForEach(vm.classes.indices, id: \.self) { index in
                                     if index != 0 && index != 1 && index == vm.selectedIndex {
                                         let daySchedule = vm.classes[index] // Это массив строк для дня
@@ -37,10 +38,10 @@ struct ScheduleView: View {
                                                 HStack(spacing: 15) {
                                                     VStack {
                                                         Text(convertTimeString(vm.classes[1][lessonIndex])[0])
-                                                            .font(.custom("Montserrat-Regular", size: 15))
+                                                            .font(.custom("Montserrat-Regular", fixedSize: 15))
                                                             .padding(.bottom, 1)
                                                         Text(convertTimeString(vm.classes[1][lessonIndex])[1])
-                                                            .font(.custom("Montserrat-Regular", size: 15))
+                                                            .font(.custom("Montserrat-Regular", fixedSize: 15))
                                                             .padding(.top, 1)
                                                     }
                                                     .frame(width: 48)
@@ -54,7 +55,7 @@ struct ScheduleView: View {
                                                         .padding(.bottom, 7)
                                                         .foregroundColor(getColorForClass(lesson))
                                                     Text(lesson)
-                                                        .font(.custom("Montserrat-Medium", size: 15))
+                                                        .font(.custom("Montserrat-Medium", fixedSize: 16))
                                                         .lineSpacing(3)
                                                         .padding(.top, 9)
                                                         .padding(.bottom, 9)
@@ -72,7 +73,7 @@ struct ScheduleView: View {
                             if classes.contains(where: { daysAreEqual($0.day, vm.selectedDay) }) {
                                 VStack(alignment: .leading, spacing: 20) {
                                     Text("Мои пары")
-                                        .font(.custom("Montserrat-Bold", size: 20))
+                                        .font(.custom("Montserrat-Bold", fixedSize: 20))
                                     ForEach(classes) { _class in
                                         if daysAreEqual(_class.day, vm.selectedDay) {
                                             CreatedClassView(_class: _class)
@@ -85,8 +86,10 @@ struct ScheduleView: View {
                             }
                             if UserDefaults.standard.string(forKey: "vpk") != nil {
                                 VStack (alignment: .leading, spacing: 20 ) {
-                                    Text("ВПК")
-                                        .font(.custom("Montserrat-Bold", size: 20))
+                                    if isShowingVPKLabel {
+                                        Text("ВПК")
+                                            .font(.custom("Montserrat-Bold", fixedSize: 20))
+                                    }
                                     ForEach(vm.vpks.indices, id: \.self) { index in
                                         if index != 0 && index != 1 && index == vm.selectedIndex {
                                             let dayVPK = vm.vpks[index] // Это массив строк для дня
@@ -96,10 +99,10 @@ struct ScheduleView: View {
                                                     HStack(spacing: 15) {
                                                         VStack {
                                                             Text(convertTimeString(vm.vpks[1][lessonIndex])[0])
-                                                                .font(.custom("Montserrat-Regular", size: 15))
+                                                                .font(.custom("Montserrat-Regular", fixedSize: 15))
                                                                 .padding(.bottom, 1)
                                                             Text(convertTimeString(vm.vpks[1][lessonIndex])[1])
-                                                                .font(.custom("Montserrat-Regular", size: 15))
+                                                                .font(.custom("Montserrat-Regular", fixedSize: 15))
                                                                 .padding(.top, 1)
                                                         }
                                                         .frame(width: 48)
@@ -113,7 +116,7 @@ struct ScheduleView: View {
                                                             .padding(.bottom, 7)
                                                             .foregroundColor(getColorForClass(lesson))
                                                         Text(lesson)
-                                                            .font(.custom("Montserrat-Medium", size: 15))
+                                                            .font(.custom("Montserrat-Medium", fixedSize: 16))
                                                             .lineSpacing(3)
                                                             .padding(.top, 9)
                                                             .padding(.bottom, 9)
@@ -123,6 +126,9 @@ struct ScheduleView: View {
                                                     .background(Color.white)
                                                     .cornerRadius(20)
                                                     .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 2)
+                                                    .onAppear {
+                                                        isShowingVPKLabel = true
+                                                    }
                                                 }
                                             }
                                         }

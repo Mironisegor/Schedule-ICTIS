@@ -14,6 +14,7 @@ struct SelectingGroupView: View {
     @ObservedObject var vm: ScheduleViewModel
     @State private var isLoading = false
     @State private var searchTask: DispatchWorkItem?
+    @AppStorage("group") private var favGroup = ""
     var body: some View {
         NavigationView {
             VStack {
@@ -30,6 +31,9 @@ struct SelectingGroupView: View {
                             let task = DispatchWorkItem {
                                 if !text.isEmpty {
                                     vm.fetchGroups(group: text)
+                                }
+                                else {
+                                    vm.fetchGroups(group: "кт")
                                 }
                             }
                             searchTask = task
@@ -93,7 +97,7 @@ struct SelectingGroupView: View {
                                     HStack {
                                         Text(item.name)
                                             .foregroundColor(.black)
-                                            .font(.custom("Montserrat-SemiBold", size: 15))
+                                            .font(.custom("Montserrat-SemiBold", fixedSize: 15))
                                         Spacer()
                                     }
                                     .padding(.horizontal, 10)
@@ -112,6 +116,27 @@ struct SelectingGroupView: View {
                         }
                     }
                 }
+                if !isFocused {
+                    if favGroup != "" {
+                        Button {
+                            UserDefaults.standard.removeObject(forKey: "group")
+                            dismiss()
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "trash")
+                                Text("Удалить группу")
+                                    .font(.custom("Montserrat-Medium", fixedSize: 17))
+                                Spacer()
+                            }
+                            .frame(height: 40)
+                            .background(Color.white)
+                            .foregroundColor(Color.red)
+                            .cornerRadius(10)
+                            .padding(.bottom, UIScreen.main.bounds.height / 11)
+                        }
+                    }
+                }
             }
             .padding(.horizontal, 10)
             .background(Color("background"))
@@ -120,4 +145,9 @@ struct SelectingGroupView: View {
             vm.fetchGroups(group: "кт")
         }
     }
+}
+
+#Preview {
+    @Previewable @StateObject var vm = ScheduleViewModel()
+    SelectingGroupView(vm: vm)
 }

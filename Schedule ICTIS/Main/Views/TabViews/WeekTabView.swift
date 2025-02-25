@@ -12,12 +12,13 @@ struct WeekTabView: View {
     @State var weekSlider: [[Date.WeekDay]] = []
     @State private var createWeek: Bool = false
     @ObservedObject var vm: ScheduleViewModel
+    @Binding var isShowingVPKLabel: Bool
     var body: some View {
         HStack {
             TabView(selection: $currentWeekIndex) {
                 ForEach(weekSlider.indices, id: \.self) { index in
                     let week = weekSlider[index]
-                    WeekViewForWeek(weekSlider: $weekSlider, currentWeekIndex: $currentWeekIndex, createWeek: $createWeek, week: week, vm: vm)
+                    WeekViewForWeek(weekSlider: $weekSlider, currentWeekIndex: $currentWeekIndex, createWeek: $createWeek, week: week, vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
                         .padding(.horizontal, 15)
                         .tag(index)
                 }

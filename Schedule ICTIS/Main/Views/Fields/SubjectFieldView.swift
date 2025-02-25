@@ -19,7 +19,7 @@ struct SubjectFieldView: View {
                 .padding(.leading, 12)
                 .padding(.trailing, 9)
             TextField(labelForField, text: $text)
-                .font(.custom("Montserrat-Meduim", size: 17))
+                .font(.custom("Montserrat-Meduim", fixedSize: 17))
                 .disableAutocorrection(true)
                 .submitLabel(.done)
                 .focused($isFocused)
@@ -33,7 +33,7 @@ struct SubjectFieldView: View {
                     Group {
                         if isShowingSubjectFieldRed {
                             Text("Поле должно быть заполнено!")
-                                .font(.custom("Montserrat-Meduim", size: 17))
+                                .font(.custom("Montserrat-Meduim", fixedSize: 17))
                                 .foregroundColor(.red)
                                 .frame(width: 290)
                                 .padding(.leading, -38)

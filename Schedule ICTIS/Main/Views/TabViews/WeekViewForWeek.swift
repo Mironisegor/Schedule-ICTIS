@@ -13,17 +13,18 @@ struct WeekViewForWeek: View {
     @Binding var createWeek: Bool
     let week: [Date.WeekDay]
     @ObservedObject var vm: ScheduleViewModel
+    @Binding var isShowingVPKLabel: Bool
     var body: some View {
         HStack (spacing: 10) {
             ForEach(week) { day in
                 VStack (spacing: 1) {
                     Text(day.date.format("E"))
-                        .font(.custom("Montserrat-SemiBold", size: 14))
+                        .font(.custom("Montserrat-SemiBold", fixedSize: 15))
                         .foregroundColor(day.date.format("E") == "Вс" ? Color(.red) : isSameDate(day.date, vm.selectedDay) ? Color("customGray1") : Color("customGray3"))
                         .padding(.top, 13)
                         .foregroundColor(.gray)
                     Text(day.date.format("dd"))
-                        .font(.custom("Montserrat-Semibold", size: 14))
+                        .font(.custom("Montserrat-Semibold", fixedSize: 15))
                         .foregroundStyle(isSameDate(day.date, vm.selectedDay) ? .white : .black)
                         .padding(.bottom, 13)
                 }
@@ -52,6 +53,7 @@ struct WeekViewForWeek: View {
                 )
                 .cornerRadius(15)
                 .onTapGesture {
+                    isShowingVPKLabel = false
                     vm.selectedDay = day.date
                     vm.updateSelectedDayIndex()
                 }

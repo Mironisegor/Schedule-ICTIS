@@ -1,8 +1,8 @@
 //
-//  SettingsView.swift
+//  SettingsView2.swift
 //  Schedule ICTIS
 //
-//  Created by Mironov Egor on 30.01.2025.
+//  Created by G412 on 25.02.2025.
 //
 
 import SwiftUI
@@ -11,42 +11,30 @@ struct SettingsView: View {
     @ObservedObject var vm: ScheduleViewModel
     @State private var selectedTheme = "Светлая"
     @State private var selectedLanguage = "Русский"
-    @AppStorage("group") private var favGroup = ""
-    @AppStorage("vpk") private var favVPK = ""
     var body: some View {
         NavigationView {
             VStack {
-                List {
-                    Section("Общие") {
-                        Picker("Тема", selection: $selectedTheme, content: {
-                            ForEach(MockData.themes, id: \.self) {
-                                Text($0)
-                            }
-                        })
-                        Picker("Язык", selection: $selectedLanguage, content: {
-                            ForEach(MockData.languages, id: \.self) {
-                                Text($0)
-                            }
-                        })
+                ScrollView (.vertical, showsIndicators: false) {
+                    VStack (alignment: .leading) {
+                        Text("Общие")
+                            .font(.custom("Montserrat-Medium", fixedSize: 18))
+                            .foregroundColor(Color("customGray3"))
+                            .padding(.horizontal)
+                        GeneralGroupSettings(selectedTheme: $selectedTheme, selectedLanguage: $selectedLanguage)
                     }
-                    Section("Расписание") {
-                        NavigationLink(destination: SelectingGroupView(vm: vm)) {
-                            LabeledContent {
-                                Text(favGroup)
-                            } label: {
-                                Text("Избранное расписание")
-                            }
-                        }
-                        NavigationLink(destination: SelectingVPKView(vm: vm)) {
-                            LabeledContent {
-                                Text(favVPK)
-                            } label: {
-                                Text("Избранное ВПК")
-                            }
-                        }
+                    .padding(.top, 20)
+                    VStack (alignment: .leading) {
+                        Text("Расписание")
+                            .font(.custom("Montserrat-Medium", fixedSize: 18))
+                            .foregroundColor(Color("customGray3"))
+                            .padding(.horizontal)
+                        ScheduleGroupSettings(vm: vm)
                     }
+                    .padding(.top, 20)
                 }
+                .padding(.horizontal)
             }
+            .background(Color("background"))
             .navigationTitle("Настройки")
         }
     }

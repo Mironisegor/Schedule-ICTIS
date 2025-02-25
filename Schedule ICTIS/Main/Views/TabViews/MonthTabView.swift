@@ -13,12 +13,13 @@ struct MonthTabView: View {
     @State private var createMonth: Bool = false
     @State private var currentWeekIndex: Int = 0
     @ObservedObject var vm: ScheduleViewModel
+    @Binding var isShowingVPKLabel: Bool
     var body: some View {
         VStack {
             HStack (spacing: 34) {
                 ForEach(MockData.daysOfWeek.indices, id: \.self) { index in
                     Text(MockData.daysOfWeek[index])
-                        .font(.custom("Montserrat-SemiBold", size: 14))
+                        .font(.custom("Montserrat-SemiBold", fixedSize: 15))
                         .foregroundColor(MockData.daysOfWeek[index] == "Вс" ? Color(.red) : Color("customGray2"))
                         .padding(.top, 13)
                         .foregroundColor(.gray)
@@ -60,7 +61,7 @@ struct MonthTabView: View {
         VStack (spacing: 10) {
             ForEach(month.indices, id: \.self) { index in
                 let week = month[index].week
-                WeekViewForMonth(week: week, vm: vm)
+                WeekViewForMonth(week: week, vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
             }
         }
         .background {

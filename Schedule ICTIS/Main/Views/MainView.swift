@@ -13,6 +13,7 @@ struct MainView: View {
     @ObservedObject var vm: ScheduleViewModel
     @FocusState private var isFocusedSearchBar: Bool
     @State private var isScrolling: Bool = false
+    @State private var isShowingVPKLabel = false
     
     var body: some View {
         VStack {
@@ -27,7 +28,7 @@ struct MainView: View {
                 LoadingScheduleView()
             }
             else {
-                ScheduleView(vm: vm, isScrolling: $isScrolling)
+                ScheduleView(vm: vm, isScrolling: $isScrolling, isShowingVPKLabel: $isShowingVPKLabel)
             }
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
@@ -48,14 +49,14 @@ struct MainView: View {
             HStack {
                 VStack (alignment: .leading, spacing: 0) {
                     Text(vm.selectedDay.format("EEEE"))
-                        .font(.custom("Montserrat-SemiBold", size: 30))
+                        .font(.custom("Montserrat-SemiBold", fixedSize: 30))
                         .foregroundStyle(.black)
                     HStack (spacing: 5) {
                         Text(vm.selectedDay.format("dd"))
-                            .font(.custom("Montserrat-Bold", size: 17))
+                            .font(.custom("Montserrat-Bold", fixedSize: 17))
                             .foregroundStyle(Color("grayForDate"))
                         Text(vm.selectedDay.format("MMMM"))
-                            .font(.custom("Montserrat-Bold", size: 17))
+                            .font(.custom("Montserrat-Bold", fixedSize: 17))
                             .foregroundStyle(Color("grayForDate"))
                         Spacer()
                         Button(action: {
@@ -65,7 +66,7 @@ struct MainView: View {
                         }) {
                             HStack(spacing: 2) {
                                 Text(isShowingMonthSlider ? "Свернуть" : "Развернуть")
-                                    .font(.custom("Montserrat-Regular", size: 15))
+                                    .font(.custom("Montserrat-Regular", fixedSize: 15))
                                     .foregroundStyle(Color.blue)
                                 Image(isShowingMonthSlider ? "arrowup" : "arrowdown")
                                     .resizable()
@@ -80,11 +81,11 @@ struct MainView: View {
                 Spacer()
             }
             if (!isShowingMonthSlider) {
-                WeekTabView(vm: vm)
+                WeekTabView(vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
                     .transition(.opacity)
             }
             else {
-                MonthTabView(vm: vm)
+                MonthTabView(vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
                     .transition(.opacity)
             }
         }

@@ -31,7 +31,7 @@ struct CreateEditClassView: View {
                         .padding(.bottom, 10)
                     HStack {
                         Text("Тип")
-                            .font(.custom("Montserrat-Medium", size: 17))
+                            .font(.custom("Montserrat-Medium", fixedSize: 17))
                         Spacer()
                         Picker("Тип", selection: $vm._class.online, content: {
                             ForEach(MockData.onlineOrOffline, id: \.self) {
@@ -76,11 +76,11 @@ struct CreateEditClassView: View {
                             .padding(.trailing, 5)
                         Text("Дата")
                             .foregroundColor(Color("grayForFields").opacity(0.5))
-                            .font(.custom("Montserrat-Meduim", size: 17))
+                            .font(.custom("Montserrat-Meduim", fixedSize: 17))
                         Spacer()
                         Text("\(vm._class.day, formatter: dateFormatter)")
                             .foregroundColor(.black)
-                            .font(.custom("Montserrat-Medium", size: 17))
+                            .font(.custom("Montserrat-Medium", fixedSize: 17))
                             .padding(.trailing, 20)
                     }
                     .frame(height: 40)
@@ -128,7 +128,7 @@ struct CreateEditClassView: View {
                     .frame(height: 40)
                     .padding(.bottom, 10)
                     Toggle("Пометить как важную", isOn: $vm._class.important)
-                        .font(.custom("Montserrat-Medium", size: 17))
+                        .font(.custom("Montserrat-Medium", fixedSize: 17))
                         .frame(height: 40)
                         .padding(.horizontal)
                         .background(
@@ -136,14 +136,14 @@ struct CreateEditClassView: View {
                                 .fill(.white)
                         )
                         .padding(.bottom, 10)
-                    
                     HStack {
                         Text("Напоминанние")
-                            .font(.custom("Montserrat-Medium", size: 17))
+                            .font(.custom("Montserrat-Medium", fixedSize: 17))
                         Spacer()
                         Picker("Напоминание", selection: $vm._class.notification, content: {
                             ForEach(MockData.notifications, id: \.self) {
                                 Text($0)
+                                    .font(.custom("Montserrat-Medium", fixedSize: 17))
                             }
                         })
                         .accentColor(Color("grayForFields"))
@@ -173,7 +173,7 @@ struct CreateEditClassView: View {
                                 Spacer()
                                 Image(systemName: "trash")
                                 Text("Удалить занятие")
-                                    .font(.custom("Montserrat-Medium", size: 17))
+                                    .font(.custom("Montserrat-Medium", fixedSize: 17))
                                 Spacer()
                             }
                             .frame(height: 40)

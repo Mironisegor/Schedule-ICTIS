@@ -10,13 +10,14 @@ import SwiftUI
 struct WeekViewForMonth: View {
     let week: [Date.WeekDay]
     @ObservedObject var vm: ScheduleViewModel
+    @Binding var isShowingVPKLabel: Bool
     
     var body: some View {
         HStack(spacing: 23) {
             ForEach(week) { day in
                 VStack {
                     Text(day.date.format("dd"))
-                        .font(.custom("Montserrat-SemiBold", size: 14))
+                        .font(.custom("Montserrat-SemiBold", fixedSize: 15))
                         .foregroundStyle(getForegroundColor(day: day))
                 }
                 .frame(width: 30, height: 30, alignment: .center)
@@ -25,6 +26,7 @@ struct WeekViewForMonth: View {
                 .cornerRadius(15)
                 .onTapGesture {
                     handleTap(day: day)
+                    isShowingVPKLabel = false
                 }
             }
         }

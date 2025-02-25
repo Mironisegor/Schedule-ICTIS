@@ -23,13 +23,13 @@ struct StartEndTimeFieldView: View {
             
             if !isTimeSelected || isIncorrectDate {
                 Text(text)
-                    .font(.custom("Montserrat-Meduim", size: 17))
+                    .font(.custom("Montserrat-Meduim", fixedSize: 17))
                     .foregroundColor(.gray.opacity(0.5))
             }
             else {
                 Text("\(selectedTime, formatter: timeFormatter)")
                     .foregroundColor(isIncorrectDate ? .red : .black)
-                    .font(.custom("Montserrat-Medium", size: 17))
+                    .font(.custom("Montserrat-Medium", fixedSize: 17))
                     .padding(.trailing, 10)
             }
             Spacer()

@@ -16,10 +16,10 @@ struct CreatedClassView: View {
             HStack(spacing: 15) {
                 VStack {
                     Text(getTimeString(_class.starttime))
-                        .font(.custom("Montserrat-Regular", size: 15))
+                        .font(.custom("Montserrat-Regular", fixedSize: 15))
                         .padding(.bottom, 1)
                     Text(getTimeString(_class.endtime))
-                        .font(.custom("Montserrat-Regular", size: 15))
+                        .font(.custom("Montserrat-Regular", fixedSize: 15))
                         .padding(.top, 1)
                 }
                 .frame(width: 48)
@@ -33,7 +33,7 @@ struct CreatedClassView: View {
                     .padding(.bottom, 7)
                     .foregroundColor(_class.important ? Color("redForImportant") : onlineOrNot(_class.online))
                 Text(getSubjectName(_class.subject, _class.professor, _class.auditory))
-                    .font(.custom("Montserrat-Medium", size: 15))
+                    .font(.custom("Montserrat-Medium", fixedSize: 15))
                     .lineSpacing(3)
                     .padding(.top, 9)
                     .padding(.bottom, 9)
