@@ -120,6 +120,9 @@ struct SelectingVPKView: View {
                     if favVPK != "" {
                         Button {
                             UserDefaults.standard.removeObject(forKey: "vpk")
+                            vm.vpks.removeAll()
+                            vm.vpk = ""
+                            vm.vpkHTML = ""
                             dismiss()
                         } label: {
                             HStack {
@@ -133,7 +136,7 @@ struct SelectingVPKView: View {
                             .background(Color.white)
                             .foregroundColor(Color.red)
                             .cornerRadius(10)
-                            .padding(.bottom, UIScreen.main.bounds.height / 11)
+                            .padding(.bottom, 50)
                         }
                     }
                 }

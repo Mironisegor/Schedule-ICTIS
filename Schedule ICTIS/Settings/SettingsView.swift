@@ -2,7 +2,7 @@
 //  SettingsView2.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 25.02.2025.
+//  Created by Mironov Egor on 25.02.2025.
 //
 
 import SwiftUI

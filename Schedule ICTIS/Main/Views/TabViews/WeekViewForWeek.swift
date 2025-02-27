@@ -13,7 +13,6 @@ struct WeekViewForWeek: View {
     @Binding var createWeek: Bool
     let week: [Date.WeekDay]
     @ObservedObject var vm: ScheduleViewModel
-    @Binding var isShowingVPKLabel: Bool
     var body: some View {
         HStack (spacing: 10) {
             ForEach(week) { day in
@@ -53,7 +52,6 @@ struct WeekViewForWeek: View {
                 )
                 .cornerRadius(15)
                 .onTapGesture {
-                    isShowingVPKLabel = false
                     vm.selectedDay = day.date
                     vm.updateSelectedDayIndex()
                 }

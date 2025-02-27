@@ -10,7 +10,6 @@ import SwiftUI
 struct WeekViewForMonth: View {
     let week: [Date.WeekDay]
     @ObservedObject var vm: ScheduleViewModel
-    @Binding var isShowingVPKLabel: Bool
     
     var body: some View {
         HStack(spacing: 23) {
@@ -26,7 +25,6 @@ struct WeekViewForMonth: View {
                 .cornerRadius(15)
                 .onTapGesture {
                     handleTap(day: day)
-                    isShowingVPKLabel = false
                 }
             }
         }

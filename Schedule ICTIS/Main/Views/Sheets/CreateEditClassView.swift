@@ -18,6 +18,7 @@ struct CreateEditClassView: View {
     @State private var isSelectedTime1 = false
     @State private var isSelectedTime2 = false
     @State private var textForLabelInSubjectField: String = "Предмет"
+    @State private var selectedType: String = "Оффлайн"
     @FocusState private var isFocusedSubject: Bool
     @FocusState private var isFocusedAuditory: Bool
     @FocusState private var isFocusedProfessor: Bool
@@ -29,25 +30,47 @@ struct CreateEditClassView: View {
                 VStack {
                     SubjectFieldView(text: $vm._class.subject, isShowingSubjectFieldRed: $isShowingSubjectFieldRed, labelForField: $textForLabelInSubjectField, isFocused: _isFocusedSubject)
                         .padding(.bottom, 10)
-                    HStack {
-                        Text("Тип")
-                            .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        Spacer()
-                        Picker("Тип", selection: $vm._class.online, content: {
-                            ForEach(MockData.onlineOrOffline, id: \.self) {
-                                Text($0)
-                            }
-                        })
-                        .accentColor(Color("grayForFields"))
-                    }
-                    .frame(height: 40)
-                    .padding(.horizontal)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.white)
-                    )
-                    .padding(.bottom, 10)
                     
+                    HStack {
+                        HStack {
+                            Text("Тип")
+                                .font(.custom("Montserrat-Medium", fixedSize: 17))
+                                .foregroundColor(.black)
+                            Spacer()
+                            HStack {
+                                Text(vm._class.online)
+                                    .font(.custom("Montserrat-Medium", fixedSize: 17))
+                                    .foregroundColor(Color("customGray3"))
+                                Image("upDownArrows")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15, height: 15)
+                            }
+                            .padding(.horizontal)
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.white)
+                        )
+                        .overlay {
+                            HStack {
+                                Spacer()
+                                Picker("Тип", selection: $vm._class.online, content: {
+                                    ForEach(MockData.onlineOrOffline, id: \.self) {
+                                        Text($0)
+                                    }
+                                })
+                                .accentColor(Color("grayForFields"))
+                                .padding(.trailing, 35)
+                                .blendMode(.destinationOver)
+                            }
+                            .frame(width: UIScreen.main.bounds.width)
+                        }
+                    }
+                    .padding(.bottom, 10)
                     
                     ZStack {
                         if vm._class.online == "Оффлайн" {
@@ -136,24 +159,46 @@ struct CreateEditClassView: View {
                                 .fill(.white)
                         )
                         .padding(.bottom, 10)
+                    
                     HStack {
-                        Text("Напоминанние")
-                            .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        Spacer()
-                        Picker("Напоминание", selection: $vm._class.notification, content: {
-                            ForEach(MockData.notifications, id: \.self) {
-                                Text($0)
+                        HStack {
+                            Text("Напоминание")
+                                .font(.custom("Montserrat-Medium", fixedSize: 17))
+                                .foregroundColor(.black)
+                            Spacer()
+                            HStack {
+                                Text(vm._class.notification)
                                     .font(.custom("Montserrat-Medium", fixedSize: 17))
+                                    .foregroundColor(Color("customGray3"))
+                                Image("upDownArrows")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 15, height: 15)
                             }
-                        })
-                        .accentColor(Color("grayForFields"))
+                            .padding(.horizontal)
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.white)
+                        )
+                        .overlay {
+                            HStack {
+                                Spacer()
+                                Picker("", selection: $vm._class.notification   , content: {
+                                    ForEach(MockData.notifications, id: \.self) {
+                                        Text($0)
+                                    }
+                                })
+                                .accentColor(Color("grayForFields"))
+                                .padding(.trailing, 35)
+                                .blendMode(.destinationOver)
+                            }
+                            .frame(width: UIScreen.main.bounds.width)
+                        }
                     }
-                    .frame(height: 40)
-                    .padding(.horizontal)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.white)
-                    )
                     .padding(.bottom, 10)
                     
                     CommentFieldView(textForComment: $vm._class.comment, isFocused: _isFocusedComment)

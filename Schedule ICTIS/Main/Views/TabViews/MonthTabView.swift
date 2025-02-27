@@ -13,7 +13,6 @@ struct MonthTabView: View {
     @State private var createMonth: Bool = false
     @State private var currentWeekIndex: Int = 0
     @ObservedObject var vm: ScheduleViewModel
-    @Binding var isShowingVPKLabel: Bool
     var body: some View {
         VStack {
             HStack (spacing: 34) {
@@ -61,7 +60,7 @@ struct MonthTabView: View {
         VStack (spacing: 10) {
             ForEach(month.indices, id: \.self) { index in
                 let week = month[index].week
-                WeekViewForMonth(week: week, vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
+                WeekViewForMonth(week: week, vm: vm)
             }
         }
         .background {

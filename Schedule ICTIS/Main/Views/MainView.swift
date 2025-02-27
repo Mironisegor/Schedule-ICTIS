@@ -13,11 +13,10 @@ struct MainView: View {
     @ObservedObject var vm: ScheduleViewModel
     @FocusState private var isFocusedSearchBar: Bool
     @State private var isScrolling: Bool = false
-    @State private var isShowingVPKLabel = false
     
     var body: some View {
         VStack {
-            SearchBarView(text: $searchText, isFocused: _isFocusedSearchBar, vm: vm)
+            SearchBarView(text: $searchText, isFocused: _isFocusedSearchBar, vm: vm, isShowingMonthSlider: $isShowingMonthSlider)
                 .onChange(of: isScrolling, initial: false) { oldValue, newValue in
                     if newValue && isScrolling {
                         isFocusedSearchBar = false
@@ -28,7 +27,7 @@ struct MainView: View {
                 LoadingScheduleView()
             }
             else {
-                ScheduleView(vm: vm, isScrolling: $isScrolling, isShowingVPKLabel: $isShowingVPKLabel)
+                ScheduleView(vm: vm, isScrolling: $isScrolling)
             }
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
@@ -81,11 +80,11 @@ struct MainView: View {
                 Spacer()
             }
             if (!isShowingMonthSlider) {
-                WeekTabView(vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
+                WeekTabView(vm: vm)
                     .transition(.opacity)
             }
             else {
-                MonthTabView(vm: vm, isShowingVPKLabel: $isShowingVPKLabel)
+                MonthTabView(vm: vm)
                     .transition(.opacity)
             }
         }

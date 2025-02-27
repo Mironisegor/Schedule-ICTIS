@@ -115,11 +115,13 @@ struct SelectingGroupView: View {
                             }
                         }
                     }
-                }
-                if !isFocused {
+                } else {
                     if favGroup != "" {
                         Button {
                             UserDefaults.standard.removeObject(forKey: "group")
+                            vm.classes.removeAll()
+                            vm.group = ""
+                            vm.numOfGroup = ""
                             dismiss()
                         } label: {
                             HStack {
@@ -133,7 +135,7 @@ struct SelectingGroupView: View {
                             .background(Color.white)
                             .foregroundColor(Color.red)
                             .cornerRadius(10)
-                            .padding(.bottom, UIScreen.main.bounds.height / 11)
+                            .padding(.bottom, 50)
                         }
                     }
                 }

@@ -18,16 +18,16 @@ struct LoadingScheduleView: View {
                             .fill(
                                 LinearGradient(
                                     gradient: Gradient(colors: [
-                                        isAnimated ? Color.gray.opacity(0.5) : Color.gray.opacity(0.2),
-                                        isAnimated ? Color.gray.opacity(0.2) : Color.gray.opacity(0.5)
+                                        isAnimated ? Color.gray.opacity(0.6) : Color.gray.opacity(0.3),
+                                        isAnimated ? Color.gray.opacity(0.3) : Color.gray.opacity(0.6)
                                     ]),
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
                             )
-                            .frame(height: 65)
+                            .frame(height: 70)
                             .padding(.horizontal, 20)
-                            .animation(.linear(duration: 0.9).repeatForever(autoreverses: true), value: isAnimated)
+                            .animation(.linear(duration: 0.8).repeatForever(autoreverses: true), value: isAnimated)
                         }
                     }
                     .onAppear {

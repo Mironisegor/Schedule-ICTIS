@@ -53,11 +53,11 @@ final class ScheduleViewModel: ObservableObject {
         Task {
             do {
                 var schedule: Schedule
-                // В этот if мы заходим только если пользователь перелистывает недели и нам известы номер группы(в html формате) и номер недели, которая показывается пользователю
+                // В этот if мы заходим только если пользователь перелистывает недели и нам ИЗВЕСТНЫ номер группы(в html формате) и номер недели, которая показывается пользователю
                 if (isOtherWeek || !isFirstStartOffApp) && (group == "default") {
                     schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, self.numOfGroup)
                 }
-                // В else мы заходим в том случае, если не знаем номер недели, которую нужно отобразить и номер группы(в html формате)
+                // В else мы заходим в том случае, если НЕ знаем номер недели, которую нужно отобразить и номер группы(в html формате)
                 else  {
                     print("Отладка 1")
                     schedule = try await NetworkManager.shared.getSchedule(group)

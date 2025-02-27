@@ -9,14 +9,20 @@ import SwiftUI
 
 struct ScheduleView: View {
     @ObservedObject var vm: ScheduleViewModel
-    @FetchRequest(fetchRequest: ClassModel.all()) private var classes  //Делаем запрос в CoreData и получаем список сохраненных пар
+    @FetchRequest(fetchRequest: ClassModel.all()) private var classes  // Делаем запрос в CoreData и получаем список сохраненных пар
     @State private var selectedClass: ClassModel? = nil
     @State private var lastOffset: CGFloat = 0
     @State private var scrollTimer: Timer? = nil
     @State private var isShowingMyPairs = false
     @Binding var isScrolling: Bool
-    @Binding var isShowingVPKLabel: Bool
     var provider = ClassProvider.shared
+    var hasLessons: Bool {
+        return vm.classes.indices.contains(vm.selectedIndex) &&
+               vm.classes[vm.selectedIndex].dropFirst().contains { !$0.isEmpty }
+    }
+    var hasVPK: Bool {
+        return vm.vpks.indices.contains(vm.selectedIndex) && vm.vpks[vm.selectedIndex].dropFirst().contains { !$0.isEmpty }
+    }
     var body: some View {
         if vm.isLoading {
             LoadingScheduleView()
@@ -27,8 +33,10 @@ struct ScheduleView: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack (spacing: 30) {
                             VStack (alignment: .leading, spacing: 20 ) {
-                                Text("Учебное расписание")
-                                    .font(.custom("Montserrat-Bold", fixedSize: 20))
+                                if hasLessons {
+                                    Text("Учебное расписание")
+                                        .font(.custom("Montserrat-Bold", fixedSize: 20))
+                                }
                                 ForEach(vm.classes.indices, id: \.self) { index in
                                     if index != 0 && index != 1 && index == vm.selectedIndex {
                                         let daySchedule = vm.classes[index] // Это массив строк для дня
@@ -86,7 +94,7 @@ struct ScheduleView: View {
                             }
                             if UserDefaults.standard.string(forKey: "vpk") != nil {
                                 VStack (alignment: .leading, spacing: 20 ) {
-                                    if isShowingVPKLabel {
+                                    if hasVPK {
                                         Text("ВПК")
                                             .font(.custom("Montserrat-Bold", fixedSize: 20))
                                     }
@@ -126,9 +134,6 @@ struct ScheduleView: View {
                                                     .background(Color.white)
                                                     .cornerRadius(20)
                                                     .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 2)
-                                                    .onAppear {
-                                                        isShowingVPKLabel = true
-                                                    }
                                                 }
                                             }
                                         }

@@ -12,6 +12,7 @@ struct SearchBarView: View {
     @FocusState var isFocused: Bool
     @State private var isShowingSheet: Bool = false
     @ObservedObject var vm: ScheduleViewModel
+    @Binding var isShowingMonthSlider: Bool
 
     var provider = ClassProvider.shared
 
@@ -47,6 +48,9 @@ struct SearchBarView: View {
                         }
                 }
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                self.isShowingMonthSlider = false
+            })
             .frame(height: 40)
             .background(
                 RoundedRectangle(cornerRadius: 10)
