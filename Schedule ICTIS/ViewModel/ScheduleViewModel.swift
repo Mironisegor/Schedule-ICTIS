@@ -6,10 +6,16 @@
 //
 
 import Foundation
+import SwiftUICore
 
 @MainActor
 final class ScheduleViewModel: ObservableObject {
     //MARK: Properties
+    
+    @Published var nameGroups: [String] = []
+    @Published var numbersNTMLGroups: [String] = []
+    @Published var classesGroups: [[ClassInfo]] = []
+    
     //Schedule
     @Published var weekScheduleGroup: Table = Table(
         type: "",
@@ -21,14 +27,12 @@ final class ScheduleViewModel: ObservableObject {
     )
     @Published var selectedDay: Date = .init()
     @Published var selectedIndex: Int = 1
-    @Published var classes: [[String]] = []
     @Published var week: Int = 0
-    @Published var numOfGroup: String = ""
+    
     @Published var isFirstStartOffApp = true
     @Published var isShowingAlertForIncorrectGroup: Bool = false
     @Published var errorInNetwork: NetworkError?
     @Published var isLoading: Bool = false
-    @Published var group: String = ""
     @Published var isNewGroup: Bool = false
     
     //Groups
@@ -46,39 +50,64 @@ final class ScheduleViewModel: ObservableObject {
         link: ""
     )
     
-    
-    //MARK: Methods
-    func fetchWeekSchedule(group: String = "default", isOtherWeek: Bool = false) {
+    //MARK: Methods    
+    func fetchWeekSchedule(isOtherWeek: Bool = false) {
         isLoading = true
         Task {
             do {
-                var schedule: Schedule
-                // В этот if мы заходим только если пользователь перелистывает недели и нам ИЗВЕСТНЫ номер группы(в html формате) и номер недели, которая показывается пользователю
-                if (isOtherWeek || !isFirstStartOffApp) && (group == "default") {
-                    schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, self.numOfGroup)
+                var updatedClassesGroups: [[ClassInfo]] = Array(repeating: [], count: 6) // 6 дней (пн-сб)
+                
+                if isOtherWeek {
+                    for groupHTML in numbersNTMLGroups {
+                        let schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, groupHTML)
+                        let table = schedule.table.table
+                        let nameOfGroup = schedule.table.name
+                        
+                        // Преобразуем данные в формат ClassInfo
+                        for (dayIndex, day) in table[2...].enumerated() { // Пропускаем первые две строки (заголовки)
+                            for (timeIndex, subject) in day.enumerated() {
+                                if !subject.isEmpty && timeIndex > 0 { // Пропускаем первый столбец (день и дату)
+                                    let time = table[1][timeIndex] // Время берем из второй строки
+                                    let classInfo = ClassInfo(subject: subject, group: nameOfGroup, time: time)
+                                    updatedClassesGroups[dayIndex].append(classInfo)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    for groupName in nameGroups {
+                        let schedule = try await NetworkManager.shared.getSchedule(groupName)
+                        let numberHTML = schedule.table.group
+                        self.numbersNTMLGroups.append(numberHTML)
+                        let table = schedule.table.table
+                        let nameOfGroup = schedule.table.name
+                        self.week = schedule.table.week
+                        
+                        // Преобразуем данные в формат ClassInfo
+                        for (dayIndex, day) in table[2...].enumerated() { // Пропускаем первые две строки (заголовки)
+                            for (timeIndex, subject) in day.enumerated() {
+                                if !subject.isEmpty && timeIndex > 0 { // Пропускаем первый столбец (день и дату)
+                                    let time = table[1][timeIndex] // Время берем из второй строки
+                                    let classInfo = ClassInfo(subject: subject, group: groupName, time: time)
+                                    updatedClassesGroups[dayIndex].append(classInfo)
+                                }
+                            }
+                        }
+                    }
                 }
-                // В else мы заходим в том случае, если НЕ знаем номер недели, которую нужно отобразить и номер группы(в html формате)
-                else  {
-                    print("Отладка 1")
-                    schedule = try await NetworkManager.shared.getSchedule(group)
-                    print("Отладка 2")
-                    self.group = group
-                    self.isNewGroup = true
-                    self.selectedDay = .init()
-                }
-                self.weekScheduleGroup = schedule.table
-                self.week = weekScheduleGroup.week
-                self.numOfGroup = weekScheduleGroup.group
-                self.classes = weekScheduleGroup.table
+                
+                // Обновляем данные
+                self.classesGroups = updatedClassesGroups
                 self.isFirstStartOffApp = false
                 self.isShowingAlertForIncorrectGroup = false
                 self.isLoading = false
                 self.errorInNetwork = .noError
-                print("Отладка 4")
-            }
-            catch {
+                
+                // Сортируем по времени
+                self.sortClassesByTime()
+            } catch {
                 if let error = error as? NetworkError {
-                    switch (error) {
+                    switch error {
                     case .invalidResponse:
                         errorInNetwork = .invalidResponse
                     case .invalidData:
@@ -135,46 +164,68 @@ final class ScheduleViewModel: ObservableObject {
         }
     }
     
-    func fetchGroups(group: String) {
-        Task {
-            do {
-                var groups: Welcome
-                groups = try await NetworkManager.shared.getGroups(group: group)
-                self.groups = groups.choices
-                
-            }
-            catch {
-                if let error = error as? NetworkError {
-                    switch (error) {
-                    case .invalidData:
-                        self.groups.removeAll()
-                    default:
-                        self.groups.removeAll()
-                        print("Неизвестная ошибка: \(error)")
-                    }
-                    print("Есть ошибка: \(error)")
-                }
-            }
-        }
-    }
-    
     func updateSelectedDayIndex() {
         switch selectedDay.format("E") {
         case "Пн":
-            selectedIndex = 2
+            selectedIndex = 0
         case "Вт":
-            selectedIndex = 3
+            selectedIndex = 1
         case "Ср":
-            selectedIndex = 4
+            selectedIndex = 2
         case "Чт":
-            selectedIndex = 5
+            selectedIndex = 3
         case "Пт":
-            selectedIndex = 6
+            selectedIndex = 4
         case "Сб":
-            selectedIndex = 7
+            selectedIndex = 5
         default:
-            selectedIndex = 8
+            selectedIndex = 6
         }
     }
     
+    private func parseTime(_ timeString: String) -> Int {
+        // Разделяем строку по дефису и берем первую часть (время начала)
+        let startTimeString = timeString.components(separatedBy: "-").first ?? ""
+        
+        // Разделяем время на часы и минуты
+        let components = startTimeString.components(separatedBy: ":")
+        guard components.count == 2,
+              let hours = Int(components[0]),
+              let minutes = Int(components[1]) else {
+            return 0 // В случае ошибки возвращаем 0
+        }
+        
+        // Преобразуем время в минуты с начала дня
+        return hours * 60 + minutes
+    }
+    
+    // Method for sorting classes by time
+    private func sortClassesByTime() {
+        // Проходим по каждому дню (подмассиву) в classesGroups
+        for dayIndex in 0..<classesGroups.count {
+            // Сортируем подмассив по времени начала пары
+            classesGroups[dayIndex].sort { class1, class2 in
+                let time1 = parseTime(class1.time) // Время начала первой пары
+                let time2 = parseTime(class2.time) // Время начала второй пары
+                return time1 < time2 // Сортируем по возрастанию
+            }
+        }
+    }
+    
+    func updateArrayOfGroups() {
+        self.nameGroups.removeAll()
+        self.numbersNTMLGroups.removeAll()
+        let group1 = UserDefaults.standard.string(forKey: "group")
+        let group2 = UserDefaults.standard.string(forKey: "group2")
+        let group3 = UserDefaults.standard.string(forKey: "group3")
+        if let nameGroup1 = group1, nameGroup1 != "" {
+            self.nameGroups.append(nameGroup1)
+        }
+        if let nameGroup2 = group2, nameGroup2 != ""  {
+            self.nameGroups.append(nameGroup2)
+        }
+        if let nameGroup3 = group3, nameGroup3 != "" {
+            self.nameGroups.append(nameGroup3)
+        }
+    }
 }

@@ -8,20 +8,15 @@
 import SwiftUI
 
 struct ScheduleGroupSettings: View {
-    @AppStorage("group") private var favGroup = ""
-    @AppStorage("vpk") private var favVPK = ""
     @ObservedObject var vm: ScheduleViewModel
     var body: some View {
         VStack {
-            NavigationLink(destination: SelectingGroupView(vm: vm)) {
+            NavigationLink(destination: FavGroupsView(vm: vm)) {
                 HStack {
                     Text("Избранное расписание")
                         .font(.custom("Montserrat-Medium", fixedSize: 17))
                         .foregroundColor(.black)
                     Spacer()
-                    Text(favGroup)
-                        .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        .foregroundColor(Color("customGray3"))
                     Image("arrowRight")
                 }
                 .padding(.horizontal)
@@ -38,9 +33,6 @@ struct ScheduleGroupSettings: View {
                         .font(.custom("Montserrat-Medium", fixedSize: 17))
                         .foregroundColor(.black)
                     Spacer()
-                    Text(favVPK)
-                        .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        .foregroundColor(Color("customGray3"))
                     Image("arrowRight")
                 }
                 .padding(.horizontal)

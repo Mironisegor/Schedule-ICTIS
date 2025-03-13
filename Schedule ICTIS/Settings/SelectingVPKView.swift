@@ -14,6 +14,7 @@ struct SelectingVPKView: View {
     @ObservedObject var vm: ScheduleViewModel
     @State private var isLoading = false
     @State private var searchTask: DispatchWorkItem?
+    @StateObject private var serchGroupsVM = SearchGroupsViewModel()
     @AppStorage("vpk") private var favVPK = ""
     var body: some View {
         NavigationView {
@@ -30,10 +31,10 @@ struct SelectingVPKView: View {
                             searchTask?.cancel()
                             let task = DispatchWorkItem {
                                 if !text.isEmpty {
-                                    vm.fetchGroups(group: text)
+                                    serchGroupsVM.fetchGroups(group: text)
                                 }
                                 else {
-                                    vm.fetchGroups(group: "впк")
+                                    serchGroupsVM.fetchGroups(group: "впк")
                                 }
                             }
                             searchTask = task
@@ -50,7 +51,7 @@ struct SelectingVPKView: View {
                                         vm.errorInNetwork = nil
                                         print("Зашел")
                                         UserDefaults.standard.set(text, forKey: "vpk")
-                                        vm.group = text
+                                        //vm.group = text
                                         self.text = ""
                                         dismiss()
                                     }
@@ -87,7 +88,7 @@ struct SelectingVPKView: View {
                 }
                 if isFocused {
                     ScrollView(.vertical, showsIndicators: true) {
-                        ForEach(vm.groups) { item in
+                        ForEach(serchGroupsVM.groups) { item in
                             if item.name.starts(with: "ВП") || item.name.starts(with: "мВ") {
                                 VStack {
                                     Rectangle()
@@ -145,7 +146,7 @@ struct SelectingVPKView: View {
             .background(Color("background"))
         }
         .onAppear {
-            vm.fetchGroups(group: "впк")
+            serchGroupsVM.fetchGroups(group: "впк")
         }
     }
 }

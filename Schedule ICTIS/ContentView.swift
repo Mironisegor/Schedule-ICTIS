@@ -36,15 +36,23 @@ struct ContentView: View {
         }
         .accentColor(Color("blueColor"))
         .onAppear {
-            let group = UserDefaults.standard.string(forKey: "group")
-            if let nameGroup = group {
-                vm.group = nameGroup
-                vm.fetchWeekSchedule(group: nameGroup)
+            let group1 = UserDefaults.standard.string(forKey: "group")
+            let group2 = UserDefaults.standard.string(forKey: "group2")
+            let group3 = UserDefaults.standard.string(forKey: "group3")
+            if let nameGroup1 = group1, nameGroup1 != "" {
+                vm.nameGroups.append(nameGroup1)
             }
+            if let nameGroup2 = group2, nameGroup2 != ""  {
+                vm.nameGroups.append(nameGroup2)
+            }
+            if let nameGroup3 = group3, nameGroup3 != "" {
+                vm.nameGroups.append(nameGroup3)
+            }
+            print("\(group1) - \(group2) - \(group3)")
+            vm.fetchWeekSchedule()
             if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
                 vm.fetchWeekVPK(vpk: vpkStr)
             }
-            print(vm.vpks)
         }
     }
 }

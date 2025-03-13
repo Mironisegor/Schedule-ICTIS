@@ -29,7 +29,7 @@ struct SearchBarView: View {
                     .onSubmit {
                         self.isFocused = false
                         if (!text.isEmpty) {
-                            vm.fetchWeekSchedule(group: text)
+                            //vm.fetchWeekSchedule(group: text)
                         }
                         self.text = ""
                     }

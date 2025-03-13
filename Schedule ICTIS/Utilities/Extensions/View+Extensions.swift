@@ -187,11 +187,11 @@ extension WeekViewForWeek {
             if let firstDate = weekSlider[currentWeekIndex].first?.date,
                 currentWeekIndex == 0 {
                 vm.week -= 1
-                if vm.group != "" {
+                if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
                 if UserDefaults.standard.string(forKey: "vpk") != nil {
-                    vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
+                    //vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
                 }
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
@@ -203,7 +203,7 @@ extension WeekViewForWeek {
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
                 currentWeekIndex == (weekSlider.count - 1) {
                 vm.week += 1
-                if vm.group != "" {
+                if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
                 if UserDefaults.standard.string(forKey: "vpk") != nil {
@@ -252,11 +252,11 @@ extension WeekViewForMonth {
             }
             print(difBetweenWeeks)
             vm.week += difBetweenWeeks
-            if vm.group != "" {
+            if !vm.nameGroups.isEmpty {
                 vm.fetchWeekSchedule(isOtherWeek: true)
             }
             if UserDefaults.standard.string(forKey: "vpk") != nil {
-                vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
+                //vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
             }
         }
         vm.selectedDay = day.date
@@ -293,7 +293,7 @@ extension MonthTabView {
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week -= 5
-                if vm.group != "" {
+                if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
                 if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
@@ -309,7 +309,7 @@ extension MonthTabView {
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week += 5
-                if vm.group != "" {
+                if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
                 if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {

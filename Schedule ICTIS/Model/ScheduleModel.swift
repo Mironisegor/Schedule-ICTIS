@@ -21,3 +21,10 @@ struct Table: Decodable {
     let table: [[String]]
     let link: String
 }
+
+struct ClassInfo: Identifiable {
+    let id = UUID()
+    let subject: String
+    let group: String
+    let time: String
+}

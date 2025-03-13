@@ -16,10 +16,6 @@ struct ScheduleView: View {
     @State private var isShowingMyPairs = false
     @Binding var isScrolling: Bool
     var provider = ClassProvider.shared
-    var hasLessons: Bool {
-        return vm.classes.indices.contains(vm.selectedIndex) &&
-               vm.classes[vm.selectedIndex].dropFirst().contains { !$0.isEmpty }
-    }
     var hasVPK: Bool {
         return vm.vpks.indices.contains(vm.selectedIndex) && vm.vpks[vm.selectedIndex].dropFirst().contains { !$0.isEmpty }
     }
@@ -32,23 +28,20 @@ struct ScheduleView: View {
                 ZStack (alignment: .top) {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack (spacing: 30) {
-                            VStack (alignment: .leading, spacing: 20 ) {
-                                if hasLessons {
-                                    Text("Учебное расписание")
-                                        .font(.custom("Montserrat-Bold", fixedSize: 20))
-                                }
-                                ForEach(vm.classes.indices, id: \.self) { index in
-                                    if index != 0 && index != 1 && index == vm.selectedIndex {
-                                        let daySchedule = vm.classes[index] // Это массив строк для дня
-                                        ForEach(daySchedule.indices.dropFirst(), id: \.self) { lessonIndex in
-                                            let lesson = daySchedule[lessonIndex] // Это строка с расписанием одной пары
-                                            if !lesson.isEmpty {
+                            VStack (alignment: .leading, spacing: 10) {
+                                ForEach(0..<vm.classesGroups.count, id: \.self) { dayIndex in
+                                    if dayIndex == vm.selectedIndex {
+                                        ForEach(vm.classesGroups[dayIndex]) { info in
+                                            VStack (alignment: .trailing) {
+                                                Text(info.group)
+                                                    .font(.custom("Montserrat-Regular", fixedSize: 11))
+                                                    .foregroundColor(Color("grayForNameGroup"))
                                                 HStack(spacing: 15) {
                                                     VStack {
-                                                        Text(convertTimeString(vm.classes[1][lessonIndex])[0])
+                                                        Text(convertTimeString(info.time)[0])
                                                             .font(.custom("Montserrat-Regular", fixedSize: 15))
                                                             .padding(.bottom, 1)
-                                                        Text(convertTimeString(vm.classes[1][lessonIndex])[1])
+                                                        Text(convertTimeString(info.time)[1])
                                                             .font(.custom("Montserrat-Regular", fixedSize: 15))
                                                             .padding(.top, 1)
                                                     }
@@ -61,8 +54,8 @@ struct ScheduleView: View {
                                                         .frame(maxHeight: UIScreen.main.bounds.height - 18)
                                                         .padding(.top, 7)
                                                         .padding(.bottom, 7)
-                                                        .foregroundColor(getColorForClass(lesson))
-                                                    Text(lesson)
+                                                        .foregroundColor(getColorForClass(info.subject))
+                                                    Text(info.subject)
                                                         .font(.custom("Montserrat-Medium", fixedSize: 16))
                                                         .lineSpacing(3)
                                                         .padding(.top, 9)
@@ -88,54 +81,6 @@ struct ScheduleView: View {
                                                 .onTapGesture {
                                                     selectedClass = _class
                                                 }
-                                        }
-                                    }
-                                }
-                            }
-                            if UserDefaults.standard.string(forKey: "vpk") != nil {
-                                VStack (alignment: .leading, spacing: 20 ) {
-                                    if hasVPK {
-                                        Text("ВПК")
-                                            .font(.custom("Montserrat-Bold", fixedSize: 20))
-                                    }
-                                    ForEach(vm.vpks.indices, id: \.self) { index in
-                                        if index != 0 && index != 1 && index == vm.selectedIndex {
-                                            let dayVPK = vm.vpks[index] // Это массив строк для дня
-                                            ForEach(dayVPK.indices.dropFirst(), id: \.self) { lessonIndex in
-                                                let lesson = dayVPK[lessonIndex] // Это строка с расписанием одной пары
-                                                if !lesson.isEmpty {
-                                                    HStack(spacing: 15) {
-                                                        VStack {
-                                                            Text(convertTimeString(vm.vpks[1][lessonIndex])[0])
-                                                                .font(.custom("Montserrat-Regular", fixedSize: 15))
-                                                                .padding(.bottom, 1)
-                                                            Text(convertTimeString(vm.vpks[1][lessonIndex])[1])
-                                                                .font(.custom("Montserrat-Regular", fixedSize: 15))
-                                                                .padding(.top, 1)
-                                                        }
-                                                        .frame(width: 48)
-                                                        .padding(.top, 7)
-                                                        .padding(.bottom, 7)
-                                                        .padding(.leading, 10)
-                                                        Rectangle()
-                                                            .frame(width: 2)
-                                                            .frame(maxHeight: UIScreen.main.bounds.height - 18)
-                                                            .padding(.top, 7)
-                                                            .padding(.bottom, 7)
-                                                            .foregroundColor(getColorForClass(lesson))
-                                                        Text(lesson)
-                                                            .font(.custom("Montserrat-Medium", fixedSize: 16))
-                                                            .lineSpacing(3)
-                                                            .padding(.top, 9)
-                                                            .padding(.bottom, 9)
-                                                        Spacer()
-                                                    }
-                                                    .frame(maxWidth: UIScreen.main.bounds.width - 40, maxHeight: 230)
-                                                    .background(Color.white)
-                                                    .cornerRadius(20)
-                                                    .shadow(color: .black.opacity(0.25), radius: 4, x: 2, y: 2)
-                                                }
-                                            }
                                         }
                                     }
                                 }
