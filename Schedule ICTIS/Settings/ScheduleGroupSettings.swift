@@ -27,7 +27,7 @@ struct ScheduleGroupSettings: View {
                 .foregroundColor(Color("customGray1"))
                 .frame(height: 1)
                 .padding(.horizontal)
-            NavigationLink(destination: SelectingVPKView(vm: vm)) {
+            NavigationLink(destination: FavVPKView(vm: vm)) {
                 HStack {
                     Text("ВПК")
                         .font(.custom("Montserrat-Medium", fixedSize: 17))

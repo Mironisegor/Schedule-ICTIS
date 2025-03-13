@@ -47,10 +47,8 @@ struct SelectingGroupView: View {
                             vm.fetchWeekSchedule(isOtherWeek: false)
                             self.isLoading = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                self.isLoading = false
                                 if vm.errorInNetwork == .noError {
                                     vm.errorInNetwork = nil
-                                    print("Зашел")
                                     if firstFavGroup == "" {
                                         UserDefaults.standard.set(text, forKey: "group")
                                     } else if secondFavGroup == "" {
@@ -58,7 +56,9 @@ struct SelectingGroupView: View {
                                     } else {
                                         UserDefaults.standard.set(text, forKey: "group3")
                                     }
-                                    vm.nameGroups.append(text)
+                                    vm.updateArrayOfGroups()
+                                    vm.fetchWeekSchedule()
+                                    self.isLoading = false
                                     self.text = ""
                                     dismiss()
                                 }

@@ -1,5 +1,5 @@
 //
-//  SelectedVPKView.swift
+//  SelectedGroupView.swift
 //  Schedule ICTIS
 //
 //  Created by Mironov Egor on 30.01.2025.
@@ -15,143 +15,132 @@ struct SelectingVPKView: View {
     @State private var isLoading = false
     @State private var searchTask: DispatchWorkItem?
     @StateObject private var serchGroupsVM = SearchGroupsViewModel()
-    @AppStorage("vpk") private var favVPK = ""
+    var firstFavVPK: String
+    var secondFavVPK: String
+    var thirdFavVPK: String
     var body: some View {
-        NavigationView {
-            VStack {
-                HStack (spacing: 0) {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(Color.gray)
-                        .padding(.leading, 12)
-                        .padding(.trailing, 7)
-                    TextField("Поиск ВПК", text: $text)
-                        .disableAutocorrection(true)
-                        .focused($isFocused)
-                        .onChange(of: text) { oldValue, newValue in
-                            searchTask?.cancel()
-                            let task = DispatchWorkItem {
-                                if !text.isEmpty {
-                                    serchGroupsVM.fetchGroups(group: text)
+        VStack {
+            HStack (spacing: 0) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(Color.gray)
+                    .padding(.leading, 12)
+                    .padding(.trailing, 7)
+                TextField("Поиск ВПК", text: $text)
+                    .disableAutocorrection(true)
+                    .focused($isFocused)
+                    .onChange(of: text) { oldValue, newValue in
+                        searchTask?.cancel()
+                        let task = DispatchWorkItem {
+                            if !text.isEmpty {
+                                serchGroupsVM.fetchGroups(group: text)
+                            }
+                            else {
+                                serchGroupsVM.fetchGroups(group: "ВПК")
+                            }
+                        }
+                        searchTask = task
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
+                    }
+                    .onSubmit {
+                        self.isFocused = false
+                        if (!text.isEmpty) {
+                            vm.fetchWeekSchedule(isOtherWeek: false)
+                            self.isLoading = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                if vm.errorInNetwork == .noError {
+                                    vm.errorInNetwork = nil
+                                    if firstFavVPK == "" {
+                                        UserDefaults.standard.set(text, forKey: "vpk1")
+                                    } else if secondFavVPK == "" {
+                                        UserDefaults.standard.set(text, forKey: "vpk2")
+                                    } else {
+                                        UserDefaults.standard.set(text, forKey: "vpk3")
+                                    }
+                                    vm.updateArrayOfGroups()
+                                    vm.fetchWeekSchedule()
+                                    self.isLoading = false
+                                    self.text = ""
+                                    print("✅ - Избранный ВПК был установлен")
+                                    dismiss()
                                 }
                                 else {
-                                    serchGroupsVM.fetchGroups(group: "впк")
-                                }
-                            }
-                            searchTask = task
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: task)
-                        }
-                        .onSubmit {
-                            self.isFocused = false
-                            if (!text.isEmpty) {
-                                vm.fetchWeekVPK(vpk: UserDefaults.standard.string(forKey: "vpk"))
-                                self.isLoading = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    self.isLoading = false
-                                    if vm.errorInNetwork == .noError {
-                                        vm.errorInNetwork = nil
-                                        print("Зашел")
-                                        UserDefaults.standard.set(text, forKey: "vpk")
-                                        //vm.group = text
-                                        self.text = ""
-                                        dismiss()
-                                    }
-                                    else {
-                                        vm.isShowingAlertForIncorrectGroup = true
-                                        vm.errorInNetwork = .invalidResponse
-                                    }
+                                    vm.isShowingAlertForIncorrectGroup = true
+                                    vm.errorInNetwork = .invalidResponse
                                 }
                             }
                         }
-                        .submitLabel(.done)
-                    if isFocused {
-                        Button {
-                            self.text = ""
-                            self.isFocused = false
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .padding(.trailing, 20)
-                                .offset(x: 10)
-                                .foregroundColor(.gray)
-                                .background(
-                                )
-                            }
                     }
-                }
-                .frame(height: 40)
-                .background(
-                    RoundedRectangle(cornerRadius: 15)
-                        .fill(.white)
-                )
-                Spacer()
-                if isLoading {
-                    LoadingView(isLoading: $isLoading)
-                }
+                    .submitLabel(.done)
                 if isFocused {
-                    ScrollView(.vertical, showsIndicators: true) {
-                        ForEach(serchGroupsVM.groups) { item in
-                            if item.name.starts(with: "ВП") || item.name.starts(with: "мВ") {
-                                VStack {
-                                    Rectangle()
-                                        .frame(height: 1)
-                                        .foregroundColor(Color("customGray1"))
-                                        .padding(.horizontal, 10)
-                                    HStack {
-                                        Text(item.name)
-                                            .foregroundColor(.black)
-                                            .font(.custom("Montserrat-SemiBold", fixedSize: 15))
-                                        Spacer()
-                                    }
+                    Button {
+                        self.text = ""
+                        self.isFocused = false
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .padding(.trailing, 20)
+                            .offset(x: 10)
+                            .foregroundColor(.gray)
+                            .background(
+                            )
+                        }
+                }
+            }
+            .frame(height: 40)
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(.white)
+                )
+            Spacer()
+            if isLoading {
+                LoadingView(isLoading: $isLoading)
+            }
+            if isFocused {
+                ScrollView(.vertical, showsIndicators: true) {
+                    ForEach(serchGroupsVM.groups) { item in
+                        if item.name.starts(with: "ВПК") {
+                            VStack {
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundColor(Color("customGray1"))
                                     .padding(.horizontal, 10)
-                                    .padding(.top, 2)
-                                    .padding(.bottom, 2)
-                                    .frame(width: UIScreen.main.bounds.width, height: 30)
-                                    .background(Color("background"))
-                                    .onTapGesture {
-                                        UserDefaults.standard.set(item.name, forKey: "vpk")
-                                        vm.vpk = item.name
-                                        vm.fetchWeekVPK(vpk: item.name)
-                                        dismiss()
+                                HStack {
+                                    Text(item.name)
+                                        .foregroundColor(.black)
+                                        .font(.custom("Montserrat-SemiBold", fixedSize: 15))
+                                    Spacer()
+                                }
+                                .padding(.horizontal, 10)
+                                .padding(.top, 2)
+                                .padding(.bottom, 2)
+                                .frame(width: UIScreen.main.bounds.width, height: 30)
+                                .background(Color("background"))
+                                .onTapGesture {
+                                    if firstFavVPK == "" {
+                                        UserDefaults.standard.set(item.name, forKey: "vpk1")
+                                    } else if secondFavVPK == "" {
+                                        UserDefaults.standard.set(item.name, forKey: "vpk2")
+                                    } else {
+                                        UserDefaults.standard.set(item.name, forKey: "vpk3")
                                     }
+                                    vm.updateArrayOfGroups()
+                                    vm.fetchWeekSchedule()
+                                    dismiss()
                                 }
                             }
-                        }
-                    }
-                }
-                if !isFocused {
-                    if favVPK != "" {
-                        Button {
-                            UserDefaults.standard.removeObject(forKey: "vpk")
-                            vm.vpks.removeAll()
-                            vm.vpk = ""
-                            vm.vpkHTML = ""
-                            dismiss()
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Image(systemName: "trash")
-                                Text("Удалить ВПК")
-                                    .font(.custom("Montserrat-Medium", fixedSize: 17))
-                                Spacer()
-                            }
-                            .frame(height: 40)
-                            .background(Color.white)
-                            .foregroundColor(Color.red)
-                            .cornerRadius(10)
-                            .padding(.bottom, 50)
                         }
                     }
                 }
             }
-            .padding(.horizontal, 10)
-            .background(Color("background"))
         }
+        .padding(.horizontal, 10)
+        .background(Color("background"))
         .onAppear {
-            serchGroupsVM.fetchGroups(group: "впк")
+            serchGroupsVM.fetchGroups(group: "ВПК")
         }
     }
 }
-
+ 
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    SelectingVPKView(vm: vm)
+    SelectingVPKView(vm: vm, firstFavVPK: "", secondFavVPK: "", thirdFavVPK: "")
 }

@@ -80,7 +80,6 @@ final class ScheduleViewModel: ObservableObject {
                         let numberHTML = schedule.table.group
                         self.numbersNTMLGroups.append(numberHTML)
                         let table = schedule.table.table
-                        let nameOfGroup = schedule.table.name
                         self.week = schedule.table.week
                         
                         // Преобразуем данные в формат ClassInfo
@@ -108,47 +107,6 @@ final class ScheduleViewModel: ObservableObject {
             } catch {
                 if let error = error as? NetworkError {
                     switch error {
-                    case .invalidResponse:
-                        errorInNetwork = .invalidResponse
-                    case .invalidData:
-                        errorInNetwork = .invalidData
-                        self.isShowingAlertForIncorrectGroup = true
-                    default:
-                        print("Неизвестная ошибка: \(error)")
-                    }
-                    isLoading = false
-                    print("Есть ошибка: \(error)")
-                }
-            }
-        }
-    }
-    
-    func fetchWeekVPK(isOtherWeek: Bool = false, vpk: String? = "default") {
-        isLoading = true
-        Task {
-            do {
-                var tempVPKS: Schedule
-                // В этот if мы заходим только если пользователь перелистывает недели и нам известы номер ВПК(в html формате) и номер недели, которая показывается пользователю
-                if isOtherWeek  && vpk != nil {
-                    tempVPKS = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, self.vpkHTML)
-                }
-                // В else мы заходим в том случае, если не знаем номер недели, которую нужно отобразить и номер группы(в html формате)
-                else  {
-                    tempVPKS = try await NetworkManager.shared.getSchedule(vpk!)
-                    self.vpk = vpk!
-                    self.selectedDay = .init()
-                }
-                self.weekScheduleVPK = tempVPKS.table
-                self.vpkHTML = weekScheduleVPK.group
-                self.vpks = weekScheduleVPK.table
-                print(self.vpk)
-                self.isShowingAlertForIncorrectGroup = false
-                self.isLoading = false
-                self.errorInNetwork = .noError
-            }
-            catch {
-                if let error = error as? NetworkError {
-                    switch (error) {
                     case .invalidResponse:
                         errorInNetwork = .invalidResponse
                     case .invalidData:
@@ -218,6 +176,9 @@ final class ScheduleViewModel: ObservableObject {
         let group1 = UserDefaults.standard.string(forKey: "group")
         let group2 = UserDefaults.standard.string(forKey: "group2")
         let group3 = UserDefaults.standard.string(forKey: "group3")
+        let vpk1 = UserDefaults.standard.string(forKey: "vpk1")
+        let vpk2 = UserDefaults.standard.string(forKey: "vpk2")
+        let vpk3 = UserDefaults.standard.string(forKey: "vpk3")
         if let nameGroup1 = group1, nameGroup1 != "" {
             self.nameGroups.append(nameGroup1)
         }
@@ -226,6 +187,15 @@ final class ScheduleViewModel: ObservableObject {
         }
         if let nameGroup3 = group3, nameGroup3 != "" {
             self.nameGroups.append(nameGroup3)
+        }
+        if let nameVPK1 = vpk1, nameVPK1 != "" {
+            self.nameGroups.append(nameVPK1)
+        }
+        if let nameVPK2 = vpk2, nameVPK2 != "" {
+            self.nameGroups.append(nameVPK2)
+        }
+        if let nameVPK3 = vpk3, nameVPK3 != "" {
+            self.nameGroups.append(nameVPK3)
         }
     }
 }

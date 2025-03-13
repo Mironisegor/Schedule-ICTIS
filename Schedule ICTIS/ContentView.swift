@@ -50,9 +50,6 @@ struct ContentView: View {
             }
             print("\(group1) - \(group2) - \(group3)")
             vm.fetchWeekSchedule()
-            if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
-                vm.fetchWeekVPK(vpk: vpkStr)
-            }
         }
     }
 }

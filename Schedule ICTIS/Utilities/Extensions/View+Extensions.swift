@@ -206,9 +206,6 @@ extension WeekViewForWeek {
                 if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
-                if UserDefaults.standard.string(forKey: "vpk") != nil {
-                    vm.fetchWeekVPK(isOtherWeek: true, vpk: UserDefaults.standard.string(forKey: "vpk"))
-                }
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2
@@ -296,9 +293,6 @@ extension MonthTabView {
                 if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
-                if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
-                    vm.fetchWeekVPK(vpk: vpkStr)
-                }
             }
             
             if let lastDate = monthSlider[currentMonthIndex].last?.week[6].date,
@@ -311,9 +305,6 @@ extension MonthTabView {
                 vm.week += 5
                 if !vm.nameGroups.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
-                }
-                if let vpkStr = UserDefaults.standard.string(forKey: "vpk") {
-                    vm.fetchWeekVPK(vpk: vpkStr)
                 }
             }
         }

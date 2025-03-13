@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct FavGroupsView: View {
+struct FavVPKView: View {
     @ObservedObject var vm: ScheduleViewModel
-    var firstFavGroup = (UserDefaults.standard.string(forKey: "group") ?? "")
-    var secondFavGroup = (UserDefaults.standard.string(forKey: "group2") ?? "")
-    var thirdFavGroup = (UserDefaults.standard.string(forKey: "group3") ?? "")
+    var firstFavVPK = (UserDefaults.standard.string(forKey: "vpk1") ?? "")
+    var secondFavVPK = (UserDefaults.standard.string(forKey: "vpk2") ?? "")
+    var thirdFavVPK = (UserDefaults.standard.string(forKey: "vpk3") ?? "")
     var body: some View {
         VStack (spacing: 0) {
             List {
-                if firstFavGroup != "" {
+                if firstFavVPK != "" {
                     HStack {
-                        Text(firstFavGroup)
+                        Text(firstFavVPK)
                             .font(.custom("Montserrat-Medium", fixedSize: 17))
                         Spacer()
                     }
@@ -25,7 +25,7 @@ struct FavGroupsView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            UserDefaults.standard.set("", forKey: "group")
+                            UserDefaults.standard.set("", forKey: "vpk1")
                             vm.updateArrayOfGroups()
                             vm.fetchWeekSchedule()
                         } label: {
@@ -33,9 +33,9 @@ struct FavGroupsView: View {
                         }
                     }
                 }
-                if secondFavGroup != "" {
+                if secondFavVPK != "" {
                     HStack {
-                        Text(secondFavGroup)
+                        Text(secondFavVPK)
                             .font(.custom("Montserrat-Medium", fixedSize: 17))
                         Spacer()
                     }
@@ -43,7 +43,7 @@ struct FavGroupsView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            UserDefaults.standard.set("", forKey: "group2")
+                            UserDefaults.standard.set("", forKey: "vpk2")
                             vm.updateArrayOfGroups()
                             vm.fetchWeekSchedule()
                         } label: {
@@ -51,9 +51,9 @@ struct FavGroupsView: View {
                         }
                     }
                 }
-                if thirdFavGroup != "" {
+                if thirdFavVPK != "" {
                     HStack {
-                        Text(thirdFavGroup)
+                        Text(thirdFavVPK)
                             .font(.custom("Montserrat-Medium", fixedSize: 17))
                         Spacer()
                     }
@@ -61,7 +61,7 @@ struct FavGroupsView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            UserDefaults.standard.set("", forKey: "group3")
+                            UserDefaults.standard.set("", forKey: "vpk3")
                             vm.updateArrayOfGroups()
                             vm.fetchWeekSchedule()
                         } label: {
@@ -76,8 +76,8 @@ struct FavGroupsView: View {
             
             HStack {
                 Spacer()
-                if firstFavGroup == "" || secondFavGroup == "" || thirdFavGroup == "" {
-                    NavigationLink(destination: SelectingGroupView(vm: vm, firstFavGroup: firstFavGroup, secondFavGroup: secondFavGroup, thirdFavGroup: thirdFavGroup)) {
+                if firstFavVPK == "" || secondFavVPK == "" || thirdFavVPK == "" {
+                    NavigationLink(destination: SelectingVPKView(vm: vm, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)) {
                         HStack {
                           Image(systemName: "plus")
                               .foregroundColor(.white)
@@ -98,5 +98,5 @@ struct FavGroupsView: View {
 
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    FavGroupsView(vm: vm)
+    FavVPKView(vm: vm)
 }
