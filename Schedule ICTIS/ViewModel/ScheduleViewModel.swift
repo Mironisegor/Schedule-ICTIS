@@ -11,10 +11,10 @@ import SwiftUICore
 @MainActor
 final class ScheduleViewModel: ObservableObject {
     //MARK: Properties
-    
     @Published var nameGroups: [String] = []
     @Published var numbersNTMLGroups: [String] = []
     @Published var classesGroups: [[ClassInfo]] = []
+    @Published var searchingGroup = ""
     
     //Schedule
     @Published var weekScheduleGroup: Table = Table(
@@ -35,21 +35,6 @@ final class ScheduleViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isNewGroup: Bool = false
     
-    //Groups
-    @Published var groups: [Choice] = []
-    //VPK
-    @Published var vpks: [[String]] = []
-    @Published var vpkHTML: String = ""
-    @Published var vpk: String = ""
-    @Published var weekScheduleVPK: Table = Table(
-        type: "",
-        name: "",
-        week: 0,
-        group: "",
-        table: [[]],
-        link: ""
-    )
-    
     //MARK: Methods    
     func fetchWeekSchedule(isOtherWeek: Bool = false) {
         isLoading = true
@@ -57,6 +42,7 @@ final class ScheduleViewModel: ObservableObject {
             do {
                 var updatedClassesGroups: [[ClassInfo]] = Array(repeating: [], count: 6) // 6 дней (пн-сб)
                 
+                // Если другая неделя, запрашиваем расписание по неделе и номеру группу(в HTML формате)
                 if isOtherWeek {
                     for groupHTML in numbersNTMLGroups {
                         let schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, groupHTML)
@@ -197,5 +183,6 @@ final class ScheduleViewModel: ObservableObject {
         if let nameVPK3 = vpk3, nameVPK3 != "" {
             self.nameGroups.append(nameVPK3)
         }
+        self.nameGroups.append(self.searchingGroup)
     }
 }
