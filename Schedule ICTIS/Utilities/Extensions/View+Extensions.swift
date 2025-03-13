@@ -183,11 +183,12 @@ extension WeekTabView {
 extension WeekViewForWeek {
     func paginateWeek() {
         let calendar = Calendar.current
+        let groupsKeys = Array (vm.nameToHtml.keys)
         if weekSlider.indices.contains(currentWeekIndex) {
             if let firstDate = weekSlider[currentWeekIndex].first?.date,
                 currentWeekIndex == 0 {
                 vm.week -= 1
-                if !vm.nameGroups.isEmpty {
+                if !groupsKeys.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
                 if UserDefaults.standard.string(forKey: "vpk") != nil {
@@ -203,7 +204,7 @@ extension WeekViewForWeek {
             if let lastDate = weekSlider[currentWeekIndex].last?.date,
                 currentWeekIndex == (weekSlider.count - 1) {
                 vm.week += 1
-                if !vm.nameGroups.isEmpty {
+                if !groupsKeys.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
                 weekSlider.append(lastDate.createNextWeek())
@@ -243,13 +244,14 @@ extension WeekViewForMonth {
             print("На одной неделе")
         }
         else {
+            let groupsKeys = Array(vm.nameToHtml.keys)
             var difBetweenWeeks = weeksBetween(startDate: vm.selectedDay, endDate: day.date)
             if day.date < vm.selectedDay {
                 difBetweenWeeks = difBetweenWeeks * -1
             }
             print(difBetweenWeeks)
             vm.week += difBetweenWeeks
-            if !vm.nameGroups.isEmpty {
+            if !groupsKeys.isEmpty {
                 vm.fetchWeekSchedule(isOtherWeek: true)
             }
             if UserDefaults.standard.string(forKey: "vpk") != nil {
@@ -281,6 +283,7 @@ extension MonthTabView {
     
     func paginateMonth(_ indexOfWeek: Int = 0) {
         let calendar = Calendar.current
+        let groupsKeys = Array (vm.nameToHtml.keys)
         if monthSlider.indices.contains(currentMonthIndex) {
             if let firstDate = monthSlider[currentMonthIndex].first?.week[0].date,
                 currentMonthIndex == 0 {
@@ -290,7 +293,7 @@ extension MonthTabView {
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week -= 5
-                if !vm.nameGroups.isEmpty {
+                if !groupsKeys.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
             }
@@ -303,7 +306,7 @@ extension MonthTabView {
                 vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 5, to: vm.selectedDay) ?? Date.init()
                 vm.updateSelectedDayIndex()
                 vm.week += 5
-                if !vm.nameGroups.isEmpty {
+                if !groupsKeys.isEmpty {
                     vm.fetchWeekSchedule(isOtherWeek: true)
                 }
             }

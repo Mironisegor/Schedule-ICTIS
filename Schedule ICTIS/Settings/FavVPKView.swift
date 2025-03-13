@@ -25,9 +25,8 @@ struct FavVPKView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            vm.removeFromSchedule(group: firstFavVPK)
                             UserDefaults.standard.set("", forKey: "vpk1")
-                            vm.updateArrayOfGroups()
-                            vm.fetchWeekSchedule()
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }
@@ -43,9 +42,8 @@ struct FavVPKView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            vm.removeFromSchedule(group: secondFavVPK)
                             UserDefaults.standard.set("", forKey: "vpk2")
-                            vm.updateArrayOfGroups()
-                            vm.fetchWeekSchedule()
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }
@@ -61,9 +59,8 @@ struct FavVPKView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            vm.removeFromSchedule(group: thirdFavVPK)
                             UserDefaults.standard.set("", forKey: "vpk3")
-                            vm.updateArrayOfGroups()
-                            vm.fetchWeekSchedule()
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }

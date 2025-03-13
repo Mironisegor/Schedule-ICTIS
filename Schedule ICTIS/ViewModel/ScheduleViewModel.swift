@@ -11,8 +11,7 @@ import SwiftUICore
 @MainActor
 final class ScheduleViewModel: ObservableObject {
     //MARK: Properties
-    @Published var nameGroups: [String] = []
-    @Published var numbersNTMLGroups: [String] = []
+    @Published var nameToHtml: [String : String] = [:]
     @Published var classesGroups: [[ClassInfo]] = []
     @Published var searchingGroup = ""
     
@@ -44,7 +43,8 @@ final class ScheduleViewModel: ObservableObject {
                 
                 // Если другая неделя, запрашиваем расписание по неделе и номеру группу(в HTML формате)
                 if isOtherWeek {
-                    for groupHTML in numbersNTMLGroups {
+                    let groupHTMLs = Array(self.nameToHtml.values)
+                    for groupHTML in groupHTMLs {
                         let schedule = try await NetworkManager.shared.getScheduleForOtherWeek(self.week, groupHTML)
                         let table = schedule.table.table
                         let nameOfGroup = schedule.table.name
@@ -61,10 +61,11 @@ final class ScheduleViewModel: ObservableObject {
                         }
                     }
                 } else {
-                    for groupName in nameGroups {
+                    let groupNames = Array(self.nameToHtml.keys)
+                    for groupName in groupNames {
                         let schedule = try await NetworkManager.shared.getSchedule(groupName)
                         let numberHTML = schedule.table.group
-                        self.numbersNTMLGroups.append(numberHTML)
+                        self.nameToHtml[groupName] = numberHTML
                         let table = schedule.table.table
                         self.week = schedule.table.week
                         
@@ -156,33 +157,19 @@ final class ScheduleViewModel: ObservableObject {
         }
     }
     
-    func updateArrayOfGroups() {
-        self.nameGroups.removeAll()
-        self.numbersNTMLGroups.removeAll()
-        let group1 = UserDefaults.standard.string(forKey: "group")
-        let group2 = UserDefaults.standard.string(forKey: "group2")
-        let group3 = UserDefaults.standard.string(forKey: "group3")
-        let vpk1 = UserDefaults.standard.string(forKey: "vpk1")
-        let vpk2 = UserDefaults.standard.string(forKey: "vpk2")
-        let vpk3 = UserDefaults.standard.string(forKey: "vpk3")
-        if let nameGroup1 = group1, nameGroup1 != "" {
-            self.nameGroups.append(nameGroup1)
+    func removeFromSchedule(group: String) {
+        self.nameToHtml[group] = nil
+        
+        for i in classesGroups.indices {
+            // Сначала находим индексы элементов для удаления
+            let indicesToRemove = classesGroups[i].indices.filter { j in
+                classesGroups[i][j].group.lowercased() == group.lowercased()
+            }
+            
+            // Удаляем элементы в обратном порядке, чтобы индексы оставались корректными
+            for j in indicesToRemove.reversed() {
+                classesGroups[i].remove(at: j)
+            }
         }
-        if let nameGroup2 = group2, nameGroup2 != ""  {
-            self.nameGroups.append(nameGroup2)
-        }
-        if let nameGroup3 = group3, nameGroup3 != "" {
-            self.nameGroups.append(nameGroup3)
-        }
-        if let nameVPK1 = vpk1, nameVPK1 != "" {
-            self.nameGroups.append(nameVPK1)
-        }
-        if let nameVPK2 = vpk2, nameVPK2 != "" {
-            self.nameGroups.append(nameVPK2)
-        }
-        if let nameVPK3 = vpk3, nameVPK3 != "" {
-            self.nameGroups.append(nameVPK3)
-        }
-        self.nameGroups.append(self.searchingGroup)
     }
 }

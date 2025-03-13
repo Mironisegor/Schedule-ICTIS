@@ -25,9 +25,8 @@ struct FavGroupsView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            vm.removeFromSchedule(group: firstFavGroup)
                             UserDefaults.standard.set("", forKey: "group")
-                            vm.updateArrayOfGroups()
-                            vm.fetchWeekSchedule()
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }
@@ -43,9 +42,8 @@ struct FavGroupsView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            vm.removeFromSchedule(group: secondFavGroup)
                             UserDefaults.standard.set("", forKey: "group2")
-                            vm.updateArrayOfGroups()
-                            vm.fetchWeekSchedule()
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }
@@ -61,9 +59,8 @@ struct FavGroupsView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
+                            vm.removeFromSchedule(group: thirdFavGroup)
                             UserDefaults.standard.set("", forKey: "group3")
-                            vm.updateArrayOfGroups()
-                            vm.fetchWeekSchedule()
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }

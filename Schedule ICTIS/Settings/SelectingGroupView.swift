@@ -51,12 +51,14 @@ struct SelectingGroupView: View {
                                     vm.errorInNetwork = nil
                                     if firstFavGroup == "" {
                                         UserDefaults.standard.set(text, forKey: "group")
+                                        vm.nameToHtml[text] = ""
                                     } else if secondFavGroup == "" {
                                         UserDefaults.standard.set(text, forKey: "group2")
+                                        vm.nameToHtml[text] = ""
                                     } else {
                                         UserDefaults.standard.set(text, forKey: "group3")
+                                        vm.nameToHtml[text] = ""
                                     }
-                                    vm.updateArrayOfGroups()
                                     vm.fetchWeekSchedule()
                                     self.isLoading = false
                                     self.text = ""
@@ -116,12 +118,14 @@ struct SelectingGroupView: View {
                                 .onTapGesture {
                                     if firstFavGroup == "" {
                                         UserDefaults.standard.set(item.name, forKey: "group")
+                                        vm.nameToHtml[item.name] = ""
                                     } else if secondFavGroup == "" {
                                         UserDefaults.standard.set(item.name, forKey: "group2")
+                                        vm.nameToHtml[item.name] = ""
                                     } else {
                                         UserDefaults.standard.set(item.name, forKey: "group3")
+                                        vm.nameToHtml[item.name] = ""
                                     }
-                                    vm.updateArrayOfGroups()
                                     vm.fetchWeekSchedule()
                                     dismiss()
                                 }

@@ -16,9 +16,6 @@ struct ScheduleView: View {
     @State private var isShowingMyPairs = false
     @Binding var isScrolling: Bool
     var provider = ClassProvider.shared
-    var hasVPK: Bool {
-        return vm.vpks.indices.contains(vm.selectedIndex) && vm.vpks[vm.selectedIndex].dropFirst().contains { !$0.isEmpty }
-    }
     var body: some View {
         if vm.isLoading {
             LoadingScheduleView()
