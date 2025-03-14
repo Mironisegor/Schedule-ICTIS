@@ -94,9 +94,7 @@ struct SelectingVPKView: View {
             if isLoading {
                 LoadingView(isLoading: $isLoading)
             }
-            if isFocused {
-                ListOfGroupsView(vm: vm, serchGroupsVM: serchGroupsVM, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)
-            }
+            ListOfGroupsView(vm: vm, serchGroupsVM: serchGroupsVM, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)
         }
         .padding(.horizontal, 10)
         .background(Color("background"))

@@ -95,7 +95,7 @@ struct SelectingGroupView: View {
             if isLoading {
                 LoadingView(isLoading: $isLoading)
             }
-            if isFocused {
+            //if isFocused {
                 ScrollView(.vertical, showsIndicators: true) {
                     ForEach(serchGroupsVM.groups) { item in
                         if item.name.starts(with: "КТ") { //Отображаем только группы(без аудиторий и преподавателей)
@@ -133,7 +133,7 @@ struct SelectingGroupView: View {
                         }
                     }
                 }
-            }
+            //}
         }
         .padding(.horizontal, 10)
         .background(Color("background"))

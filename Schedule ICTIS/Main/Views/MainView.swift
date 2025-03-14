@@ -82,14 +82,15 @@ struct MainView: View {
             if (!isShowingMonthSlider) {
                 WeekTabView(vm: vm)
                     .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.25), value: isShowingMonthSlider)
             }
             else {
                 MonthTabView(vm: vm)
                     .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.25), value: isShowingMonthSlider)
             }
         }
         .padding(.horizontal)
-        .animation(.easeInOut(duration: 0.25), value: isShowingMonthSlider)
     }
 }
 #Preview {

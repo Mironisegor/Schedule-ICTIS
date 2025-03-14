@@ -17,7 +17,7 @@ struct ListOfGroupsView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             ForEach(serchGroupsVM.groups) { item in
-                if item.name.starts(with: "ВПК") {
+                if item.name.starts(with: "ВПК") || item.name.starts(with: "мВПК") {
                     VStack {
                         Rectangle()
                             .frame(height: 1)
