@@ -14,9 +14,14 @@ final class NetworkManager {
     private let decoder = JSONDecoder()
     private let urlForGroup = "https://webictis.sfedu.ru/schedule-api/?query="
     private let urlForWeek = "https://webictis.sfedu.ru/schedule-api/?group="
+    private let customSession: URLSession // Кастомная сессия для ограничения времени ответа от сервера
     
     //MARK: Initializer
     private init() {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 3 // Таймаут запроса 10 секунд
+        configuration.timeoutIntervalForResource = 3 // Таймаут ресурса 15 секунд
+        self.customSession = URLSession(configuration: configuration)
         decoder.dateDecodingStrategy = .iso8601
     }
     
@@ -32,7 +37,7 @@ final class NetworkManager {
     func getSchedule(_ group: String) async throws -> Schedule {
         let newUrlForGroup = makeUrlForGroup(group)
         guard let url = URL(string: newUrlForGroup) else { throw NetworkError.invalidUrl }
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await customSession.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
         
         do {
@@ -47,7 +52,7 @@ final class NetworkManager {
         let newUrlForWeek = makeUrlForWeek(numOfWeek, htmlNameOfGroup)
         print(newUrlForWeek)
         guard let url = URL(string: newUrlForWeek) else { throw NetworkError.invalidUrl }
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await customSession.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
         
         do {
@@ -61,7 +66,7 @@ final class NetworkManager {
     func getGroups(group: String) async throws -> Welcome {
         let newUrlForGroups = makeUrlForGroup(group)
         guard let url = URL(string: newUrlForGroups) else { throw NetworkError.invalidUrl }
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await customSession.data(from: url)
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
         
         do {

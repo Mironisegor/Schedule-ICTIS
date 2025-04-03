@@ -11,9 +11,9 @@ struct MainView: View {
     @State private var searchText: String = ""
     @State private var isShowingMonthSlider: Bool = false
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     @FocusState private var isFocusedSearchBar: Bool
     @State private var isScrolling: Bool = false
-    
     var body: some View {
         VStack {
             SearchBarView(text: $searchText, isFocused: _isFocusedSearchBar, vm: vm, isShowingMonthSlider: $isShowingMonthSlider)
@@ -23,11 +23,12 @@ struct MainView: View {
                     }
                 }
             CurrentDateView()
+            FilterGroupsView(vm: vm)
             if vm.isLoading {
                 LoadingScheduleView()
             }
             else {
-                ScheduleView(vm: vm, isScrolling: $isScrolling)
+                ScheduleView(vm: vm, networkMonitor: networkMonitor, isScrolling: $isScrolling)
             }
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
@@ -87,12 +88,10 @@ struct MainView: View {
             else {
                 MonthTabView(vm: vm)
                     .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.25), value: isShowingMonthSlider)
+                    .animation(.linear(duration: 0.5), value: isShowingMonthSlider)
             }
         }
         .padding(.horizontal)
     }
 }
-#Preview {
-    ContentView()
-}
+

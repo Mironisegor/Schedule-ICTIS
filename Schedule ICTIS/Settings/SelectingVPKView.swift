@@ -56,7 +56,9 @@ struct SelectingVPKView: View {
                                     } else {
                                         UserDefaults.standard.set(text, forKey: "vpk3")
                                     }
+                                    text = transformStringToFormat(text)
                                     vm.nameToHtml[text] = ""
+                                    vm.updateFilteringGroups()
                                     vm.fetchWeekSchedule()
                                     self.isLoading = false
                                     self.text = ""

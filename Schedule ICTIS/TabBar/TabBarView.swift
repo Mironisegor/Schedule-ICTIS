@@ -58,7 +58,3 @@ struct TabBarView: View {
         }
     }
 }
-
-#Preview {
-    ContentView()
-}

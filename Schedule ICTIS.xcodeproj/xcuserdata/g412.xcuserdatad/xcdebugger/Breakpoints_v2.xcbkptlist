@@ -8,7 +8,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "CF2C0E34-74B0-458B-AE66-E61DEB75A958"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Schedule ICTIS/Main/Views/ProfessorAuditoryClassFieldView.swift"

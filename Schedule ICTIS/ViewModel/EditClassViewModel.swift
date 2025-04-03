@@ -2,14 +2,14 @@
 //  EditClassViewModel.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 18.12.2024.
+//  Created by Egor Mironov on 18.12.2024.
 //
 
 import Foundation
 import CoreData
 
 final class EditClassViewModel: ObservableObject {
-    @Published var _class: ClassModel
+    @Published var _class: CoreDataClassModel
     
     let isNew: Bool
     
@@ -17,7 +17,7 @@ final class EditClassViewModel: ObservableObject {
     
     private let context: NSManagedObjectContext
     
-    init(provider: ClassProvider, _class: ClassModel? = nil) {
+    init(provider: ClassProvider, _class: CoreDataClassModel? = nil) {
         self.provider = provider
         self.context = provider.newContext
         
@@ -27,7 +27,7 @@ final class EditClassViewModel: ObservableObject {
             self.isNew = false
         }
         else {
-            self._class = ClassModel(context: self.context)
+            self._class = CoreDataClassModel(context: self.context)
             self.isNew = true
         }
     }

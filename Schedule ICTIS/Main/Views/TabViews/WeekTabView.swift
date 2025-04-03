@@ -44,7 +44,3 @@ struct WeekTabView: View {
         }
     }
 }
-
-#Preview {
-    ContentView()
-}

@@ -44,6 +44,7 @@ struct ListOfGroupsView: View {
                             }
                             vm.nameToHtml[item.name] = ""
                             vm.fetchWeekSchedule()
+                            vm.updateFilteringGroups()
                             dismiss()
                         }
                     }

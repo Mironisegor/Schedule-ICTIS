@@ -49,11 +49,11 @@ final class ClassProvider {
         }
     }
     
-    func exists(_ lesson: ClassModel, in context: NSManagedObjectContext) -> ClassModel? {
-        try? context.existingObject(with: lesson.objectID) as? ClassModel
+    func exists(_ lesson: CoreDataClassModel, in context: NSManagedObjectContext) -> CoreDataClassModel? {
+        try? context.existingObject(with: lesson.objectID) as? CoreDataClassModel
     }
     
-    func delete(_ lesson: ClassModel, in context: NSManagedObjectContext) throws {
+    func delete(_ lesson: CoreDataClassModel, in context: NSManagedObjectContext) throws {
         if let existingClass = exists(lesson, in: context) {
             context.delete(existingClass)
             Task(priority: .background) {
@@ -74,5 +74,22 @@ final class ClassProvider {
 extension EnvironmentValues {
     static var isPreview: Bool {
         return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+    }
+}
+
+extension ClassProvider {
+    func exists(_ jsonClass: JsonClassModel, in context: NSManagedObjectContext) -> JsonClassModel? {
+        try? context.existingObject(with: jsonClass.objectID) as? JsonClassModel
+    }
+    
+    func delete(_ jsonClass: JsonClassModel, in context: NSManagedObjectContext) throws {
+        if let existingJsonClass = exists(jsonClass, in: context) {
+            context.delete(existingJsonClass)
+            Task(priority: .background) {
+                try await context.perform {
+                    try context.save()
+                }
+            }
+        }
     }
 }

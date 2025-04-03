@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-final class ClassModel: NSManagedObject, Identifiable {
+final class CoreDataClassModel: NSManagedObject, Identifiable {
     @NSManaged var auditory: String
     @NSManaged var professor: String
     @NSManaged var subject: String
@@ -47,29 +47,29 @@ final class ClassModel: NSManagedObject, Identifiable {
 }
 
 // Расширение для загрузки данных из памяти
-extension ClassModel {
+extension CoreDataClassModel {
     // Получаем все данные из памяти
-    private static var classesFetchRequest: NSFetchRequest<ClassModel> {
-        NSFetchRequest(entityName: "ClassModel")
+    private static var classesFetchRequest: NSFetchRequest<CoreDataClassModel> {
+        NSFetchRequest(entityName: "CoreDataClassModel")
     }
     
     // Получаем все данные и сортируем их по дню
     // Этот метод будет использоваться на View(ScheduleView), где отображаются пары
-    static func all() -> NSFetchRequest<ClassModel> {
-        let request: NSFetchRequest<ClassModel> = classesFetchRequest
+    static func all() -> NSFetchRequest<CoreDataClassModel> {
+        let request: NSFetchRequest<CoreDataClassModel> = classesFetchRequest
         request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \ClassModel.day, ascending: true)
+            NSSortDescriptor(keyPath: \CoreDataClassModel.day, ascending: true)
         ]
         return request
     }
 }
 
-extension ClassModel {
+extension CoreDataClassModel {
     @discardableResult
-    static func makePreview(count: Int, in context: NSManagedObjectContext) -> [ClassModel] {
-        var classes = [ClassModel]()
+    static func makePreview(count: Int, in context: NSManagedObjectContext) -> [CoreDataClassModel] {
+        var classes = [CoreDataClassModel]()
         for i in 0..<count {
-            let _class = ClassModel(context: context)
+            let _class = CoreDataClassModel(context: context)
             _class.subject = "Предмет \(i)"
             _class.auditory = "Аудитория \(i)"
             _class.professor = "Преподаватель \(i)"
@@ -81,11 +81,11 @@ extension ClassModel {
         return classes
     }
     
-    static func preview(context: NSManagedObjectContext = ClassProvider.shared.viewContext) -> ClassModel {
+    static func preview(context: NSManagedObjectContext = ClassProvider.shared.viewContext) -> CoreDataClassModel {
         return makePreview(count: 1, in: context)[0]
     }
         
-    static func empty(context: NSManagedObjectContext = ClassProvider.shared.viewContext) -> ClassModel {
-        return ClassModel(context: context)
+    static func empty(context: NSManagedObjectContext = ClassProvider.shared.viewContext) -> CoreDataClassModel {
+        return CoreDataClassModel(context: context)
     }
 }

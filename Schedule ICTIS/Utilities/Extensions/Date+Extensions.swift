@@ -87,9 +87,11 @@ extension Date {
     func createPreviousMonth() -> [MonthWeek] {
         let calendar = Calendar.current
         let startOfFirstDate = calendar.startOfDay(for: self)
-        guard let previousDate = calendar.date(byAdding: .month, value: -1, to: startOfFirstDate) else {
+        guard let previousDate = calendar.date(byAdding: .weekOfMonth, value: -5, to: startOfFirstDate) else {
             return []
         }
+        print("Start of first date \(startOfFirstDate)")
+        print("Previous date \(previousDate)")
         return fetchMonth(previousDate)
     }
     

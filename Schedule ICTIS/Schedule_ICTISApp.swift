@@ -9,10 +9,16 @@ import SwiftUI
 
 @main
 struct Schedule_ICTISApp: App {
+    @StateObject private var networkMonitor = NetworkMonitor()
+    @StateObject var vm = ScheduleViewModel()
+    var provider = ClassProvider.shared
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(vm: vm, networkMonitor: networkMonitor)
                 .environment(\.managedObjectContext, ClassProvider.shared.viewContext)
+                .onAppear {
+                    vm.fillDictForVm()
+                }
         }
     }
 }

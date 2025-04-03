@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - Welcome
 struct Welcome: Decodable {
-    let choices: [Choice]
+    let choices: [Subject]
 }
 
 // MARK: - Choice
-struct Choice: Decodable, Identifiable {
+struct Subject: Decodable, Identifiable {
     let name: String
     let id: String
     let group: String

@@ -31,9 +31,11 @@ struct SearchBarView: View {
                         if (!text.isEmpty) {
                             vm.nameToHtml[vm.searchingGroup] = nil
                             vm.removeFromSchedule(group: vm.searchingGroup)
+                            text = transformStringToFormat(text)
                             vm.searchingGroup = text
                             vm.nameToHtml[text] = ""
                             vm.fetchWeekSchedule()
+                            vm.updateFilteringGroups()
                         }
                         self.text = ""
                     }
@@ -88,6 +90,3 @@ struct SearchBarView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}

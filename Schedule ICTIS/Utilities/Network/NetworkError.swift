@@ -11,8 +11,8 @@ enum NetworkError: String, Error, LocalizedError {
     case invalidUrl
     case invalidResponse
     case invalidData
-    case noNetwork
     case noError
+    case timeout
     
     var errorDescription: String? {
         switch self {
@@ -22,8 +22,8 @@ enum NetworkError: String, Error, LocalizedError {
             "InvalidResponse"
         case .invalidData:
             "Проверьте номер группы"
-        case .noNetwork:
-            "No network connection"
+        case .timeout:
+            "Ошибка сети"
         case .noError:
             "Нет ошибки"
         }
@@ -37,8 +37,8 @@ enum NetworkError: String, Error, LocalizedError {
             "Для этой недели расписания еще нет"
         case .invalidData:
             "Похоже такой группы не существует"
-        case .noNetwork:
-            "Проверьте подключение к интернету и попробуйте заново"
+        case .timeout:
+            "Проверьте соединение с интернетом"
         case .noError:
             "Ошибки нет"
         }

@@ -49,17 +49,17 @@ struct SelectingGroupView: View {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 if vm.errorInNetwork == .noError {
                                     vm.errorInNetwork = nil
+                                    text = transformStringToFormat(text)
                                     if firstFavGroup == "" {
                                         UserDefaults.standard.set(text, forKey: "group")
-                                        vm.nameToHtml[text] = ""
                                     } else if secondFavGroup == "" {
                                         UserDefaults.standard.set(text, forKey: "group2")
-                                        vm.nameToHtml[text] = ""
                                     } else {
                                         UserDefaults.standard.set(text, forKey: "group3")
-                                        vm.nameToHtml[text] = ""
                                     }
+                                    vm.nameToHtml[text] = ""
                                     vm.fetchWeekSchedule()
+                                    vm.updateFilteringGroups()
                                     self.isLoading = false
                                     self.text = ""
                                     dismiss()
@@ -126,6 +126,7 @@ struct SelectingGroupView: View {
                                         UserDefaults.standard.set(item.name, forKey: "group3")
                                         vm.nameToHtml[item.name] = ""
                                     }
+                                    vm.updateFilteringGroups()
                                     vm.fetchWeekSchedule()
                                     dismiss()
                                 }

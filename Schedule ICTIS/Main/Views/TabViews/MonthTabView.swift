@@ -15,31 +15,31 @@ struct MonthTabView: View {
     @ObservedObject var vm: ScheduleViewModel
     var body: some View {
         VStack {
-            HStack (spacing: 34) {
+            HStack (spacing: 33) {
                 ForEach(MockData.daysOfWeek.indices, id: \.self) { index in
                     Text(MockData.daysOfWeek[index])
                         .font(.custom("Montserrat-SemiBold", fixedSize: 15))
                         .foregroundColor(MockData.daysOfWeek[index] == "Вс" ? Color(.red) : Color("customGray2"))
-                        .padding(.top, 13)
-                        .foregroundColor(.gray)
                 }
             }
-            .padding(.top, 14)
             TabView(selection: $currentMonthIndex) {
                 ForEach(monthSlider.indices, id: \.self) { index in
                     let month = monthSlider[index]
                     MonthView(month)
                         .tag(index)
+                        .transition(.slide)
                 }
             }
-            .padding(.top, -25)
-            .padding(.bottom, -10)
             .padding(.horizontal, -15)
             .tabViewStyle(.page(indexDisplayMode: .never))
+            //.animation(.easeIn(duration: 0.3), value: currentMonthIndex)
         }
-        .onAppear(perform: {
+        .frame(height: 220)
+        .padding(.top, 26)
+        .padding(.bottom, 20)
+        .onAppear {
             updateMonthScreenViewForNewGroup()
-        })
+        }
         .onChange(of: currentMonthIndex, initial: false) { oldValue, newValue in
             if newValue == 0 || newValue == (monthSlider.count - 1) {
                 createMonth = true
@@ -82,6 +82,3 @@ struct MonthTabView: View {
 }
 
 
-#Preview {
-    ContentView()
-}

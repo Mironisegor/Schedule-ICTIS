@@ -14,6 +14,8 @@ final class ScheduleViewModel: ObservableObject {
     @Published var nameToHtml: [String : String] = [:]
     @Published var classesGroups: [[ClassInfo]] = []
     @Published var searchingGroup = ""
+    @Published var filteringGroups: [String] = ["Все"]
+    @Published var showOnlyChoosenGroup: String = "Все"
     
     //Schedule
     @Published var weekScheduleGroup: Table = Table(
@@ -25,7 +27,7 @@ final class ScheduleViewModel: ObservableObject {
         link: ""
     )
     @Published var selectedDay: Date = .init()
-    @Published var selectedIndex: Int = 1
+    @Published var selectedIndex: Int = 0
     @Published var week: Int = 0
     
     @Published var isFirstStartOffApp = true
@@ -92,7 +94,10 @@ final class ScheduleViewModel: ObservableObject {
                 // Сортируем по времени
                 self.sortClassesByTime()
             } catch {
-                if let error = error as? NetworkError {
+                if let urlError = error as? URLError, urlError.code == .timedOut {
+                    errorInNetwork = .timeout
+                    print("Ошибка: превышено время ожидания ответа от сервера")
+                } else if let error = error as? NetworkError {
                     switch error {
                     case .invalidResponse:
                         errorInNetwork = .invalidResponse
@@ -102,9 +107,9 @@ final class ScheduleViewModel: ObservableObject {
                     default:
                         print("Неизвестная ошибка: \(error)")
                     }
-                    isLoading = false
                     print("Есть ошибка: \(error)")
                 }
+                isLoading = false
             }
         }
     }
@@ -170,6 +175,39 @@ final class ScheduleViewModel: ObservableObject {
             for j in indicesToRemove.reversed() {
                 classesGroups[i].remove(at: j)
             }
+        }
+    }
+    
+    func updateFilteringGroups() {
+        self.filteringGroups = ["Все"]
+        let keys = self.nameToHtml.keys
+        self.filteringGroups.append(contentsOf: keys)
+    }
+    
+    func fillDictForVm() {
+        let group1 = UserDefaults.standard.string(forKey: "group")
+        let group2 = UserDefaults.standard.string(forKey: "group2")
+        let group3 = UserDefaults.standard.string(forKey: "group3")
+        let vpk1 = UserDefaults.standard.string(forKey: "vpk1")
+        let vpk2 = UserDefaults.standard.string(forKey: "vpk2")
+        let vpk3 = UserDefaults.standard.string(forKey: "vpk3")
+        if let nameGroup1 = group1, nameGroup1 != "" {
+            nameToHtml[nameGroup1] = ""
+        }
+        if let nameGroup2 = group2, nameGroup2 != ""  {
+            nameToHtml[nameGroup2] = ""
+        }
+        if let nameGroup3 = group3, nameGroup3 != "" {
+            nameToHtml[nameGroup3] = ""
+        }
+        if let nameVpk1 = vpk1, nameVpk1 != "" {
+            nameToHtml[nameVpk1] = ""
+        }
+        if let nameVpk2 = vpk2, nameVpk2 != "" {
+            nameToHtml[nameVpk2] = ""
+        }
+        if let nameVpk3 = vpk3, nameVpk3 != "" {
+            nameToHtml[nameVpk3] = ""
         }
     }
 }

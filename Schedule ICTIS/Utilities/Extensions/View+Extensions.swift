@@ -8,6 +8,36 @@
 import SwiftUI
 
 extension View {
+    
+    func transformStringToFormat(_ input: String) -> String {
+        var result = input
+        
+        // Условие 1: начинается с "кт"
+        if result.lowercased().hasPrefix("кт") {
+            result = result.lowercased()
+            let firstTwo = String(result.prefix(2)).uppercased()
+            let rest = String(result.dropFirst(2))
+            result = firstTwo + rest
+            return result
+        }
+        
+        // Условие 2: содержит "впк"
+        if result.lowercased().contains("впк") {
+            result = result.lowercased()
+            result = result.replacingOccurrences(of: "впк", with: "ВПК")
+            return result
+        }
+        
+        // Условие 3: содержит "мвпк"
+        if result.lowercased().contains("мвпк") {
+            result = result.lowercased()
+            result = result.replacingOccurrences(of: "впк", with: "ВПК")
+            return result
+        }
+        
+        return result
+    }
+    
     func isSameDate(_ date1: Date, _ date2: Date) -> Bool {
         return Calendar.current.isDate(date1, inSameDayAs: date2)
     }
@@ -270,13 +300,17 @@ extension MonthTabView {
             let currentMonth = Date().fetchMonth(vm.selectedDay)
             
             if let firstDate = currentMonth.first?.week[0].date {
-                monthSlider.append(firstDate.createPreviousMonth())
+                let temp = firstDate.createPreviousMonth()
+                print("First date - \(firstDate)")
+                print(temp)
+                monthSlider.append(temp)
             }
                 
             monthSlider.append(currentMonth)
             
             if let lastDate = currentMonth.last?.week[6].date {
-                monthSlider.append(lastDate.createNextMonth())
+                let temp = lastDate.createNextMonth()
+                monthSlider.append(temp)
             }
         }
     }

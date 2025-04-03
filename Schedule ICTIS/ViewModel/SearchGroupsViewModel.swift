@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 final class SearchGroupsViewModel: ObservableObject {
-    @Published var groups: [Choice] = []
+    @Published var groups: [Subject] = []
     
     func fetchGroups(group: String) {
         Task {
