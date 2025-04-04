@@ -12,6 +12,7 @@ struct SelectingGroupView: View {
     @FocusState private var isFocused: Bool
     @State private var text: String = ""
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     @State private var isLoading = false
     @State private var searchTask: DispatchWorkItem?
     @StateObject private var serchGroupsVM = SearchGroupsViewModel()
@@ -93,9 +94,9 @@ struct SelectingGroupView: View {
                 )
             Spacer()
             if isLoading {
-                LoadingView(isLoading: $isLoading)
-            }
-            //if isFocused {
+                LoadingView()
+                Spacer()
+            } else if networkMonitor.isConnected {
                 ScrollView(.vertical, showsIndicators: true) {
                     ForEach(serchGroupsVM.groups) { item in
                         if item.name.starts(with: "КТ") { //Отображаем только группы(без аудиторий и преподавателей)
@@ -134,7 +135,9 @@ struct SelectingGroupView: View {
                         }
                     }
                 }
-            //}
+            } else {
+                NetworkErrorView(message: "Восстановите подключение к интернету чтобы мы смогли загрузить список групп")
+            }
         }
         .padding(.horizontal, 10)
         .background(Color("background"))
@@ -146,5 +149,6 @@ struct SelectingGroupView: View {
  
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    SelectingGroupView(vm: vm, firstFavGroup: "", secondFavGroup: "", thirdFavGroup: "")
+    @Previewable @StateObject var vm2 = NetworkMonitor()
+    SelectingGroupView(vm: vm, networkMonitor: vm2, firstFavGroup: "", secondFavGroup: "", thirdFavGroup: "")
 }

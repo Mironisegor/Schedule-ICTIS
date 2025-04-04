@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NetworkErrorView: View {
+    var message: String
     var body: some View {
         VStack {
             Spacer()
@@ -15,17 +16,16 @@ struct NetworkErrorView: View {
                 Image(systemName: "wifi.slash")
                     .font(.system(size: 60, weight: .light))
                     .frame(width: 70, height: 70)
-                Text("Восстановите подключение к интернету чтобы мы могли загрузить расписание")
+                Text(message)
                     .font(.custom("Montserrat-Medium", fixedSize: 15))
                     .padding(.top, 5)
             }
             .padding(.horizontal, 30)
-            .padding(.top, UIScreen.main.bounds.height/8)
             Spacer()
         }
     }
 }
 
 #Preview {
-    NetworkErrorView()
+    NetworkErrorView(message: "Восстановите подключение к интернету чтобы мы смогли загрузить расписание")
 }

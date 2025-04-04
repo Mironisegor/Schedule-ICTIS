@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ScheduleGroupSettings: View {
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     var body: some View {
         VStack {
-            NavigationLink(destination: FavGroupsView(vm: vm)) {
+            NavigationLink(destination: FavGroupsView(vm: vm, networkMonitor: networkMonitor)) {
                 HStack {
                     Text("Избранное расписание")
                         .font(.custom("Montserrat-Medium", fixedSize: 17))
@@ -27,7 +28,7 @@ struct ScheduleGroupSettings: View {
                 .foregroundColor(Color("customGray1"))
                 .frame(height: 1)
                 .padding(.horizontal)
-            NavigationLink(destination: FavVPKView(vm: vm)) {
+            NavigationLink(destination: FavVPKView(vm: vm, networkMonitor: networkMonitor)) {
                 HStack {
                     Text("ВПК")
                         .font(.custom("Montserrat-Medium", fixedSize: 17))

@@ -2,14 +2,14 @@
 //  CustomTabBarView.swift
 //  Schedule ICTIS
 //
-//  Created by Egor Mironov on 13.11.2024.
+//  Created by Mironov Egor on 13.11.2024.
 //
 
 import SwiftUI
 
 struct TabBarView: View {
     @Binding var selectedTab: TabBarModel
-//    @NameSpace private var animation
+    @Namespace private var animation
     var body: some View {
         VStack {
             Spacer()
@@ -20,14 +20,14 @@ struct TabBarView: View {
             .padding(6)
             .background(.white)
             .mask(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .shadow(color: .black.opacity(0.2), radius: 8, x: 4, y: 4)
+            .shadow(color: .black.opacity(0.4), radius: 20, x: 8, y: 8)
             
-    //        .background(
-    //            background
-    //                .shadow(.drop(color: .black.opacity(0.08), radius: 5, x: 5, y: 5))
-    //                .shadow(.drop(color: .black.opacity(0.08), radius: 5, x: 5, y: -5)),
-    //            in: .capsule
-    //        )
+            //.background(
+            //    background
+            //        .shadow(.drop(color: Color.black.opacity(0.08), radius: 5, x: 5, y: 5))
+            //        .shadow(.drop(color: Color.black.opacity(0.08), radius: 5, x: 5, y: -5)),
+            //    in: .capsule
+            //)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)  // Фиксаци таб-бара, при появлении клавиатуры
     }
@@ -40,6 +40,7 @@ struct TabBarView: View {
                 VStack (alignment: .center) {
                     Image(systemName: tab.rawValue)
                         .font(.title3)
+                        .fontWeight(.regular)
                 }
                 .frame(width: 70, height: 28)
                 .foregroundStyle(selectedTab == tab ? Color.white : Color("blueColor"))
@@ -49,8 +50,18 @@ struct TabBarView: View {
                 .background {
                     if selectedTab == tab {
                         Capsule()
-                            .fill(Color("blueColor"))
-//                                .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(stops: [
+                                        .init(color: Color("blueColor").opacity(0.9), location: 0.0),
+                                        .init(color: Color("blueColor").opacity(0.9), location: 0.5),
+                                        .init(color: Color("blueColor").opacity(1.0), location: 1.0)
+                                    ]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                     }
                 }
             }

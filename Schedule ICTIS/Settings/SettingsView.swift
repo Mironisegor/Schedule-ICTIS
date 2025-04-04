@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     @State private var selectedTheme = "Светлая"
     @State private var selectedLanguage = "Русский"
     var body: some View {
@@ -28,7 +29,7 @@ struct SettingsView: View {
                             .font(.custom("Montserrat-Medium", fixedSize: 18))
                             .foregroundColor(Color("customGray3"))
                             .padding(.horizontal)
-                        ScheduleGroupSettings(vm: vm)
+                        ScheduleGroupSettings(vm: vm, networkMonitor: networkMonitor)
                     }
                     .padding(.top, 20)
                 }
@@ -42,5 +43,6 @@ struct SettingsView: View {
 
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    SettingsView(vm: vm)
+    @Previewable @StateObject var vm2 = NetworkMonitor()
+    SettingsView(vm: vm, networkMonitor: vm2)
 }

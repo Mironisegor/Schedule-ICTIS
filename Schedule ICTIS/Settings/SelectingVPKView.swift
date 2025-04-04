@@ -12,6 +12,7 @@ struct SelectingVPKView: View {
     @FocusState private var isFocused: Bool
     @State private var text: String = ""
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     @State private var isLoading = false
     @State private var searchTask: DispatchWorkItem?
     @StateObject private var serchGroupsVM = SearchGroupsViewModel()
@@ -94,9 +95,13 @@ struct SelectingVPKView: View {
                 )
             Spacer()
             if isLoading {
-                LoadingView(isLoading: $isLoading)
+                LoadingView()
+                Spacer()
+            } else if networkMonitor.isConnected {
+                ListOfGroupsView(vm: vm, serchGroupsVM: serchGroupsVM, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)
+            } else {
+                ConnectingToNetworkView()
             }
-            ListOfGroupsView(vm: vm, serchGroupsVM: serchGroupsVM, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)
         }
         .padding(.horizontal, 10)
         .background(Color("background"))
@@ -108,5 +113,6 @@ struct SelectingVPKView: View {
  
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    SelectingVPKView(vm: vm, firstFavVPK: "", secondFavVPK: "", thirdFavVPK: "")
+    @Previewable @StateObject var vm2 = NetworkMonitor()
+    SelectingVPKView(vm: vm, networkMonitor: vm2, firstFavVPK: "", secondFavVPK: "", thirdFavVPK: "")
 }

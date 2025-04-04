@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FavGroupsView: View {
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     var firstFavGroup = (UserDefaults.standard.string(forKey: "group") ?? "")
     var secondFavGroup = (UserDefaults.standard.string(forKey: "group2") ?? "")
     var thirdFavGroup = (UserDefaults.standard.string(forKey: "group3") ?? "")
@@ -74,7 +75,7 @@ struct FavGroupsView: View {
             HStack {
                 Spacer()
                 if firstFavGroup == "" || secondFavGroup == "" || thirdFavGroup == "" {
-                    NavigationLink(destination: SelectingGroupView(vm: vm, firstFavGroup: firstFavGroup, secondFavGroup: secondFavGroup, thirdFavGroup: thirdFavGroup)) {
+                    NavigationLink(destination: SelectingGroupView(vm: vm, networkMonitor: networkMonitor, firstFavGroup: firstFavGroup, secondFavGroup: secondFavGroup, thirdFavGroup: thirdFavGroup)) {
                         HStack {
                           Image(systemName: "plus")
                               .foregroundColor(.white)
@@ -87,7 +88,7 @@ struct FavGroupsView: View {
                     }
                 }
             }
-            .padding(.bottom, 50)
+            .padding(.bottom, 90)
         }
         .background(Color("background"))
     }
@@ -95,5 +96,6 @@ struct FavGroupsView: View {
 
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    FavGroupsView(vm: vm)
+    @Previewable @StateObject var vm2 = NetworkMonitor()
+    FavGroupsView(vm: vm, networkMonitor: vm2)
 }

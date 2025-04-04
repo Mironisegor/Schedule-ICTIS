@@ -48,7 +48,7 @@ struct ScheduleView: View {
     private var onlineContent: some View {
         Group {
             if vm.errorInNetwork == .timeout {
-                NetworkErrorView()
+                NetworkErrorView(message: "Проверьте подключение к интернету")
             } else if vm.isLoading {
                 LoadingScheduleView()
             } else if vm.errorInNetwork != .invalidResponse {
@@ -114,7 +114,8 @@ struct ScheduleView: View {
             } else {
                 let filteredSubjects = subjects.filter { $0.day == Int16(vm.selectedIndex) }
                 if (filteredSubjects.isEmpty || vm.week != 0) && !hasClassesToShow {
-                    NetworkErrorView()
+                        ConnectingToNetworkView()
+                        .padding(.top, 100)
                 } else {
                     ForEach(filteredSubjects, id: \.self) { subject in
                         if (vm.showOnlyChoosenGroup == "Все" || subject.group == vm.showOnlyChoosenGroup) &&  vm.week == 0 {

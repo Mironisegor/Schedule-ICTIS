@@ -2,13 +2,14 @@
 //  FavGroupsView.swift
 //  Schedule ICTIS
 //
-//  Created by G412 on 05.03.2025.
+//  Created by Egor Mironov on 05.03.2025.
 //
 
 import SwiftUI
 
 struct FavVPKView: View {
     @ObservedObject var vm: ScheduleViewModel
+    @ObservedObject var networkMonitor: NetworkMonitor
     var firstFavVPK = (UserDefaults.standard.string(forKey: "vpk1") ?? "")
     var secondFavVPK = (UserDefaults.standard.string(forKey: "vpk2") ?? "")
     var thirdFavVPK = (UserDefaults.standard.string(forKey: "vpk3") ?? "")
@@ -74,7 +75,7 @@ struct FavVPKView: View {
             HStack {
                 Spacer()
                 if firstFavVPK == "" || secondFavVPK == "" || thirdFavVPK == "" {
-                    NavigationLink(destination: SelectingVPKView(vm: vm, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)) {
+                    NavigationLink(destination: SelectingVPKView(vm: vm, networkMonitor: networkMonitor, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)) {
                         HStack {
                           Image(systemName: "plus")
                               .foregroundColor(.white)
@@ -87,7 +88,7 @@ struct FavVPKView: View {
                     }
                 }
             }
-            .padding(.bottom, 50)
+            .padding(.bottom, 90)
         }
         .background(Color("background"))
     }
@@ -95,5 +96,6 @@ struct FavVPKView: View {
 
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
-    FavVPKView(vm: vm)
+    @Previewable @StateObject var vm2 = NetworkMonitor()
+    FavVPKView(vm: vm, networkMonitor: vm2)
 }
