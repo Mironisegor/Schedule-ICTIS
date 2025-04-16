@@ -34,9 +34,6 @@ struct ContentView: View {
             }
             TabBarView(selectedTab: $selectedTab)
         }
-        .onAppear {
-            vm.fetchWeekSchedule()
-        }
     }
 }
 

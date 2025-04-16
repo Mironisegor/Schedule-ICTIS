@@ -29,13 +29,20 @@ struct SearchBarView: View {
                     .onSubmit {
                         self.isFocused = false
                         if (!text.isEmpty) {
-                            vm.nameToHtml[vm.searchingGroup] = nil
-                            vm.removeFromSchedule(group: vm.searchingGroup)
-                            text = transformStringToFormat(text)
-                            vm.searchingGroup = text
-                            vm.nameToHtml[text] = ""
-                            vm.fetchWeekSchedule()
-                            vm.updateFilteringGroups()
+                            vm.fetchWeekForSingleGroup(groupName: text)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                guard vm.errorInNetwork == .noError else {
+                                    vm.isShowingAlertForIncorrectGroup = true
+                                    return
+                                }
+                                vm.nameToHtml[vm.searchingGroup] = nil
+                                vm.removeFromSchedule(group: vm.searchingGroup)
+                                text = transformStringToFormat(text)
+                                vm.searchingGroup = text
+                                vm.nameToHtml[text] = ""
+                                vm.fetchWeekSchedule()
+                                vm.updateFilteringGroups()
+                            }
                         }
                         self.text = ""
                     }

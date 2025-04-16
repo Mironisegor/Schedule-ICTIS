@@ -92,4 +92,38 @@ extension ClassProvider {
             }
         }
     }
+    
+    func exists(_ favGroup: FavouriteGroupModel, in context: NSManagedObjectContext) -> FavouriteGroupModel? {
+        try? context.existingObject(with: favGroup.objectID) as? FavouriteGroupModel
+    }
+    
+    func delete(_ favGroup: FavouriteGroupModel, in context: NSManagedObjectContext) throws {
+        if let existingFavGroup = exists(favGroup, in: context) {
+            context.delete(existingFavGroup)
+            Task(priority: .background) {
+                try await context.perform {
+                    try context.save()
+                }
+            }
+        }
+    }
+    
+    func exists(_ favVpk: FavouriteVpkModel, in context: NSManagedObjectContext) -> FavouriteVpkModel? {
+        try? context.existingObject(with: favVpk.objectID) as? FavouriteVpkModel
+    }
+    
+    func delete(_ favVpk: FavouriteVpkModel, in context: NSManagedObjectContext) throws {
+        if let existingFavVpk = exists(favVpk, in: context) {
+            context.delete(existingFavVpk)
+            Task(priority: .background) {
+                try await context.perform {
+                    try context.save()
+                }
+            }
+        }
+    }
+}
+
+extension ClassProvider {
+    
 }

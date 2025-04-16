@@ -41,6 +41,7 @@ struct SettingsView: View {
     }
 }
 
+
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
     @Previewable @StateObject var vm2 = NetworkMonitor()

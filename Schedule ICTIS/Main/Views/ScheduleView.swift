@@ -4,8 +4,10 @@ import CoreData
 struct ScheduleView: View {
     @ObservedObject var vm: ScheduleViewModel
     @ObservedObject var networkMonitor: NetworkMonitor
-    @FetchRequest(fetchRequest: CoreDataClassModel.all()) private var classes  // Список пар добавленных пользователем
-    @FetchRequest(fetchRequest: JsonClassModel.all()) private var subjects     // Список пар сохраненных в CoreData
+    @FetchRequest(fetchRequest: CoreDataClassModel.all()) var classes             // Список пар добавленных пользователем
+    @FetchRequest(fetchRequest: JsonClassModel.all()) private var subjects        // Список пар сохраненных в CoreData(для отсутствия интернета)
+    @FetchRequest(fetchRequest: FavouriteGroupModel.all()) private var favGroups
+    @FetchRequest(fetchRequest: FavouriteVpkModel.all()) private var favVpk
     @State private var selectedClass: CoreDataClassModel? = nil
     @State private var lastOffset: CGFloat = 0
     @State private var scrollTimer: Timer? = nil
@@ -13,10 +15,10 @@ struct ScheduleView: View {
     var provider = ClassProvider.shared
     
     private var hasSubjectsToShow: Bool {
-        subjects.contains { subject in
-            subject.week == vm.week
+            subjects.contains { subject in
+                subject.week == vm.week
+            }
         }
-    }
     
     private var hasClassesToShow: Bool {
         classes.contains { _class in
@@ -44,16 +46,17 @@ struct ScheduleView: View {
         }
     }
     
-    // Онлайн-контент (с интернетом)
     private var onlineContent: some View {
         Group {
             if vm.errorInNetwork == .timeout {
                 NetworkErrorView(message: "Проверьте подключение к интернету")
-            } else if vm.isLoading {
-                LoadingScheduleView()
-            } else if vm.errorInNetwork != .invalidResponse {
+            } else if vm.errorInNetwork == .invalidResponse {
+                NoScheduleView()
+            }
+            else if vm.errorInNetwork == .noError {
                 scheduleScrollView(isOnline: true)
-            } else {
+            }
+            else {
                 NoScheduleView()
             }
         }
@@ -64,12 +67,10 @@ struct ScheduleView: View {
         }
     }
     
-    // Оффлайн-контент (без интернета)
     private var offlineContent: some View {
         scheduleScrollView(isOnline: false)
     }
     
-    // Общий ScrollView для расписания
     private func scheduleScrollView(isOnline: Bool) -> some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 30) {
@@ -112,14 +113,14 @@ struct ScheduleView: View {
                     }
                 }
             } else {
-                let filteredSubjects = subjects.filter { $0.day == Int16(vm.selectedIndex) }
-                if (filteredSubjects.isEmpty || vm.week != 0) && !hasClassesToShow {
-                        ConnectingToNetworkView()
+                let filteredSubjects = subjects.filter {($0.day == Int16(vm.selectedIndex))}
+                if (filteredSubjects.isEmpty || vm.week != 0) && !hasSubjectsToShow {
+                    ConnectingToNetworkView()
                         .padding(.top, 100)
                 } else {
                     ForEach(filteredSubjects, id: \.self) { subject in
-                        if (vm.showOnlyChoosenGroup == "Все" || subject.group == vm.showOnlyChoosenGroup) &&  vm.week == 0 {
-                            SubjectView(info: ClassInfo(subject: subject.name!, group: subject.group!, time: subject.time!), vm: vm)
+                        if vm.showOnlyChoosenGroup == "Все" || subject.group == vm.showOnlyChoosenGroup {
+                            SubjectView(info: ClassInfo(subject: subject.name, group: subject.group, time: subject.time), vm: vm)
                         }
                     }
                 }
@@ -157,99 +158,6 @@ struct ScheduleView: View {
             )
         }
         .frame(width: UIScreen.main.bounds.width, height: 15)
-    }
-}
-
-extension ScheduleView {
-    private func deleteClassesFormCoreDataIfMonday() {
-        let today = Date()
-        let calendar = Calendar.current
-        let weekday = calendar.component(.weekday, from: today)
-        
-        if weekday == 6 {
-            for _class in classes {
-                if _class.day < today {
-                    do {
-                        try provider.delete(_class, in: provider.viewContext)
-                    } catch {
-                        print("❌ - Ошибка при удалении: \(error)")
-                    }
-                }
-            }
-        }
-    }
-    
-    func saveGroupsToMemory() {
-        var indexOfTheDay: Int16 = 0
-        let context = provider.newContext // Создаем новый контекст
-        
-        context.perform {
-            for dayIndex in 0..<self.vm.classesGroups.count {
-                let classesForDay = self.vm.classesGroups[dayIndex]
-                
-                // Проходим по всем занятиям текущего дня
-                for classInfo in classesForDay {
-                    let newClass = JsonClassModel(context: context)
-                    
-                    // Заполняем атрибуты
-                    newClass.name = classInfo.subject
-                    newClass.group = classInfo.group
-                    newClass.time = classInfo.time
-                    newClass.day = indexOfTheDay
-                    newClass.week = Int16(vm.week)
-                }
-                indexOfTheDay += 1
-            }
-            
-            // Сохраняем изменения в CoreData
-            do {
-                try self.provider.persist(in: context)
-                print("✅ Успешно сохранено в CoreData")
-            } catch {
-                print("❌ Ошибка при сохранении в CoreData: \(error)")
-            }
-        }
-    }
-    
-    @MainActor
-    func deleteAllJsonClassModelsSync() throws {
-        let context = provider.viewContext
-        
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = JsonClassModel.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        try context.execute(deleteRequest)
-        try context.save()
-        print("✅ Все объекты JsonClassModel успешно удалены")
-    }
-    
-    func checkSavingOncePerDay() {
-        let today = Date()
-        let calendar = Calendar.current
-        let todayStart = calendar.startOfDay(for: today) // Начало текущего дня
-        
-        // Получаем дату последнего выполнения из UserDefaults
-        let lastCheckDate = UserDefaults.standard.object(forKey: "LastSaving") as? Date ?? .distantPast
-        let lastCheckStart = calendar.startOfDay(for: lastCheckDate)
-    
-        print("Дата последнего сохранения расписания в CoreData: \(lastCheckDate)")
-        
-        // Проверяем, был ли уже выполнен код сегодня
-        if lastCheckStart < todayStart && networkMonitor.isConnected {
-            print("✅ Интернет есть, сохранение пар в CoreData")
-            vm.fillDictForVm()
-            vm.fetchWeekSchedule()
-            do {
-                try deleteAllJsonClassModelsSync()
-            } catch {
-                print("Ошибка при удалении: \(error)")
-                return
-            }
-            saveGroupsToMemory()
-            
-            // Сохраняем текущую дату как дату последнего выполнения
-            UserDefaults.standard.set(today, forKey: "LastSaving")
-        }
     }
 }
 

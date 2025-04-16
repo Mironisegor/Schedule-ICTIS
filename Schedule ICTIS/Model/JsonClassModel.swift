@@ -8,11 +8,12 @@
 import Foundation
 import CoreData
 
-final class JsonDataClassModel: NSManagedObject, Identifiable {
+final class JsonClassModel: NSManagedObject, Identifiable {
     @NSManaged var name: String
     @NSManaged var group: String
     @NSManaged var time: String
     @NSManaged var day: Int16
+    @NSManaged var week: Int16
     
     // Здесь мы выполняем дополнительную инициализацию, назначая значения по умолчанию
     // Этот метод вызывается всякий раз, когда объект Core Data вставляется в контекст
@@ -42,5 +43,23 @@ extension JsonClassModel {
             NSSortDescriptor(keyPath: \JsonClassModel.time, ascending: true)
         ]
         return request
+    }
+    
+    static func deleteClasses(withName name: String, in context: NSManagedObjectContext) throws {
+        let fetchRequest: NSFetchRequest<JsonClassModel> = JsonClassModel.all()
+        fetchRequest.predicate = NSPredicate(format: "group == %@", name)
+        
+        let groupsToDelete = try context.fetch(fetchRequest)
+        
+        print("Пары для удаления: \(groupsToDelete)")
+        
+        for group in groupsToDelete {
+            do {
+                try ClassProvider.shared.delete(group, in: context)
+            }
+            catch {
+                print(error)
+            }
+        }
     }
 }

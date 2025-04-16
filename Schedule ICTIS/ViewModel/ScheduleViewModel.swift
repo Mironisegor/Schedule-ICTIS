@@ -11,6 +11,8 @@ import SwiftUICore
 @MainActor
 final class ScheduleViewModel: ObservableObject {
     //MARK: Properties
+    @Published var classesForSingleGroup: [[ClassInfo]] = []
+    @Published var weekForSingleGroup = 0
     @Published var nameToHtml: [String : String] = [:]
     @Published var classesGroups: [[ClassInfo]] = []
     @Published var searchingGroup = ""
@@ -70,6 +72,8 @@ final class ScheduleViewModel: ObservableObject {
                         self.nameToHtml[groupName] = numberHTML
                         let table = schedule.table.table
                         self.week = schedule.table.week
+//                        print("Группа: \(schedule.table.name), неделя: \(schedule.table.week)")
+//                        print(table)
                         
                         // Преобразуем данные в формат ClassInfo
                         for (dayIndex, day) in table[2...].enumerated() { // Пропускаем первые две строки (заголовки)
@@ -93,6 +97,55 @@ final class ScheduleViewModel: ObservableObject {
                 
                 // Сортируем по времени
                 self.sortClassesByTime()
+            } catch {
+                if let urlError = error as? URLError, urlError.code == .timedOut {
+                    errorInNetwork = .timeout
+                    print("Ошибка: превышено время ожидания ответа от сервера")
+                } else if let error = error as? NetworkError {
+                    switch error {
+                    case .invalidResponse:
+                        errorInNetwork = .invalidResponse
+                    case .invalidData:
+                        errorInNetwork = .invalidData
+                        self.isShowingAlertForIncorrectGroup = true
+                    default:
+                        print("Неизвестная ошибка: \(error)")
+                    }
+                    print("Есть ошибка: \(error)")
+                }
+                isLoading = false
+            }
+        }
+    }
+    
+    func fetchWeekForSingleGroup(groupName name: String) {
+        isLoading = true
+        Task {
+            do {
+                var singleSchedule: [[ClassInfo]] = Array(repeating: [], count: 6) // 6 дней (пн-сб)
+                let schedule = try await NetworkManager.shared.getSchedule(name)
+                let table = schedule.table.table
+                let groupName = schedule.table.name
+                self.weekForSingleGroup = schedule.table.week
+                    
+                // Преобразуем данные в формат ClassInfo
+                for (dayIndex, day) in table[2...].enumerated() { // Пропускаем первые две строки (заголовки)
+                    for (timeIndex, subject) in day.enumerated() {
+                        if !subject.isEmpty && timeIndex > 0 { // Пропускаем первый столбец (день и дату)
+                            let time = table[1][timeIndex] // Время берем из второй строки
+                            let classInfo = ClassInfo(subject: subject, group: groupName, time: time)
+                            singleSchedule[dayIndex].append(classInfo)
+                        }
+                    }
+                }
+                
+                // Обновляем данные
+                self.classesForSingleGroup = singleSchedule
+                self.isFirstStartOffApp = false
+                self.isShowingAlertForIncorrectGroup = false
+                self.isLoading = false
+                self.errorInNetwork = .noError
+                
             } catch {
                 if let urlError = error as? URLError, urlError.code == .timedOut {
                     errorInNetwork = .timeout
@@ -182,32 +235,5 @@ final class ScheduleViewModel: ObservableObject {
         self.filteringGroups = ["Все"]
         let keys = self.nameToHtml.keys
         self.filteringGroups.append(contentsOf: keys)
-    }
-    
-    func fillDictForVm() {
-        let group1 = UserDefaults.standard.string(forKey: "group")
-        let group2 = UserDefaults.standard.string(forKey: "group2")
-        let group3 = UserDefaults.standard.string(forKey: "group3")
-        let vpk1 = UserDefaults.standard.string(forKey: "vpk1")
-        let vpk2 = UserDefaults.standard.string(forKey: "vpk2")
-        let vpk3 = UserDefaults.standard.string(forKey: "vpk3")
-        if let nameGroup1 = group1, nameGroup1 != "" {
-            nameToHtml[nameGroup1] = ""
-        }
-        if let nameGroup2 = group2, nameGroup2 != ""  {
-            nameToHtml[nameGroup2] = ""
-        }
-        if let nameGroup3 = group3, nameGroup3 != "" {
-            nameToHtml[nameGroup3] = ""
-        }
-        if let nameVpk1 = vpk1, nameVpk1 != "" {
-            nameToHtml[nameVpk1] = ""
-        }
-        if let nameVpk2 = vpk2, nameVpk2 != "" {
-            nameToHtml[nameVpk2] = ""
-        }
-        if let nameVpk3 = vpk3, nameVpk3 != "" {
-            nameToHtml[nameVpk3] = ""
-        }
     }
 }

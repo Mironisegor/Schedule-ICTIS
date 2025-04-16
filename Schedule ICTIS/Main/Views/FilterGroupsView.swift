@@ -11,7 +11,7 @@ struct FilterGroupsView: View {
     @ObservedObject var vm: ScheduleViewModel
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
+            LazyHStack(spacing: 12) {
                 ForEach(vm.filteringGroups, id: \.self) { group in
                     VStack {
                         Text(group)
@@ -37,10 +37,11 @@ struct FilterGroupsView: View {
             }
             .padding(.horizontal)
         }
+        .frame(height: 40)
         .onAppear {
             vm.updateFilteringGroups()
         }
-        .padding(.bottom, 10)
+        .padding(.bottom, 4)
     }
 }
 

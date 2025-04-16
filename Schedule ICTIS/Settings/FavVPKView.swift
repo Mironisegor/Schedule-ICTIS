@@ -10,15 +10,14 @@ import SwiftUI
 struct FavVPKView: View {
     @ObservedObject var vm: ScheduleViewModel
     @ObservedObject var networkMonitor: NetworkMonitor
-    var firstFavVPK = (UserDefaults.standard.string(forKey: "vpk1") ?? "")
-    var secondFavVPK = (UserDefaults.standard.string(forKey: "vpk2") ?? "")
-    var thirdFavVPK = (UserDefaults.standard.string(forKey: "vpk3") ?? "")
+    @FetchRequest(fetchRequest: FavouriteVpkModel.all()) private var favVpk     // Список ВПК сохраненных в CoreData
+    var provider = ClassProvider.shared
     var body: some View {
         VStack (spacing: 0) {
             List {
-                if firstFavVPK != "" {
+                ForEach(favVpk, id: \.self) {favVpk in
                     HStack {
-                        Text(firstFavVPK)
+                        Text(favVpk.name)
                             .font(.custom("Montserrat-Medium", fixedSize: 17))
                         Spacer()
                     }
@@ -26,65 +25,35 @@ struct FavVPKView: View {
                     .cornerRadius(10)
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
-                            vm.removeFromSchedule(group: firstFavVPK)
-                            UserDefaults.standard.set("", forKey: "vpk1")
-                        } label: {
-                            Label("Удалить", systemImage: "trash")
-                        }
-                    }
-                }
-                if secondFavVPK != "" {
-                    HStack {
-                        Text(secondFavVPK)
-                            .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        Spacer()
-                    }
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                            vm.removeFromSchedule(group: secondFavVPK)
-                            UserDefaults.standard.set("", forKey: "vpk2")
-                        } label: {
-                            Label("Удалить", systemImage: "trash")
-                        }
-                    }
-                }
-                if thirdFavVPK != "" {
-                    HStack {
-                        Text(thirdFavVPK)
-                            .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        Spacer()
-                    }
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .swipeActions(edge: .trailing) {
-                        Button(role: .destructive) {
-                            vm.removeFromSchedule(group: thirdFavVPK)
-                            UserDefaults.standard.set("", forKey: "vpk3")
+                            vm.removeFromSchedule(group: favVpk.name)
+                            do {
+                                try JsonClassModel.deleteClasses(withName: favVpk.name, in: provider.viewContext)
+                                try provider.delete(favVpk, in: provider.viewContext)
+                            } catch {
+                                print(error)
+                            }
                         } label: {
                             Label("Удалить", systemImage: "trash")
                         }
                     }
                 }
             }
-            .frame(maxHeight: 400)
             
             Spacer()
-            
+                        
             HStack {
                 Spacer()
-                if firstFavVPK == "" || secondFavVPK == "" || thirdFavVPK == "" {
-                    NavigationLink(destination: SelectingVPKView(vm: vm, networkMonitor: networkMonitor, firstFavVPK: firstFavVPK, secondFavVPK: secondFavVPK, thirdFavVPK: thirdFavVPK)) {
+                if favVpk.count < 5 {
+                    NavigationLink(destination: SelectingVPKView(vm: vm, networkMonitor: networkMonitor)) {
                         HStack {
-                          Image(systemName: "plus")
-                              .foregroundColor(.white)
-                              .font(.system(size: 22))
-                              .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12))
-                          }
-                          .background(Color("blueColor"))
-                          .cornerRadius(10)
-                          .padding(.trailing, 20)
+                            Image(systemName: "plus")
+                                .foregroundColor(.white)
+                                .font(.system(size: 22))
+                                .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12))
+                        }
+                        .background(Color("blueColor"))
+                        .cornerRadius(10)
+                        .padding(.trailing, 20)
                     }
                 }
             }

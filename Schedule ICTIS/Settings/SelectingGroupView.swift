@@ -6,19 +6,18 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct SelectingGroupView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @State private var text: String = ""
+    @State var text: String = ""
     @ObservedObject var vm: ScheduleViewModel
     @ObservedObject var networkMonitor: NetworkMonitor
     @State private var isLoading = false
     @State private var searchTask: DispatchWorkItem?
     @StateObject private var serchGroupsVM = SearchGroupsViewModel()
-    var firstFavGroup: String
-    var secondFavGroup: String
-    var thirdFavGroup: String
+    var provider = ClassProvider.shared
     var body: some View {
         VStack {
             HStack (spacing: 0) {
@@ -44,31 +43,32 @@ struct SelectingGroupView: View {
                     }
                     .onSubmit {
                         self.isFocused = false
-                        if (!text.isEmpty) {
-                            vm.fetchWeekSchedule(isOtherWeek: false)
-                            self.isLoading = true
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                if vm.errorInNetwork == .noError {
-                                    vm.errorInNetwork = nil
-                                    text = transformStringToFormat(text)
-                                    if firstFavGroup == "" {
-                                        UserDefaults.standard.set(text, forKey: "group")
-                                    } else if secondFavGroup == "" {
-                                        UserDefaults.standard.set(text, forKey: "group2")
-                                    } else {
-                                        UserDefaults.standard.set(text, forKey: "group3")
-                                    }
-                                    vm.nameToHtml[text] = ""
-                                    vm.fetchWeekSchedule()
-                                    vm.updateFilteringGroups()
-                                    self.isLoading = false
-                                    self.text = ""
-                                    dismiss()
-                                }
-                                else {
-                                    vm.isShowingAlertForIncorrectGroup = true
-                                    vm.errorInNetwork = .invalidResponse
-                                }
+                        guard !text.isEmpty else { return }
+                        
+                        vm.fetchWeekForSingleGroup(groupName: text)
+                        self.isLoading = true
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            guard vm.errorInNetwork == .noError else {
+                                vm.isShowingAlertForIncorrectGroup = true
+                                return
+                            }
+                            
+                            vm.errorInNetwork = nil
+                            let formattedText = transformStringToFormat(text)
+                            
+                            do {
+                                try saveGroup(name: formattedText)
+                                saveScheduleForGroupToMemory(withName: formattedText)
+                                vm.nameToHtml[formattedText] = ""
+                                vm.updateFilteringGroups()
+                                vm.fetchWeekSchedule()
+                                self.isLoading = false
+                                self.text = ""
+                                dismiss()
+                            } catch {
+                                print("Ошибка сохранения: \(error.localizedDescription)")
+                                vm.isShowingAlertForIncorrectGroup = true
                             }
                         }
                     }
@@ -117,19 +117,19 @@ struct SelectingGroupView: View {
                                 .frame(width: UIScreen.main.bounds.width, height: 30)
                                 .background(Color("background"))
                                 .onTapGesture {
-                                    if firstFavGroup == "" {
-                                        UserDefaults.standard.set(item.name, forKey: "group")
+                                    do {
+                                        try saveGroup(name: item.name)
+                                        saveScheduleForGroupToMemory(withName: item.name)
                                         vm.nameToHtml[item.name] = ""
-                                    } else if secondFavGroup == "" {
-                                        UserDefaults.standard.set(item.name, forKey: "group2")
-                                        vm.nameToHtml[item.name] = ""
-                                    } else {
-                                        UserDefaults.standard.set(item.name, forKey: "group3")
-                                        vm.nameToHtml[item.name] = ""
+                                        vm.updateFilteringGroups()
+                                        vm.fetchWeekSchedule()
+                                        self.isLoading = false
+                                        self.text = ""
+                                        dismiss()
+                                    } catch {
+                                        print("Ошибка сохранения: \(error.localizedDescription)")
+                                        vm.isShowingAlertForIncorrectGroup = true
                                     }
-                                    vm.updateFilteringGroups()
-                                    vm.fetchWeekSchedule()
-                                    dismiss()
                                 }
                             }
                         }
@@ -146,9 +146,71 @@ struct SelectingGroupView: View {
         }
     }
 }
+
+extension SelectingGroupView {
+    func saveGroup(name: String) throws {
+        let context = ClassProvider.shared.viewContext
+        
+        // Создаем fetch request с правильным типом
+        let fetchRequest: NSFetchRequest<FavouriteGroupModel> = FavouriteGroupModel.all()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        
+        let existingGroups = try context.fetch(fetchRequest)
+        guard existingGroups.isEmpty else { return }
+        
+        let newGroup = FavouriteGroupModel(context: context)
+        newGroup.name = name
+        try context.save()
+    }
+    
+    func saveScheduleForGroupToMemory(withName name: String) {
+        vm.fetchWeekForSingleGroup(groupName: name)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            var indexOfTheDay: Int16 = 0
+            let context = provider.newContext // Создаем новый контекст
+            
+            context.perform {
+                for dayIndex in 0..<self.vm.classesForSingleGroup.count {
+                    let classesForDay = self.vm.classesForSingleGroup[dayIndex]
+                    
+                    // Проходим по всем занятиям текущего дня
+                    for classInfo in classesForDay {
+                        let newClass = JsonClassModel(context: context)
+                        
+                        // Заполняем атрибуты
+                        newClass.name = classInfo.subject
+                        newClass.group = classInfo.group
+                        newClass.time = classInfo.time
+                        newClass.day = indexOfTheDay
+                        newClass.week = Int16(vm.weekForSingleGroup)
+                    }
+                    indexOfTheDay += 1
+                }
+                
+                // Сохраняем изменения в CoreData
+                do {
+                    try self.provider.persist(in: context)
+                    print("✅ Избранная группа успешно сохранена в CoreData")
+                } catch {
+                    print("❌ Возникла ошибка при сохранении избранной группы в CoreData: \(error)")
+                }
+            
+                let fetchRequest: NSFetchRequest<JsonClassModel> = JsonClassModel.all()
+                do {
+                    let results = try context.fetch(fetchRequest)
+                    for group in results {
+                        print(group.group)
+                    }
+                } catch {
+                    print("Ошибка при выполнении fetch-запроса: \(error)")
+                }
+            }
+        }
+    }
+}
  
 #Preview {
     @Previewable @StateObject var vm = ScheduleViewModel()
     @Previewable @StateObject var vm2 = NetworkMonitor()
-    SelectingGroupView(vm: vm, networkMonitor: vm2, firstFavGroup: "", secondFavGroup: "", thirdFavGroup: "")
+    SelectingGroupView(vm: vm, networkMonitor: vm2)
 }

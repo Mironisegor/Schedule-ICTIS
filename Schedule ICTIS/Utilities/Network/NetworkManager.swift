@@ -12,15 +12,15 @@ final class NetworkManager {
     //MARK: Properties
     static let shared = NetworkManager()
     private let decoder = JSONDecoder()
-    private let urlForGroup = "https://webictis.sfedu.ru/schedule-api/?query="
-    private let urlForWeek = "https://webictis.sfedu.ru/schedule-api/?group="
+    private let urlForGroup = "https://shedule.rdcenter.ru/schedule-api/?query="
+    private let urlForWeek = "https://shedule.rdcenter.ru/schedule-api/?group="
     private let customSession: URLSession // Кастомная сессия для ограничения времени ответа от сервера
     
     //MARK: Initializer
     private init() {
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 3 // Таймаут запроса 10 секунд
-        configuration.timeoutIntervalForResource = 3 // Таймаут ресурса 15 секунд
+        configuration.timeoutIntervalForRequest = 4 // Таймаут запроса
+        configuration.timeoutIntervalForResource = 6 // Таймаут ресурса
         self.customSession = URLSession(configuration: configuration)
         decoder.dateDecodingStrategy = .iso8601
     }

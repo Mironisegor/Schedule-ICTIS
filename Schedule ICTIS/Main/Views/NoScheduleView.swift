@@ -11,7 +11,7 @@ struct NoScheduleView: View {
     var body: some View {
         VStack {
             ScrollView (showsIndicators: false) {
-                Text("Пока что расписания нет😪")
+                Text("Расслабся братан, расписания еще нет")
                     .padding(.top, 100)
                     .font(.custom("Montserrat-SemiBold", fixedSize: 17))
             }
