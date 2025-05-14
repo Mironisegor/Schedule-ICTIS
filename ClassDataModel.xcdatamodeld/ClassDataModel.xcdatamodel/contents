@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24C101" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CoreDataClassModel" representedClassName=".CoreDataClassModel" syncable="YES">
+        <attribute name="auditory" optional="YES" attributeType="String"/>
+        <attribute name="comment" optional="YES" attributeType="String"/>
+        <attribute name="day" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endtime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="important" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notification" optional="YES" attributeType="String"/>
+        <attribute name="online" optional="YES" attributeType="String"/>
+        <attribute name="professor" optional="YES" attributeType="String"/>
+        <attribute name="starttime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="subject" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="FavouriteGroupModel" representedClassName=".FavouriteGroupModel" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="FavouriteVpkModel" representedClassName=".FavouriteVpkModel" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="JsonClassModel" representedClassName=".JsonClassModel" syncable="YES">
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="group" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="String"/>
+        <attribute name="week" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+</model>
