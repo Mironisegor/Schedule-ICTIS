@@ -17,7 +17,7 @@ final class ScheduleViewModel: ObservableObject {
     @Published var classesGroups: [[ClassInfo]] = []
     @Published var searchingGroup = ""
     @Published var filteringGroups: [String] = ["Все"]
-    @Published var showOnlyChoosenGroup: String = "Все"
+    @Published var showOnlyChoosenGroup: String = ""
     
     //Schedule
     @Published var weekScheduleGroup: Table = Table(
@@ -34,7 +34,9 @@ final class ScheduleViewModel: ObservableObject {
     
     @Published var isFirstStartOffApp = true
     @Published var isShowingAlertForIncorrectGroup: Bool = false
+    @Published var isShowingAlertForIncorrectSingleGroup: Bool = false
     @Published var errorInNetwork: NetworkError?
+    @Published var errorInNetworkForSingleGroup: NetworkError?
     @Published var isLoading: Bool = false
     @Published var isNewGroup: Bool = false
     
@@ -141,25 +143,25 @@ final class ScheduleViewModel: ObservableObject {
                 
                 // Обновляем данные
                 self.classesForSingleGroup = singleSchedule
-                self.isShowingAlertForIncorrectGroup = false
+                self.isShowingAlertForIncorrectSingleGroup = false
                 self.isLoading = false
-                self.errorInNetwork = .noError
+                self.errorInNetworkForSingleGroup = .noError
                 
             } catch {
                 if let urlError = error as? URLError, urlError.code == .timedOut {
-                    errorInNetwork = .timeout
+                    errorInNetworkForSingleGroup = .timeout
                     print("Ошибка: превышено время ожидания ответа от сервера")
                 } else if let error = error as? NetworkError {
                     switch error {
                     case .invalidResponse:
-                        errorInNetwork = .invalidResponse
+                        errorInNetworkForSingleGroup = .invalidResponse
                     case .invalidData:
-                        errorInNetwork = .invalidData
+                        errorInNetworkForSingleGroup = .invalidData
                         print("FetchSingle: InvalidData")
-                        self.isShowingAlertForIncorrectGroup = true
                     default:
                         print("Неизвестная ошибка: \(error)")
                     }
+                    self.isShowingAlertForIncorrectSingleGroup = true
                     print("Есть ошибка: \(error)")
                 }
                 isLoading = false
@@ -229,12 +231,34 @@ final class ScheduleViewModel: ObservableObject {
                 classesGroups[i].remove(at: j)
             }
         }
+        
+        self.filteringGroups = self.filteringGroups.filter {$0 != group}
+        
+        if group == self.showOnlyChoosenGroup || self.filteringGroups.count == 2 {
+            selectShowingGroup()
+        }
     }
     
-    func updateFilteringGroups() {
-        self.filteringGroups = ["Все"]
+    func selectShowingGroup() {
+        if self.filteringGroups.count == 2 {
+            self.showOnlyChoosenGroup = self.filteringGroups[1]
+        } else if self.filteringGroups.count < 2 {
+            self.showOnlyChoosenGroup = ""
+        }
+        else {
+            self.showOnlyChoosenGroup = "Все"
+        }
+    }
+    
+    func addGroupToFilteringArray(group: String) {
+        self.filteringGroups.append(group)
+    }
+    
+    func fillFilteringGroups() {
         let keys = self.nameToHtml.keys
         print(keys)
         self.filteringGroups.append(contentsOf: keys)
+        
+        selectShowingGroup()
     }
 }

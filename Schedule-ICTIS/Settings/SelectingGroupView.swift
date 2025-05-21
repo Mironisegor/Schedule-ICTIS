@@ -45,30 +45,29 @@ struct SelectingGroupView: View {
                         self.isFocused = false
                         guard !text.isEmpty else { return }
                         
-                        vm.fetchWeekForSingleGroup(groupName: text)
                         self.isLoading = true
+                        vm.fetchWeekForSingleGroup(groupName: text)
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            guard vm.errorInNetwork == .noError else {
-                                vm.isShowingAlertForIncorrectGroup = true
+                            if vm.errorInNetworkForSingleGroup != .noError {
                                 return
                             }
                             
-                            vm.errorInNetwork = nil
+                            vm.errorInNetworkForSingleGroup = nil
                             let formattedText = transformStringToFormat(text)
                             
                             do {
                                 try saveGroup(name: formattedText)
                                 saveScheduleForGroupToMemory(withName: formattedText)
                                 vm.nameToHtml[formattedText] = ""
-                                vm.updateFilteringGroups()
+                                vm.addGroupToFilteringArray(group: formattedText)
                                 vm.fetchWeekSchedule()
                                 self.isLoading = false
                                 self.text = ""
                                 dismiss()
                             } catch {
                                 print("Ошибка сохранения: \(error.localizedDescription)")
-                                vm.isShowingAlertForIncorrectGroup = true
+                                vm.isShowingAlertForIncorrectSingleGroup = true
                             }
                         }
                     }
@@ -88,10 +87,10 @@ struct SelectingGroupView: View {
                 }
             }
             .frame(height: 40)
-            .background(
-                RoundedRectangle(cornerRadius: 15)
+            .background (
+                RoundedRectangle(cornerRadius: 10)
                     .fill(.white)
-                )
+            )
             Spacer()
             if isLoading {
                 LoadingView()
@@ -121,7 +120,7 @@ struct SelectingGroupView: View {
                                         try saveGroup(name: item.name)
                                         saveScheduleForGroupToMemory(withName: item.name)
                                         vm.nameToHtml[item.name] = ""
-                                        vm.updateFilteringGroups()
+                                        vm.addGroupToFilteringArray(group: item.name)
                                         vm.fetchWeekSchedule()
                                         self.isLoading = false
                                         self.text = ""
@@ -144,6 +143,21 @@ struct SelectingGroupView: View {
         .onAppear {
             serchGroupsVM.fetchGroups(group: "кт")
         }
+        .navigationBarBackButtonHidden(true) // Скрываем стандартную кнопку "Назад"
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Назад")
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

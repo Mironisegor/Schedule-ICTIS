@@ -31,8 +31,9 @@ struct SearchBarView: View {
                         if (!text.isEmpty) {
                             vm.fetchWeekForSingleGroup(groupName: text)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                guard vm.errorInNetwork == .noError else {
-                                    vm.isShowingAlertForIncorrectGroup = true
+                                guard vm.errorInNetworkForSingleGroup == .noError else {
+                                    vm.isShowingAlertForIncorrectSingleGroup = true
+                                    self.text = ""
                                     return
                                 }
                                 vm.removeFromSchedule(group: vm.searchingGroup)
@@ -40,7 +41,7 @@ struct SearchBarView: View {
                                 vm.searchingGroup = text
                                 vm.nameToHtml[text] = ""
                                 print("Ключи: \(vm.nameToHtml.keys)")
-                                vm.updateFilteringGroups()
+                                vm.addGroupToFilteringArray(group: text)
                                 vm.fetchWeekSchedule()
                                 self.text = ""
                             }
@@ -77,12 +78,10 @@ struct SearchBarView: View {
                         Rectangle()
                             .frame(width: 40, height: 40)
                             .foregroundStyle(Color("blueColor"))
-                            .cornerRadius(15)
+                            .cornerRadius(10)
                         Image(systemName: "plus")
-                            .resizable()
-                            .foregroundStyle(.white)
-                            .scaledToFit()
-                            .frame(width: 16)
+                            .foregroundColor(.white)
+                            .font(.system(size: 22))
                     }
                 }
             }

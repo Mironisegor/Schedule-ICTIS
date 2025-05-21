@@ -21,7 +21,7 @@ enum NetworkError: String, Error, LocalizedError {
         case .invalidResponse:
             "InvalidResponse"
         case .invalidData:
-            "Проверьте номер группы"
+            "Проверьте имя группы"
         case .timeout:
             "Ошибка сети"
         case .noError:

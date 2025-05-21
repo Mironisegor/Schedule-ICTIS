@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct FavGroupsView: View {
+    @Environment(\.dismiss) private var dismiss
     @ObservedObject var vm: ScheduleViewModel
     @ObservedObject var networkMonitor: NetworkMonitor
     @FetchRequest(fetchRequest: FavouriteGroupModel.all()) private var favGroups     // Список групп сохраненных в CoreData
@@ -39,28 +40,39 @@ struct FavGroupsView: View {
                     }
                 }
             }
-            
-            Spacer()
-                        
-            HStack {
-                Spacer()
+        }
+        .navigationBarBackButtonHidden(true) // Скрываем стандартную кнопку "Назад"
+        .background(Color("background"))
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Настройки")
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+            // Кнопка в правой части
+            ToolbarItem(placement: .topBarTrailing) {
                 if favGroups.count < 10 {
                     NavigationLink(destination: SelectingGroupView(vm: vm, networkMonitor: networkMonitor)) {
-                        HStack {
+                        ZStack {
+                            Rectangle()
+                                .frame(width: 40, height: 40)
+                                .foregroundStyle(Color("blueColor"))
+                                .cornerRadius(10)
                             Image(systemName: "plus")
                                 .foregroundColor(.white)
-                                .font(.system(size: 22))
-                                .padding(EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12))
+                                .font(.system(size: 18))
                         }
-                        .background(Color("blueColor"))
-                        .cornerRadius(10)
-                        .padding(.trailing, 20)
                     }
                 }
             }
-            .padding(.bottom, 90)
         }
-        .background(Color("background"))
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -45,30 +45,29 @@ struct SelectingVPKView: View {
                         self.isFocused = false
                         guard !text.isEmpty else { return }
                         
-                        vm.fetchWeekForSingleGroup(groupName: text)
                         self.isLoading = true
+                        vm.fetchWeekForSingleGroup(groupName: text)
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            guard vm.errorInNetwork == .noError else {
-                                vm.isShowingAlertForIncorrectGroup = true
+                            guard vm.errorInNetworkForSingleGroup == .noError else {
                                 return
                             }
                             
-                            vm.errorInNetwork = nil
+                            vm.errorInNetworkForSingleGroup = nil
                             let formattedText = transformStringToFormat(text)
                             
                             do {
                                 try saveGroup(name: formattedText)
                                 saveScheduleForVpkToMemory(withName: formattedText)
                                 vm.nameToHtml[formattedText] = ""
-                                vm.updateFilteringGroups()
+                                vm.addGroupToFilteringArray(group: formattedText)
                                 vm.fetchWeekSchedule()
                                 self.isLoading = false
                                 self.text = ""
                                 dismiss()
                             } catch {
                                 print("Ошибка сохранения: \(error.localizedDescription)")
-                                vm.isShowingAlertForIncorrectGroup = true
+                                vm.isShowingAlertForIncorrectSingleGroup = true
                             }
                         }
                     }
@@ -107,6 +106,21 @@ struct SelectingVPKView: View {
         .onAppear {
             serchGroupsVM.fetchGroups(group: "ВПК")
         }
+        .navigationBarBackButtonHidden(true) // Скрываем стандартную кнопку "Назад"
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Назад")
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

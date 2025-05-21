@@ -34,6 +34,18 @@ struct ContentView: View {
             }
             TabBarView(selectedTab: $selectedTab)
         }
+        .alert(isPresented: $vm.isShowingAlertForIncorrectSingleGroup, error: vm.errorInNetworkForSingleGroup) { error in
+            Button("ОК") {
+                print("This alert")
+                vm.isShowingAlertForIncorrectSingleGroup = false
+                vm.errorInNetworkForSingleGroup = nil
+            }
+        } message: { error in
+            Text(error.failureReason)
+        }
+        .onAppear {
+            vm.fillFilteringGroups()
+        }
     }
 }
 

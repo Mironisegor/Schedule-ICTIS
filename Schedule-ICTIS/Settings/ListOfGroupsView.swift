@@ -38,7 +38,7 @@ struct ListOfGroupsView: View {
                                 try saveGroup(name: item.name)
                                 saveScheduleForVpkToMemory(withName: item.name)
                                 vm.nameToHtml[item.name] = ""
-                                vm.updateFilteringGroups()
+                                vm.addGroupToFilteringArray(group: item.name)
                                 vm.fetchWeekSchedule()
                                 dismiss()
                             } catch {

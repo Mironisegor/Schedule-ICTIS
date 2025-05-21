@@ -51,8 +51,6 @@ extension JsonClassModel {
         
         let groupsToDelete = try context.fetch(fetchRequest)
         
-        print("Пары для удаления: \(groupsToDelete)")
-        
         for group in groupsToDelete {
             do {
                 try ClassProvider.shared.delete(group, in: context)

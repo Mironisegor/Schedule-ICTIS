@@ -13,7 +13,7 @@ struct SettingsView: View {
     @State private var selectedTheme = "Светлая"
     @State private var selectedLanguage = "Русский"
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 ScrollView (.vertical, showsIndicators: false) {
                     VStack (alignment: .leading) {

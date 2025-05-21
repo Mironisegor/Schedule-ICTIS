@@ -14,32 +14,34 @@ struct MainView: View {
     @FocusState private var isFocusedSearchBar: Bool
     @State private var isScrolling: Bool = false
     var body: some View {
-        VStack {
-            SearchBarView(isFocused: _isFocusedSearchBar, vm: vm, isShowingMonthSlider: $isShowingMonthSlider)
-                .onChange(of: isScrolling, initial: false) { oldValue, newValue in
-                    if newValue && isScrolling {
-                        isFocusedSearchBar = false
+        NavigationStack {
+            VStack {
+                SearchBarView(isFocused: _isFocusedSearchBar, vm: vm, isShowingMonthSlider: $isShowingMonthSlider)
+                    .onChange(of: isScrolling, initial: false) { oldValue, newValue in
+                        if newValue && isScrolling {
+                            isFocusedSearchBar = false
+                        }
                     }
+                CurrentDateView()
+                FilterGroupsView(vm: vm, networkMonitor: networkMonitor)
+                if vm.isLoading {
+                    LoadingScheduleView()
                 }
-            CurrentDateView()
-            FilterGroupsView(vm: vm)
-            if vm.isLoading {
-                LoadingScheduleView()
+                else {
+                    ScheduleView(vm: vm, networkMonitor: networkMonitor, isScrolling: $isScrolling)
+                }
             }
-            else {
-                ScheduleView(vm: vm, networkMonitor: networkMonitor, isScrolling: $isScrolling)
+            .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
+                Button("ОК") {
+                    print("This alert")
+                    vm.isShowingAlertForIncorrectGroup = false
+                    vm.errorInNetwork = nil
+                }
+            } message: { error in
+                Text(error.failureReason)
             }
+            .background(Color("background"))
         }
-        .alert(isPresented: $vm.isShowingAlertForIncorrectGroup, error: vm.errorInNetwork) { error in
-            Button("ОК") {
-                print("This alert")
-                vm.isShowingAlertForIncorrectGroup = false
-                vm.errorInNetwork = nil
-            }
-        } message: { error in
-            Text(error.failureReason)
-        }
-        .background(Color("background"))
     }
     
     @ViewBuilder
