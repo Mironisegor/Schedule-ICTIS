@@ -121,6 +121,13 @@ struct SelectingVPKView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .gesture(
+            DragGesture().onEnded { value in
+                if value.startLocation.x < 50 && value.translation.width > 80 {
+                    dismiss()
+                }
+            }
+        )
     }
 }
 

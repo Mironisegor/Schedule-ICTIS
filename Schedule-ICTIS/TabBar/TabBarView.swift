@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TabBarView: View {
     @Binding var selectedTab: TabBarModel
+    @ObservedObject var navigationManager: NavigationManager
     @Namespace private var animation
     var body: some View {
         VStack {
@@ -36,6 +37,10 @@ struct TabBarView: View {
     var content: some View {
         ForEach(TabBarModel.allCases, id: \.rawValue) { tab in
             Button {
+                if selectedTab == tab {
+                    // Если таб уже выбран, сбрасываем навигацию
+                    navigationManager.popToRoot()
+                }
                 selectedTab = tab
             } label: {
                 VStack (alignment: .center) {

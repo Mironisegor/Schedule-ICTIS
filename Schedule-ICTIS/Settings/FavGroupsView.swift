@@ -41,8 +41,18 @@ struct FavGroupsView: View {
                 }
             }
         }
-        .navigationBarBackButtonHidden(true) // Скрываем стандартную кнопку "Назад"
+        .navigationBarBackButtonHidden(true)
         .background(Color("background"))
+        // Жест для возврата на страницу настроек
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 20, coordinateSpace: .local)
+                .onEnded { value in
+                    // Проверяем, что свайп начинается у левого края и идёт вправо
+                    if value.startLocation.x < 20 && value.translation.width > 80 {
+                        dismiss()
+                    }
+                }
+        )
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {

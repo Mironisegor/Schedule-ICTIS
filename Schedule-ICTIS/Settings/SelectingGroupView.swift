@@ -121,6 +121,9 @@ struct SelectingGroupView: View {
                                         saveScheduleForGroupToMemory(withName: item.name)
                                         vm.nameToHtml[item.name] = ""
                                         vm.addGroupToFilteringArray(group: item.name)
+                                        if vm.filteringGroups.count == 2 {
+                                            vm.showOnlyChoosenGroup = vm.filteringGroups[1]
+                                        }
                                         vm.fetchWeekSchedule()
                                         self.isLoading = false
                                         self.text = ""
@@ -158,6 +161,13 @@ struct SelectingGroupView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .gesture(
+            DragGesture().onEnded { value in
+                if value.startLocation.x < 50 && value.translation.width > 80 {
+                    dismiss()
+                }
+            }
+        )
     }
 }
 

@@ -12,6 +12,7 @@ struct ContentView: View {
     @State private var isTabBarHidden = false
     @ObservedObject var vm: ScheduleViewModel
     @ObservedObject var networkMonitor: NetworkMonitor
+    @StateObject private var navigationManager = NavigationManager()
     var body: some View {
         ZStack (alignment: .bottom) {
             TabView(selection: $selectedTab) {
@@ -32,7 +33,7 @@ struct ContentView: View {
                 SettingsView(vm: vm, networkMonitor: networkMonitor)
                     .tag(TabBarModel.settings)
             }
-            TabBarView(selectedTab: $selectedTab)
+            TabBarView(selectedTab: $selectedTab, navigationManager: navigationManager)
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectSingleGroup, error: vm.errorInNetworkForSingleGroup) { error in
             Button("ОК") {
