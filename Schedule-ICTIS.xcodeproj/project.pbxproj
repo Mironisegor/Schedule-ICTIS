@@ -1,0 +1,767 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A72849F22DD4A67B00EE711B /* ClassDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A72849F02DD4A67B00EE711B /* ClassDataModel.xcdatamodeld */; };
+		A78291462DDF691A00167B99 /* TrueTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A78290CC2DDF68E600167B99 /* TrueTime.framework */; };
+		A7FF09D82DE0AAA700DBB88C /* TrueTime.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF090A2DE0A90C00DBB88C /* TrueTime.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A78291482DDF691A00167B99 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A7FF09D82DE0AAA700DBB88C /* TrueTime.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A72847E72DD4A34900EE711B /* Schedule-ICTIS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Schedule-ICTIS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A72849F12DD4A67B00EE711B /* ClassDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ClassDataModel.xcdatamodel; sourceTree = "<group>"; };
+		A78290CC2DDF68E600167B99 /* TrueTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TrueTime.framework; sourceTree = "<group>"; };
+		A78290CE2DDF68E600167B99 /* TrueTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TrueTime.framework; sourceTree = "<group>"; };
+		A78290CF2DDF68E600167B99 /* TrueTime.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; path = TrueTime.framework.dSYM; sourceTree = "<group>"; };
+		A78290D12DDF68E600167B99 /* .TrueTime.swift.version */ = {isa = PBXFileReference; lastKnownFileType = text; path = .TrueTime.swift.version; sourceTree = "<group>"; };
+		A78290D22DDF68E600167B99 /* TrueTime.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = TrueTime.xcframework; sourceTree = "<group>"; };
+		A78290D42DDF68E600167B99 /* pull_request_template.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = pull_request_template.md; sourceTree = "<group>"; };
+		A78290D62DDF68E600167B99 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A78290D72DDF68E600167B99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A78290D82DDF68E600167B99 /* Bridging.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Bridging.m; sourceTree = "<group>"; };
+		A78290D92DDF68E600167B99 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		A78290DA2DDF68E600167B99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A78290DB2DDF68E600167B99 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A78290DE2DDF68E600167B99 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		A78290DF2DDF68E600167B99 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
+		A78290E02DDF68E600167B99 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		A78290E12DDF68E600167B99 /* Test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Test.xcconfig; sourceTree = "<group>"; };
+		A78290E32DDF68E600167B99 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		A78290E42DDF68E600167B99 /* Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Framework.xcconfig; sourceTree = "<group>"; };
+		A78290E52DDF68E600167B99 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		A78290E72DDF68E600167B99 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		A78290E92DDF68E600167B99 /* iOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Application.xcconfig"; sourceTree = "<group>"; };
+		A78290EA2DDF68E600167B99 /* iOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Base.xcconfig"; sourceTree = "<group>"; };
+		A78290EB2DDF68E600167B99 /* iOS-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Framework.xcconfig"; sourceTree = "<group>"; };
+		A78290EC2DDF68E600167B99 /* iOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		A78290EE2DDF68E600167B99 /* Mac-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Application.xcconfig"; sourceTree = "<group>"; };
+		A78290EF2DDF68E600167B99 /* Mac-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Base.xcconfig"; sourceTree = "<group>"; };
+		A78290F02DDF68E600167B99 /* Mac-DynamicLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-DynamicLibrary.xcconfig"; sourceTree = "<group>"; };
+		A78290F12DDF68E600167B99 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
+		A78290F22DDF68E600167B99 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		A78290F42DDF68E600167B99 /* tvOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "tvOS-Application.xcconfig"; sourceTree = "<group>"; };
+		A78290F52DDF68E600167B99 /* tvOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "tvOS-Base.xcconfig"; sourceTree = "<group>"; };
+		A78290F62DDF68E600167B99 /* tvOS-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "tvOS-Framework.xcconfig"; sourceTree = "<group>"; };
+		A78290F72DDF68E600167B99 /* tvOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "tvOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		A78290F92DDF68E600167B99 /* watchOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-Application.xcconfig"; sourceTree = "<group>"; };
+		A78290FA2DDF68E600167B99 /* watchOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-Base.xcconfig"; sourceTree = "<group>"; };
+		A78290FB2DDF68E600167B99 /* watchOS-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-Framework.xcconfig"; sourceTree = "<group>"; };
+		A78290FC2DDF68E600167B99 /* watchOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "watchOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		A78290FE2DDF68E600167B99 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		A78290FF2DDF68E600167B99 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A78291022DDF68E600167B99 /* test */ = {isa = PBXFileReference; lastKnownFileType = text; path = test; sourceTree = "<group>"; };
+		A78291042DDF68E600167B99 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		A78291052DDF68E600167B99 /* ntp_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ntp_types.h; sourceTree = "<group>"; };
+		A78291072DDF68E600167B99 /* Endian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endian.swift; sourceTree = "<group>"; };
+		A78291082DDF68E600167B99 /* GCDLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDLock.swift; sourceTree = "<group>"; };
+		A78291092DDF68E600167B99 /* HostResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostResolver.swift; sourceTree = "<group>"; };
+		A782910A2DDF68E600167B99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A782910B2DDF68E600167B99 /* NTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPClient.swift; sourceTree = "<group>"; };
+		A782910C2DDF68E600167B99 /* NTPConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPConnection.swift; sourceTree = "<group>"; };
+		A782910D2DDF68E600167B99 /* NTPExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPExtensions.swift; sourceTree = "<group>"; };
+		A782910E2DDF68E600167B99 /* NTPResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPResponse.swift; sourceTree = "<group>"; };
+		A782910F2DDF68E600167B99 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		A78291102DDF68E600167B99 /* ReferenceTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceTime.swift; sourceTree = "<group>"; };
+		A78291112DDF68E600167B99 /* SocketAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketAddress.swift; sourceTree = "<group>"; };
+		A78291122DDF68E600167B99 /* TimedOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedOperation.swift; sourceTree = "<group>"; };
+		A78291132DDF68E600167B99 /* TrueTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrueTime.h; sourceTree = "<group>"; };
+		A78291142DDF68E600167B99 /* TrueTime.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrueTime.m; sourceTree = "<group>"; };
+		A78291152DDF68E600167B99 /* TrueTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrueTime.swift; sourceTree = "<group>"; };
+		A78291172DDF68E600167B99 /* ArbitraryExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArbitraryExtensions.swift; sourceTree = "<group>"; };
+		A78291182DDF68E600167B99 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A78291192DDF68E600167B99 /* NTPExtensionsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPExtensionsSpec.swift; sourceTree = "<group>"; };
+		A782911A2DDF68E600167B99 /* NTPIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPIntegrationSpec.swift; sourceTree = "<group>"; };
+		A782911C2DDF68E600167B99 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		A782911D2DDF68E600167B99 /* .gitmodules */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitmodules; sourceTree = "<group>"; };
+		A782911E2DDF68E600167B99 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
+		A782911F2DDF68E600167B99 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		A78291202DDF68E600167B99 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .travis.yml; sourceTree = "<group>"; };
+		A78291212DDF68E600167B99 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		A78291222DDF68E600167B99 /* Cartfile.private */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.private; sourceTree = "<group>"; };
+		A78291232DDF68E600167B99 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
+		A78291242DDF68E600167B99 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		A78291252DDF68E600167B99 /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
+		A78291262DDF68E600167B99 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A78291272DDF68E600167B99 /* ntp.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ntp.gif; sourceTree = "<group>"; };
+		A78291282DDF68E600167B99 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A78291292DDF68E600167B99 /* truetime.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = truetime.png; sourceTree = "<group>"; };
+		A782912A2DDF68E600167B99 /* TrueTime.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = TrueTime.podspec; sourceTree = "<group>"; };
+		A782912B2DDF68E600167B99 /* TrueTime.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TrueTime.xcodeproj; sourceTree = "<group>"; };
+		A7FF090A2DE0A90C00DBB88C /* TrueTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TrueTime.framework; path = Carthage/Build/iOS/TrueTime.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A72849F42DD4A75800EE711B /* Exceptions for "Schedule-ICTIS" folder in "Schedule-ICTIS" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A72847E62DD4A34900EE711B /* Schedule-ICTIS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A72847E92DD4A34900EE711B /* Schedule-ICTIS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A72849F42DD4A75800EE711B /* Exceptions for "Schedule-ICTIS" folder in "Schedule-ICTIS" target */,
+			);
+			path = "Schedule-ICTIS";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A72847E42DD4A34900EE711B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A78291462DDF691A00167B99 /* TrueTime.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A72847DE2DD4A34900EE711B = {
+			isa = PBXGroup;
+			children = (
+				A7FF090A2DE0A90C00DBB88C /* TrueTime.framework */,
+				A72849F02DD4A67B00EE711B /* ClassDataModel.xcdatamodeld */,
+				A72847E92DD4A34900EE711B /* Schedule-ICTIS */,
+				A78290CB2DDF68E600167B99 /* Frameworks */,
+				A72847E82DD4A34900EE711B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A72847E82DD4A34900EE711B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A72847E72DD4A34900EE711B /* Schedule-ICTIS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A78290CB2DDF68E600167B99 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A782912E2DDF68E600167B99 /* Carthage */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A78290CD2DDF68E600167B99 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A78290CC2DDF68E600167B99 /* TrueTime.framework */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A78290D02DDF68E600167B99 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				A78290CE2DDF68E600167B99 /* TrueTime.framework */,
+				A78290CF2DDF68E600167B99 /* TrueTime.framework.dSYM */,
+			);
+			path = Mac;
+			sourceTree = "<group>";
+		};
+		A78290D32DDF68E600167B99 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				A78290CD2DDF68E600167B99 /* iOS */,
+				A78290D02DDF68E600167B99 /* Mac */,
+				A78290D12DDF68E600167B99 /* .TrueTime.swift.version */,
+				A78290D22DDF68E600167B99 /* TrueTime.xcframework */,
+			);
+			path = Build;
+			sourceTree = "<group>";
+		};
+		A78290D52DDF68E600167B99 /* .github */ = {
+			isa = PBXGroup;
+			children = (
+				A78290D42DDF68E600167B99 /* pull_request_template.md */,
+			);
+			path = .github;
+			sourceTree = "<group>";
+		};
+		A78290DC2DDF68E600167B99 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A78290D62DDF68E600167B99 /* AppDelegate.swift */,
+				A78290D72DDF68E600167B99 /* Assets.xcassets */,
+				A78290D82DDF68E600167B99 /* Bridging.m */,
+				A78290D92DDF68E600167B99 /* Default-568h@2x.png */,
+				A78290DA2DDF68E600167B99 /* Info.plist */,
+				A78290DB2DDF68E600167B99 /* ViewController.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A78290DD2DDF68E600167B99 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				A78290DC2DDF68E600167B99 /* iOS */,
+			);
+			path = Examples;
+			sourceTree = "<group>";
+		};
+		A78290E22DDF68E600167B99 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				A78290DE2DDF68E600167B99 /* Debug.xcconfig */,
+				A78290DF2DDF68E600167B99 /* Profile.xcconfig */,
+				A78290E02DDF68E600167B99 /* Release.xcconfig */,
+				A78290E12DDF68E600167B99 /* Test.xcconfig */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		A78290E62DDF68E600167B99 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				A78290E32DDF68E600167B99 /* Application.xcconfig */,
+				A78290E42DDF68E600167B99 /* Framework.xcconfig */,
+				A78290E52DDF68E600167B99 /* StaticLibrary.xcconfig */,
+			);
+			path = Targets;
+			sourceTree = "<group>";
+		};
+		A78290E82DDF68E600167B99 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				A78290E22DDF68E600167B99 /* Configurations */,
+				A78290E62DDF68E600167B99 /* Targets */,
+				A78290E72DDF68E600167B99 /* Common.xcconfig */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		A78290ED2DDF68E600167B99 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A78290E92DDF68E600167B99 /* iOS-Application.xcconfig */,
+				A78290EA2DDF68E600167B99 /* iOS-Base.xcconfig */,
+				A78290EB2DDF68E600167B99 /* iOS-Framework.xcconfig */,
+				A78290EC2DDF68E600167B99 /* iOS-StaticLibrary.xcconfig */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A78290F32DDF68E600167B99 /* Mac OS X */ = {
+			isa = PBXGroup;
+			children = (
+				A78290EE2DDF68E600167B99 /* Mac-Application.xcconfig */,
+				A78290EF2DDF68E600167B99 /* Mac-Base.xcconfig */,
+				A78290F02DDF68E600167B99 /* Mac-DynamicLibrary.xcconfig */,
+				A78290F12DDF68E600167B99 /* Mac-Framework.xcconfig */,
+				A78290F22DDF68E600167B99 /* Mac-StaticLibrary.xcconfig */,
+			);
+			path = "Mac OS X";
+			sourceTree = "<group>";
+		};
+		A78290F82DDF68E600167B99 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				A78290F42DDF68E600167B99 /* tvOS-Application.xcconfig */,
+				A78290F52DDF68E600167B99 /* tvOS-Base.xcconfig */,
+				A78290F62DDF68E600167B99 /* tvOS-Framework.xcconfig */,
+				A78290F72DDF68E600167B99 /* tvOS-StaticLibrary.xcconfig */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		A78290FD2DDF68E600167B99 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				A78290F92DDF68E600167B99 /* watchOS-Application.xcconfig */,
+				A78290FA2DDF68E600167B99 /* watchOS-Base.xcconfig */,
+				A78290FB2DDF68E600167B99 /* watchOS-Framework.xcconfig */,
+				A78290FC2DDF68E600167B99 /* watchOS-StaticLibrary.xcconfig */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		A78291002DDF68E600167B99 /* xcconfigs */ = {
+			isa = PBXGroup;
+			children = (
+				A78290E82DDF68E600167B99 /* Base */,
+				A78290ED2DDF68E600167B99 /* iOS */,
+				A78290F32DDF68E600167B99 /* Mac OS X */,
+				A78290F82DDF68E600167B99 /* tvOS */,
+				A78290FD2DDF68E600167B99 /* watchOS */,
+				A78290FE2DDF68E600167B99 /* .gitignore */,
+				A78290FF2DDF68E600167B99 /* README.md */,
+			);
+			path = xcconfigs;
+			sourceTree = "<group>";
+		};
+		A78291012DDF68E600167B99 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				A78291002DDF68E600167B99 /* xcconfigs */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		A78291032DDF68E600167B99 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				A78291022DDF68E600167B99 /* test */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		A78291062DDF68E600167B99 /* CTrueTime */ = {
+			isa = PBXGroup;
+			children = (
+				A78291042DDF68E600167B99 /* module.modulemap */,
+				A78291052DDF68E600167B99 /* ntp_types.h */,
+			);
+			path = CTrueTime;
+			sourceTree = "<group>";
+		};
+		A78291162DDF68E600167B99 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A78291062DDF68E600167B99 /* CTrueTime */,
+				A78291072DDF68E600167B99 /* Endian.swift */,
+				A78291082DDF68E600167B99 /* GCDLock.swift */,
+				A78291092DDF68E600167B99 /* HostResolver.swift */,
+				A782910A2DDF68E600167B99 /* Info.plist */,
+				A782910B2DDF68E600167B99 /* NTPClient.swift */,
+				A782910C2DDF68E600167B99 /* NTPConnection.swift */,
+				A782910D2DDF68E600167B99 /* NTPExtensions.swift */,
+				A782910E2DDF68E600167B99 /* NTPResponse.swift */,
+				A782910F2DDF68E600167B99 /* Reachability.swift */,
+				A78291102DDF68E600167B99 /* ReferenceTime.swift */,
+				A78291112DDF68E600167B99 /* SocketAddress.swift */,
+				A78291122DDF68E600167B99 /* TimedOperation.swift */,
+				A78291132DDF68E600167B99 /* TrueTime.h */,
+				A78291142DDF68E600167B99 /* TrueTime.m */,
+				A78291152DDF68E600167B99 /* TrueTime.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		A782911B2DDF68E600167B99 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A78291172DDF68E600167B99 /* ArbitraryExtensions.swift */,
+				A78291182DDF68E600167B99 /* Info.plist */,
+				A78291192DDF68E600167B99 /* NTPExtensionsSpec.swift */,
+				A782911A2DDF68E600167B99 /* NTPIntegrationSpec.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		A782912C2DDF68E600167B99 /* TrueTime.swift */ = {
+			isa = PBXGroup;
+			children = (
+				A78290D52DDF68E600167B99 /* .github */,
+				A78290DD2DDF68E600167B99 /* Examples */,
+				A78291012DDF68E600167B99 /* External */,
+				A78291032DDF68E600167B99 /* Scripts */,
+				A78291162DDF68E600167B99 /* Sources */,
+				A782911B2DDF68E600167B99 /* Tests */,
+				A782911C2DDF68E600167B99 /* .gitignore */,
+				A782911D2DDF68E600167B99 /* .gitmodules */,
+				A782911E2DDF68E600167B99 /* .swift-version */,
+				A782911F2DDF68E600167B99 /* .swiftlint.yml */,
+				A78291202DDF68E600167B99 /* .travis.yml */,
+				A78291212DDF68E600167B99 /* Cartfile */,
+				A78291222DDF68E600167B99 /* Cartfile.private */,
+				A78291232DDF68E600167B99 /* Cartfile.resolved */,
+				A78291242DDF68E600167B99 /* CHANGELOG.md */,
+				A78291252DDF68E600167B99 /* CODE_OF_CONDUCT.md */,
+				A78291262DDF68E600167B99 /* LICENSE */,
+				A78291272DDF68E600167B99 /* ntp.gif */,
+				A78291282DDF68E600167B99 /* README.md */,
+				A78291292DDF68E600167B99 /* truetime.png */,
+				A782912A2DDF68E600167B99 /* TrueTime.podspec */,
+				A782912B2DDF68E600167B99 /* TrueTime.xcodeproj */,
+			);
+			path = TrueTime.swift;
+			sourceTree = "<group>";
+		};
+		A782912D2DDF68E600167B99 /* Checkouts */ = {
+			isa = PBXGroup;
+			children = (
+				A782912C2DDF68E600167B99 /* TrueTime.swift */,
+			);
+			path = Checkouts;
+			sourceTree = "<group>";
+		};
+		A782912E2DDF68E600167B99 /* Carthage */ = {
+			isa = PBXGroup;
+			children = (
+				A78290D32DDF68E600167B99 /* Build */,
+				A782912D2DDF68E600167B99 /* Checkouts */,
+			);
+			path = Carthage;
+			sourceTree = "<group>";
+		};
+		A782912F2DDF68E600167B99 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A72847E62DD4A34900EE711B /* Schedule-ICTIS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A72847F52DD4A34B00EE711B /* Build configuration list for PBXNativeTarget "Schedule-ICTIS" */;
+			buildPhases = (
+				A72847E32DD4A34900EE711B /* Sources */,
+				A72847E42DD4A34900EE711B /* Frameworks */,
+				A72847E52DD4A34900EE711B /* Resources */,
+				A78291482DDF691A00167B99 /* Embed Frameworks */,
+				A78291492DDF693900167B99 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A72847E92DD4A34900EE711B /* Schedule-ICTIS */,
+			);
+			name = "Schedule-ICTIS";
+			packageProductDependencies = (
+			);
+			productName = "Schedule-ICTIS";
+			productReference = A72847E72DD4A34900EE711B /* Schedule-ICTIS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A72847DF2DD4A34900EE711B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					A72847E62DD4A34900EE711B = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = A72847E22DD4A34900EE711B /* Build configuration list for PBXProject "Schedule-ICTIS" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A72847DE2DD4A34900EE711B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A72847E82DD4A34900EE711B /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A782912F2DDF68E600167B99 /* Products */;
+					ProjectRef = A782912B2DDF68E600167B99 /* TrueTime.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				A72847E62DD4A34900EE711B /* Schedule-ICTIS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A72847E52DD4A34900EE711B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A78291492DDF693900167B99 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			dependencyFile = "$(SRCROOT)/Carthage/Build/iOS/TrueTime.framework";
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A72847E32DD4A34900EE711B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A72849F22DD4A67B00EE711B /* ClassDataModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A72847F32DD4A34B00EE711B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A72847F42DD4A34B00EE711B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A72847F62DD4A34B00EE711B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Schedule-ICTIS/Preview Content\"";
+				DEVELOPMENT_TEAM = 5X5YVGM7KV;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Schedule-ICTIS/Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Mironov-Egor.Schedule-ICTIS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A72847F72DD4A34B00EE711B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Schedule-ICTIS/Preview Content\"";
+				DEVELOPMENT_TEAM = 5X5YVGM7KV;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Schedule-ICTIS/Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Mironov-Egor.Schedule-ICTIS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A72847E22DD4A34900EE711B /* Build configuration list for PBXProject "Schedule-ICTIS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A72847F32DD4A34B00EE711B /* Debug */,
+				A72847F42DD4A34B00EE711B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A72847F52DD4A34B00EE711B /* Build configuration list for PBXNativeTarget "Schedule-ICTIS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A72847F62DD4A34B00EE711B /* Debug */,
+				A72847F72DD4A34B00EE711B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A72849F02DD4A67B00EE711B /* ClassDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A72849F12DD4A67B00EE711B /* ClassDataModel.xcdatamodel */,
+			);
+			currentVersion = A72849F12DD4A67B00EE711B /* ClassDataModel.xcdatamodel */;
+			path = ClassDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = A72847DF2DD4A34900EE711B /* Project object */;
+}
