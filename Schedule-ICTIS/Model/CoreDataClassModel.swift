@@ -27,11 +27,12 @@ final class CoreDataClassModel: NSManagedObject, Identifiable {
     override func awakeFromInsert() {
         super.awakeFromInsert()
         
+        let timeManager = TimeService.shared
         let moscowTimeZone = TimeZone(identifier: "Europe/Moscow")!
         var calendar = Calendar.current
         calendar.timeZone = moscowTimeZone
-        let startTime = Date()
-        let endTime = calendar.date(byAdding: .hour, value: 1, to: Date.init())
+        let startTime = timeManager.currentTime
+        let endTime = calendar.date(byAdding: .hour, value: 1, to: timeManager.currentTime)
         
         setPrimitiveValue("", forKey: "auditory")
         setPrimitiveValue("", forKey: "professor")
@@ -67,6 +68,7 @@ extension CoreDataClassModel {
 extension CoreDataClassModel {
     @discardableResult
     static func makePreview(count: Int, in context: NSManagedObjectContext) -> [CoreDataClassModel] {
+        let timeManager = TimeService.shared
         var classes = [CoreDataClassModel]()
         for i in 0..<count {
             let _class = CoreDataClassModel(context: context)
@@ -74,7 +76,7 @@ extension CoreDataClassModel {
             _class.auditory = "Аудитория \(i)"
             _class.professor = "Преподаватель \(i)"
             _class.day = Calendar.current.date(byAdding: .day, value: i, to: .now) ?? .now
-            _class.starttime = Date()
+            _class.starttime = timeManager.currentTime
             _class.endtime = Calendar.current.date(byAdding: .hour, value: i, to: .now) ?? .now
             classes.append(_class)
         }

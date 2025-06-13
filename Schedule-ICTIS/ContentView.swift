@@ -13,27 +13,27 @@ struct ContentView: View {
     @ObservedObject var vm: ScheduleViewModel
     @ObservedObject var networkMonitor: NetworkMonitor
     @StateObject private var navigationManager = NavigationManager()
+    @EnvironmentObject var timeManager: TimeService
     var body: some View {
         ZStack (alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                Text("Tasks")
-                    .tag(TabBarModel.tasks)
-                
-                MainView(vm: vm, networkMonitor: networkMonitor)
-                    .tag(TabBarModel.schedule)
-                    .background {
-                        if !isTabBarHidden {
-                            HideTabBar {
-                                print("TabBar is hidden")
-                                isTabBarHidden = true
-                            }
-                        }
-                    }
-                
-                SettingsView(vm: vm, networkMonitor: networkMonitor)
-                    .tag(TabBarModel.settings)
+                Group {
+                    Text("Tasks")
+                        .tag(TabBarModel.tasks)
+                    
+                    MainView(vm: vm, networkMonitor: networkMonitor)
+                        .tag(TabBarModel.schedule)
+                    
+                    SettingsView(vm: vm, networkMonitor: networkMonitor)
+                        .tag(TabBarModel.settings)
+                }
+                .toolbar(.hidden, for: .tabBar)  // Применяется ко всем вью в Group
             }
+                
             TabBarView(selectedTab: $selectedTab, navigationManager: navigationManager)
+        }
+        .onAppear {
+            vm.selectedDay = timeManager.currentTime
         }
         .alert(isPresented: $vm.isShowingAlertForIncorrectSingleGroup, error: vm.errorInNetworkForSingleGroup) { error in
             Button("ОК") {
@@ -43,9 +43,6 @@ struct ContentView: View {
             }
         } message: { error in
             Text(error.failureReason)
-        }
-        .onAppear {
-            vm.fillFilteringGroups()
         }
     }
 }

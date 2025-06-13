@@ -26,7 +26,7 @@ extension Date {
         return Calendar.current.isDateInToday(self)
     }
 
-    func fetchWeek(_ date: Date = .init()) -> [WeekDay] {
+    func fetchWeek(_ date: Date = TimeService.shared.currentTime) -> [WeekDay] {
         let calendar = Calendar.current
         let startOfDate = calendar.startOfDay(for: date)
         
@@ -50,7 +50,7 @@ extension Date {
         return week
     }
     
-    func fetchMonth(_ date: Date = .init()) -> [MonthWeek] {
+    func fetchMonth(_ date: Date = TimeService.shared.currentTime) -> [MonthWeek] {
         let calendar = Calendar.current
         let startOfDate = calendar.startOfDay(for: date)
         

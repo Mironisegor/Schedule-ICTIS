@@ -45,7 +45,8 @@ extension View {
     
     func isDateInCurrentMonth(_ date: Date) -> Bool {
         let calendar = Calendar.current
-        let currentDate = Date()
+        let timeManager = TimeService.shared
+        let currentDate = timeManager.currentTime
         
         let currentMonth = calendar.component(.month, from: currentDate)
         let currentYear = calendar.component(.year, from: currentDate)
@@ -194,9 +195,10 @@ extension View {
 
 extension WeekTabView {
     func updateWeekScreenViewForNewGroup() {
+        let timeManager = TimeService.shared
         vm.updateSelectedDayIndex()
         if weekSlider.isEmpty {
-            let currentWeek = Date().fetchWeek(vm.selectedDay)
+            let currentWeek = timeManager.currentTime.fetchWeek()
                 
             if let firstDate = currentWeek.first?.date {
                 weekSlider.append(firstDate.createPrevioustWeek())
@@ -213,6 +215,7 @@ extension WeekTabView {
 
 extension WeekViewForWeek {
     func paginateWeek() {
+        let timeManager = TimeService.shared
         let calendar = Calendar.current
         let groupsKeys = Array (vm.nameToHtml.keys)
         if weekSlider.indices.contains(currentWeekIndex) {
@@ -228,7 +231,7 @@ extension WeekViewForWeek {
                 weekSlider.insert(firstDate.createPrevioustWeek(), at: 0)
                 weekSlider.removeLast()
                 currentWeekIndex = 1
-                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -1, to: vm.selectedDay) ?? Date.init()
+                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -1, to: vm.selectedDay) ?? timeManager.currentTime
                 vm.updateSelectedDayIndex()
             }
             
@@ -241,7 +244,7 @@ extension WeekViewForWeek {
                 weekSlider.append(lastDate.createNextWeek())
                 weekSlider.removeFirst()
                 currentWeekIndex = weekSlider.count - 2
-                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 1, to: vm.selectedDay) ?? Date.init()
+                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 1, to: vm.selectedDay) ?? timeManager.currentTime
                 vm.updateSelectedDayIndex()
             }
         }
@@ -296,9 +299,10 @@ extension WeekViewForMonth {
 
 extension MonthTabView {
     func updateMonthScreenViewForNewGroup() {
+        let timeManager = TimeService.shared
         vm.updateSelectedDayIndex()
         if monthSlider.isEmpty {
-            let currentMonth = Date().fetchMonth(vm.selectedDay)
+            let currentMonth = timeManager.currentTime.fetchMonth(vm.selectedDay)
             
             if let firstDate = currentMonth.first?.week[0].date {
                 let temp = firstDate.createPreviousMonth()
@@ -317,6 +321,7 @@ extension MonthTabView {
     }
     
     func paginateMonth(_ indexOfWeek: Int = 0) {
+        let timeManager = TimeService.shared
         let calendar = Calendar.current
         let groupsKeys = Array (vm.nameToHtml.keys)
         if monthSlider.indices.contains(currentMonthIndex) {
@@ -325,7 +330,7 @@ extension MonthTabView {
                 monthSlider.insert(firstDate.createPreviousMonth(), at: 0)
                 monthSlider.removeLast()
                 currentMonthIndex = 1
-                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -5, to: vm.selectedDay) ?? Date.init()
+                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: -5, to: vm.selectedDay) ?? timeManager.currentTime
                 vm.updateSelectedDayIndex()
                 vm.week -= 5
                 if !groupsKeys.isEmpty {
@@ -338,7 +343,7 @@ extension MonthTabView {
                 monthSlider.append(lastDate.createNextMonth())
                 monthSlider.removeFirst()
                 currentMonthIndex = monthSlider.count - 2
-                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 5, to: vm.selectedDay) ?? Date.init()
+                vm.selectedDay = calendar.date(byAdding: .weekOfYear, value: 5, to: vm.selectedDay) ?? timeManager.currentTime
                 vm.updateSelectedDayIndex()
                 vm.week += 5
                 if !groupsKeys.isEmpty {

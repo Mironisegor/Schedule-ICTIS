@@ -11,7 +11,8 @@ import CoreData
 extension ScheduleView {
     // Удаляем пары добавленные пользователем, если сегодня понедельник
     func deleteClassesFormCoreDataIfMonday() {
-        let today = Date()
+        let timeManager = TimeService.shared
+        let today = timeManager.currentTime
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: today)
         
@@ -73,7 +74,8 @@ extension ScheduleView {
     }
     
     func checkSavingOncePerDay() {
-        let today = Date()
+        let timeManager = TimeService.shared
+        let today = timeManager.currentTime
         let calendar = Calendar.current
         let todayStart = calendar.startOfDay(for: today) // Начало текущего дня
         

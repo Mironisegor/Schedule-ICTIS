@@ -11,37 +11,12 @@ import SwiftUI
 struct Schedule_ICTISApp: App {
     @StateObject private var networkMonitor = NetworkMonitor()
     @StateObject var vm = ScheduleViewModel()
+    @StateObject var timeService = TimeService.shared
     var body: some Scene {
         WindowGroup {
-            ContentView(vm: vm, networkMonitor: networkMonitor)
+            FirstView(vm: vm, networkMonitor: networkMonitor)
                 .environment(\.managedObjectContext, ClassProvider.shared.viewContext)
-                .onAppear {
-                    fillDictForVm()
-                }
-        }
-    }
-}
-
-extension Schedule_ICTISApp {
-    func fillDictForVm() {
-        let context = ClassProvider.shared.viewContext
-        
-        do {
-            // Используем ваш метод all() для групп
-            let groupRequest = FavouriteGroupModel.all()
-            let groups = try context.fetch(groupRequest)
-            for group in groups {
-                vm.nameToHtml[group.name] = ""
-            }
-            
-            // Аналогично для ВПК (предполагая, что у вас есть аналогичный метод)
-            let vpkRequest = FavouriteVpkModel.all()
-            let vpks = try context.fetch(vpkRequest)
-            for vpk in vpks {
-                vm.nameToHtml[vpk.name] = ""
-            }
-        } catch {
-            print("Ошибка при загрузке данных: \(error.localizedDescription)")
+                .environmentObject(timeService)
         }
     }
 }

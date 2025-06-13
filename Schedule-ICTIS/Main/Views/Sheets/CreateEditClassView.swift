@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CreateEditClassView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var timeManager: TimeService
     @State private var isShowingDatePickerForDate: Bool = false
     @ObservedObject var vm: EditClassViewModel
     var day: Date
@@ -112,7 +113,7 @@ struct CreateEditClassView: View {
                             .fill(.white)
                     )
                     .overlay {
-                        DatePicker("", selection: $vm._class.day, in: Date()..., displayedComponents: .date)
+                        DatePicker("", selection: $vm._class.day, in: timeManager.currentTime..., displayedComponents: .date)
                             .blendMode(.destinationOver)
     
                     }
@@ -270,18 +271,17 @@ struct CreateEditClassView: View {
             .navigationTitle(vm.isNew ? "Новая пара" : "Изменить данные")
             .background(Color("background"))
             .onAppear {
-                let temp = Calendar.current.date(byAdding: .hour, value: 1, to: Date.init())
+                let temp = Calendar.current.date(byAdding: .hour, value: 1, to: timeManager.currentTime)
                 if let endTime = temp {
-                    if (!hoursMinutesAreEqual(date1: vm._class.starttime, isEqualTo: Date()) && !hoursMinutesAreEqual(date1: vm._class.endtime, isEqualTo: endTime)) {
+                    if (!hoursMinutesAreEqual(date1: vm._class.starttime, isEqualTo: timeManager.currentTime) && !hoursMinutesAreEqual(date1: vm._class.endtime, isEqualTo: endTime)) {
                         self.isSelectedTime1 = true
                         self.isSelectedTime2 = true
                         print(vm._class.starttime)
                         print(vm._class.endtime)
                         print(endTime)
-                        print(Date())
                     }
                 }
-                if day > Calendar.current.startOfDay(for: Date()) {
+                if day > Calendar.current.startOfDay(for: timeManager.currentTime) {
                     vm._class.day = day
                 }
             }

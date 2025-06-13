@@ -13,6 +13,8 @@ struct WeekViewForWeek: View {
     @Binding var createWeek: Bool
     let week: [Date.WeekDay]
     @ObservedObject var vm: ScheduleViewModel
+    @EnvironmentObject var timeManager: TimeService
+    @State private var toggleTriger = false
     var body: some View {
         HStack (spacing: 10) {
             ForEach(week) { day in
@@ -44,7 +46,7 @@ struct WeekViewForWeek: View {
                 )
                 .overlay (
                     Group {
-                        if day.date.isToday && !isSameDate(day.date, vm.selectedDay) {
+                        if isSameDate(day.date, timeManager.currentTime) && !isSameDate(day.date, vm.selectedDay) {
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(Color("blueColor"), lineWidth: 2)
                         }
@@ -55,6 +57,11 @@ struct WeekViewForWeek: View {
                     vm.selectedDay = day.date
                     vm.updateSelectedDayIndex()
                 }
+            }
+        }
+        .onChange(of: timeManager.isSynced, initial: false) { oldValue, newValue in
+            if newValue {
+                self.toggleTriger.toggle()
             }
         }
         .background {

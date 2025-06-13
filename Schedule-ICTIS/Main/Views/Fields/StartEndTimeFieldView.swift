@@ -14,6 +14,7 @@ struct StartEndTimeFieldView: View {
     var imageName: String
     var text: String
     @Binding var isTimeSelected: Bool
+    @EnvironmentObject var timeManager: TimeService
     var body: some View {
         HStack {
             Image(systemName: imageName)
@@ -41,7 +42,7 @@ struct StartEndTimeFieldView: View {
         )
         .overlay {
             if selectedDay.isToday {
-                DatePicker("", selection: $selectedTime, in: Date()..., displayedComponents: .hourAndMinute)
+                DatePicker("", selection: $selectedTime, in: timeManager.currentTime..., displayedComponents: .hourAndMinute)
                     .padding(.trailing, 35)
                     .blendMode(.destinationOver)
                     .onChange(of: selectedTime) { newValue, oldValue in
