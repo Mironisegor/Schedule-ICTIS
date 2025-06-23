@@ -1,0 +1,80 @@
+af5d288a9cecbef16046d0d4b9146d9a09b9d5ee	not-for-merge	branch '4.2.0' of https://github.com/instacart/TrueTime.swift
+07598687ff6e9a8c7bcdb24aa5e4fc8f5db3ed5b	not-for-merge	branch '5.0.1' of https://github.com/instacart/TrueTime.swift
+7d21bdd89d5274c364d028ce1d1bfd619da06c00	not-for-merge	branch '5.0.2' of https://github.com/instacart/TrueTime.swift
+fce48c177cbd0db8d99a89dc6a596b7d417a9fd9	not-for-merge	branch '5.0.3' of https://github.com/instacart/TrueTime.swift
+9b874ce4c7c8f0240064972a1f0ffbf96fc0c859	not-for-merge	branch 'flobories/no_force_unwrap' of https://github.com/instacart/TrueTime.swift
+14c2d65554d687c228b0097a2bcf4e15de5f697f	not-for-merge	branch 'master' of https://github.com/instacart/TrueTime.swift
+dd57deda8535ab08e911af6dde328af1d6d3242e	not-for-merge	branch 'mp/remove_result' of https://github.com/instacart/TrueTime.swift
+6638e21bbec93446890b40c0212e77634c862524	not-for-merge	branch 'ms/develop' of https://github.com/instacart/TrueTime.swift
+5374b644d8f52af01fb95e531ef9db1a2b53af89	not-for-merge	branch 'ms/fix-leaks' of https://github.com/instacart/TrueTime.swift
+f4c6adf59e3fb697901b3de67b72ba19d0ef251c	not-for-merge	branch 'ms/update-podspec' of https://github.com/instacart/TrueTime.swift
+b2c5b40e05d4971c6f29f8032ee11dd86d961828	not-for-merge	branch 'satish/xcode_deployment_target_update' of https://github.com/instacart/TrueTime.swift
+e64608a8b2bf6fdba4c2c69fce3fd7fccba83eb2	not-for-merge	'refs/pull/1/head' of https://github.com/instacart/TrueTime.swift
+2bb5c4c36eb695cf9a0d4105f5ed0b2e4213ca1a	not-for-merge	'refs/pull/10/head' of https://github.com/instacart/TrueTime.swift
+31ab562a98b20892e507f0eaf39a7c8ab5178613	not-for-merge	'refs/pull/105/head' of https://github.com/instacart/TrueTime.swift
+882fd3aaffb10a7599df47bc48ddbc1a4cb8e1d5	not-for-merge	'refs/pull/105/merge' of https://github.com/instacart/TrueTime.swift
+10460729d8c5634fb6b81c230e865a20b9d8197b	not-for-merge	'refs/pull/107/head' of https://github.com/instacart/TrueTime.swift
+c84fac183aced0a9ab8595ddde236620530375df	not-for-merge	'refs/pull/107/merge' of https://github.com/instacart/TrueTime.swift
+8e88e648f37c16720247c3f6c6f3752778a4214c	not-for-merge	'refs/pull/111/head' of https://github.com/instacart/TrueTime.swift
+40e2a3bcb7020533ccd997537644fb01ea6d35e9	not-for-merge	'refs/pull/111/merge' of https://github.com/instacart/TrueTime.swift
+0b674d606472f58ce0789e2140af0544400685d6	not-for-merge	'refs/pull/115/head' of https://github.com/instacart/TrueTime.swift
+19a80c2fca7516fe2dc614e5a4b5b65525c5e943	not-for-merge	'refs/pull/116/head' of https://github.com/instacart/TrueTime.swift
+4637770e9c6d76af2fc4c16c43388e9a65104745	not-for-merge	'refs/pull/116/merge' of https://github.com/instacart/TrueTime.swift
+70f2f498675817a13c2526932cb4736c45d98bd7	not-for-merge	'refs/pull/117/head' of https://github.com/instacart/TrueTime.swift
+dcf5479b9f2b426bd660ccdc2f34342b2fedf553	not-for-merge	'refs/pull/117/merge' of https://github.com/instacart/TrueTime.swift
+13fe425ffbf413c627ff8e7077a7f7ad7a6fd3c1	not-for-merge	'refs/pull/13/head' of https://github.com/instacart/TrueTime.swift
+3b8f92f722bd73cb8d2296e3ea23602d70310c19	not-for-merge	'refs/pull/2/head' of https://github.com/instacart/TrueTime.swift
+c0edece1f2ed5c39a075be6d8fb1e8791377caf9	not-for-merge	'refs/pull/20/head' of https://github.com/instacart/TrueTime.swift
+636cfc24d145d5d6fb201f48578c360ae653b93b	not-for-merge	'refs/pull/20/merge' of https://github.com/instacart/TrueTime.swift
+045dc3f54b0e02e65d063d97340f87b5ddca3a6b	not-for-merge	'refs/pull/21/head' of https://github.com/instacart/TrueTime.swift
+3f69d511274afbb610ada90e40af167b45eb0b33	not-for-merge	'refs/pull/22/head' of https://github.com/instacart/TrueTime.swift
+0f428e7d24a01be2f6df1cfce22809776ef1d2c9	not-for-merge	'refs/pull/25/head' of https://github.com/instacart/TrueTime.swift
+8363df3d7e78e7fd1aff8e25e911572ae4daf12b	not-for-merge	'refs/pull/26/head' of https://github.com/instacart/TrueTime.swift
+ca0447c6807ef0acab087f98b2b209159b17c02d	not-for-merge	'refs/pull/27/head' of https://github.com/instacart/TrueTime.swift
+aeea123478e8d72a792be0a350fb318185f9eb3b	not-for-merge	'refs/pull/28/head' of https://github.com/instacart/TrueTime.swift
+870ecbb3044298eb17f6b1c9faf2ff4053b2ffc7	not-for-merge	'refs/pull/3/head' of https://github.com/instacart/TrueTime.swift
+645e17eaad30e014ec5fed42cc8359d32221328b	not-for-merge	'refs/pull/35/head' of https://github.com/instacart/TrueTime.swift
+286a5080854aa42a6eae9dd3e060ca845921851d	not-for-merge	'refs/pull/4/head' of https://github.com/instacart/TrueTime.swift
+92241af2728b36ef734a23e986f440b900a8efb8	not-for-merge	'refs/pull/41/head' of https://github.com/instacart/TrueTime.swift
+4f7a418117473b91a01ceac4cb9aeb683734931f	not-for-merge	'refs/pull/43/head' of https://github.com/instacart/TrueTime.swift
+06802f9b7fb08d5244dd3b2db17b72b68be81c38	not-for-merge	'refs/pull/43/merge' of https://github.com/instacart/TrueTime.swift
+78c265d4b1755f645e71d8877dfc2d517e61596c	not-for-merge	'refs/pull/49/head' of https://github.com/instacart/TrueTime.swift
+b4d1f43c9418460732a42aec3ed63cab4b091f0d	not-for-merge	'refs/pull/6/head' of https://github.com/instacart/TrueTime.swift
+eec339c6ed04de4ac812cebc0d3aa94596259694	not-for-merge	'refs/pull/60/head' of https://github.com/instacart/TrueTime.swift
+54e3924496eb85093063f2dbbc53761a8f4310a2	not-for-merge	'refs/pull/63/head' of https://github.com/instacart/TrueTime.swift
+b71549c9aaf82be30733649cf6088b612cb40e20	not-for-merge	'refs/pull/65/head' of https://github.com/instacart/TrueTime.swift
+52bd9936e392b1e3e6b7eb8a0feb100802f066bb	not-for-merge	'refs/pull/67/head' of https://github.com/instacart/TrueTime.swift
+0c6ea7168a63b32f0fb329a989d72403bc813203	not-for-merge	'refs/pull/68/head' of https://github.com/instacart/TrueTime.swift
+edf4ff7df44f2fd29cbde359cfe0125d4200cdb2	not-for-merge	'refs/pull/7/head' of https://github.com/instacart/TrueTime.swift
+b8e47dcfc65582078500b3598fe56cd4fa75bb57	not-for-merge	'refs/pull/71/head' of https://github.com/instacart/TrueTime.swift
+8582bbc27ed2b70aac34fae4a00ccf68a420b74c	not-for-merge	'refs/pull/72/head' of https://github.com/instacart/TrueTime.swift
+dd57deda8535ab08e911af6dde328af1d6d3242e	not-for-merge	'refs/pull/73/head' of https://github.com/instacart/TrueTime.swift
+457580c83e120ff452356b4c53be8ac08f2bb3ab	not-for-merge	'refs/pull/74/head' of https://github.com/instacart/TrueTime.swift
+bb4f6922746fc9824362a7ded915b7c6c15aadc9	not-for-merge	'refs/pull/75/head' of https://github.com/instacart/TrueTime.swift
+fce48c177cbd0db8d99a89dc6a596b7d417a9fd9	not-for-merge	'refs/pull/76/head' of https://github.com/instacart/TrueTime.swift
+6be9ff167abd1a451de939afc224beef7d52974c	not-for-merge	'refs/pull/8/head' of https://github.com/instacart/TrueTime.swift
+3a04acd927b4c10efa48d6becd7d38a04a1e02ea	not-for-merge	'refs/pull/86/head' of https://github.com/instacart/TrueTime.swift
+7d6b475ad79d9f488c75e76dde00e030dee5c12c	not-for-merge	'refs/pull/92/head' of https://github.com/instacart/TrueTime.swift
+83ddab03e0d31cdbd5f6ce462d832c652eb2f798	not-for-merge	'refs/pull/92/merge' of https://github.com/instacart/TrueTime.swift
+753434982cf09cb17372f6ff5ff339a030a71063	not-for-merge	tag '1.0.0' of https://github.com/instacart/TrueTime.swift
+39960a646d52d0df7868fdbb41affc2bac3fe722	not-for-merge	tag '1.0.1' of https://github.com/instacart/TrueTime.swift
+7b9e18c35ff3d059e154782fd890895eec605086	not-for-merge	tag '1.1.0' of https://github.com/instacart/TrueTime.swift
+8c7c63b556f58e6b0dbe79531234285e06219ec3	not-for-merge	tag '2.0.0' of https://github.com/instacart/TrueTime.swift
+730dd1d5f86bbc177e7dfe2edaef6531d729fb02	not-for-merge	tag '2.1.0' of https://github.com/instacart/TrueTime.swift
+b40a9aa4db48e2a7e275527bb749732f084d1cab	not-for-merge	tag '2.1.1' of https://github.com/instacart/TrueTime.swift
+4f3f8c8eec918716e790af603565405716c1de10	not-for-merge	tag '3.0.0' of https://github.com/instacart/TrueTime.swift
+a7434ded7df4d9553eafcb3a777c7738e77857ce	not-for-merge	tag '3.1.0' of https://github.com/instacart/TrueTime.swift
+18d981ca6e5d8555118368964bdf53fc58813205	not-for-merge	tag '3.1.1' of https://github.com/instacart/TrueTime.swift
+85bc4e867153d0bcdb72fa84e7da5d6fbb58b29b	not-for-merge	tag '4.0.0' of https://github.com/instacart/TrueTime.swift
+bbfa2defd6b0c0f5f4727ce476d7c1786ec5ce34	not-for-merge	tag '4.1.0' of https://github.com/instacart/TrueTime.swift
+bac1265d4cc1fc6c9e08d0dce7ad7fce63f5eedc	not-for-merge	tag '4.1.1' of https://github.com/instacart/TrueTime.swift
+42fe9355f3e6c2e0bce372d1b12fc33ec0f62c0a	not-for-merge	tag '4.1.2' of https://github.com/instacart/TrueTime.swift
+37ef69eae4159f58e3aaf0f03dc02b8cfcff61d3	not-for-merge	tag '4.1.3' of https://github.com/instacart/TrueTime.swift
+73a2fedae46d469703f8452265cdb093f1a60b20	not-for-merge	tag '4.1.4' of https://github.com/instacart/TrueTime.swift
+0a98d0086b2891fbf88ba0675ec3119fb62798fb	not-for-merge	tag '4.1.5' of https://github.com/instacart/TrueTime.swift
+fa538b1a7a8e07c5270316487851e653e63c701a	not-for-merge	tag '4.2.0' of https://github.com/instacart/TrueTime.swift
+03b9db0c4d19939d716afc1f86cddceeb92aec80	not-for-merge	tag '5.0.0' of https://github.com/instacart/TrueTime.swift
+ea1b6192f1c3416760ca1b6a4ab446c0edd1d798	not-for-merge	tag '5.0.1' of https://github.com/instacart/TrueTime.swift
+c737861ae5cbd0f16342db170e30bc61b583e8f3	not-for-merge	tag '5.0.2' of https://github.com/instacart/TrueTime.swift
+8b6f114d92c4a732850158403484ffddab3c4192	not-for-merge	tag '5.0.3' of https://github.com/instacart/TrueTime.swift
+14c2d65554d687c228b0097a2bcf4e15de5f697f	not-for-merge	tag '5.1.0' of https://github.com/instacart/TrueTime.swift

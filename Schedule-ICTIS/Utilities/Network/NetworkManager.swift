@@ -14,6 +14,7 @@ final class NetworkManager {
     private let decoder = JSONDecoder()
     private let urlForGroup = "https://shedule.rdcenter.ru/schedule-api/?query="
     private let urlForWeek = "https://shedule.rdcenter.ru/schedule-api/?group="
+    private let urlForDate = "https://smartapp-code.sberdevices.ru/tools/api/now?tz=Europe/Moscow&format=dd/MM/yyyy"
     private let customSession: URLSession // Кастомная сессия для ограничения времени ответа от сервера
     
     //MARK: Initializer
@@ -73,6 +74,20 @@ final class NetworkManager {
         
         do {
             return try decoder.decode(Welcome.self, from: data)
+        }
+        catch {
+            throw NetworkError.invalidData
+        }
+    }
+    
+    func getDate() async throws -> DateModel {
+        print(urlForDate)
+        guard let url = URL(string: urlForDate) else { throw NetworkError.invalidUrl }
+        let (data, response) = try await customSession.data(from: url)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else { throw NetworkError.invalidResponse }
+        
+        do {
+            return try decoder.decode(DateModel.self, from: data)
         }
         catch {
             throw NetworkError.invalidData
