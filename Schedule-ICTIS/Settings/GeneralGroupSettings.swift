@@ -48,38 +48,6 @@ struct GeneralGroupSettings: View {
                 .foregroundColor(Color("customGray1"))
                 .frame(height: 1)
                 .padding(.horizontal)
-            HStack {
-                Text("Язык")
-                    .font(.custom("Montserrat-Medium", fixedSize: 17))
-                    .foregroundColor(.black)
-                Spacer()
-                HStack {
-                    Text(selectedLanguage)
-                        .font(.custom("Montserrat-Medium", fixedSize: 17))
-                        .foregroundColor(Color("customGray3"))
-                    Image("upDownArrows")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 15, height: 15)
-                }
-                .padding(.horizontal)
-            }
-            .padding(.horizontal)
-            .padding(.top, 7)
-            .padding(.bottom, 17)
-            .overlay {
-                HStack {
-                    Spacer()
-                    Picker("", selection: $selectedLanguage, content: {
-                        ForEach(MockData.languages, id: \.self) {
-                            Text($0)
-                        }
-                    })
-                    .padding(.trailing, 35)
-                    .blendMode(.destinationOver)
-                }
-                .frame(width: UIScreen.main.bounds.width)
-            }
         }
         .background(Color.white)
         .cornerRadius(20)

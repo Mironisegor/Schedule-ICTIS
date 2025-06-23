@@ -30,7 +30,7 @@ struct ScheduleGroupSettings: View {
                 .padding(.horizontal)
             NavigationLink(destination: FavVPKView(vm: vm, networkMonitor: networkMonitor)) {
                 HStack {
-                    Text("ВПК")
+                    Text("Избранное ВПК")
                         .font(.custom("Montserrat-Medium", fixedSize: 17))
                         .foregroundColor(.black)
                     Spacer()

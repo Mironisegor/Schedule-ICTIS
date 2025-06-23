@@ -37,6 +37,7 @@ final class ScheduleViewModel: ObservableObject {
     @Published var isShowingAlertForIncorrectSingleGroup: Bool = false
     @Published var errorInNetwork: NetworkError?
     @Published var errorInNetworkForSingleGroup: NetworkError?
+    @Published var nameOfGroupForSingle = ""
     @Published var isLoading: Bool = false
     @Published var isNewGroup: Bool = false
     
@@ -128,6 +129,7 @@ final class ScheduleViewModel: ObservableObject {
                 let schedule = try await NetworkManager.shared.getSchedule(name)
                 let table = schedule.table.table
                 let groupName = schedule.table.name
+                self.nameOfGroupForSingle = groupName
                 self.weekForSingleGroup = schedule.table.week
                     
                 // Преобразуем данные в формат ClassInfo
@@ -252,6 +254,7 @@ final class ScheduleViewModel: ObservableObject {
     
     func addGroupToFilteringArray(group: String) {
         self.filteringGroups.append(group)
+        selectShowingGroup()
     }
     
     func fillFilteringGroups() {

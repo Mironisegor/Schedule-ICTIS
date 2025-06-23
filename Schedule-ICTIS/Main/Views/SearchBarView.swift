@@ -37,11 +37,10 @@ struct SearchBarView: View {
                                     return
                                 }
                                 vm.removeFromSchedule(group: vm.searchingGroup)
-                                text = transformStringToFormat(text)
-                                vm.searchingGroup = text
-                                vm.nameToHtml[text] = ""
+                                vm.searchingGroup = vm.nameOfGroupForSingle
+                                vm.nameToHtml[vm.nameOfGroupForSingle] = ""
                                 print("Ключи: \(vm.nameToHtml.keys)")
-                                vm.addGroupToFilteringArray(group: text)
+                                vm.addGroupToFilteringArray(group: vm.searchingGroup)
                                 vm.fetchWeekSchedule()
                                 self.text = ""
                             }

@@ -54,7 +54,7 @@ struct SelectingGroupView: View {
                             }
                             
                             vm.errorInNetworkForSingleGroup = nil
-                            let formattedText = transformStringToFormat(text)
+                            let formattedText = vm.nameOfGroupForSingle
                             
                             do {
                                 try saveGroup(name: formattedText)
